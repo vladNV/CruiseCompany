@@ -16,7 +16,8 @@
 <body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
 <div class="container">
-    <div class="col-sm-offset-4">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 registration">
         <form class="form-group" action="registration" method="post">
             <div class="form-group">
                 <input placeholder="<fmt:message key="login"/>"
@@ -40,6 +41,7 @@
             </div>
         </form>
     </div>
+    <div class="col-sm-3"></div>
 </div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package model.dao.mapper;
 
 import model.entity.*;
 import model.entity.Entity;
+import model.util.AggregateOperation;
 import model.util.Role;
 import model.util.TicketClass;
 
@@ -101,6 +102,23 @@ public abstract class EntityMapper {
         }
     }
 
+    static class TicketAmountMapper
+            implements Mapper<AggregateOperation<Integer, Ticket>> {
+
+        @Override
+        public AggregateOperation<Integer, Ticket>
+        extract(ResultSet rs) throws SQLException {
+            Ticket t = Ticket.newTicket()
+                    .arrival(rs.getTimestamp("arrival").toLocalDateTime())
+                    .departure(rs.getTimestamp("departure").toLocalDateTime())
+                    .price(rs.getLong("price"))
+                    .type(TicketClass.valueOf(rs.getString("type")))
+                    .build();
+            Integer amount = rs.getInt("amount");
+            return new AggregateOperation<>(amount, t);
+        }
+    }
+
     static <T extends Entity> T
     extractIfWithoutNext(ResultSet set, Mapper<T> mapper)
             throws SQLException {
@@ -150,6 +168,8 @@ public abstract class EntityMapper {
                     return (T) new ExcursionMapper();
                 case TicketMapper:
                     return (T) new TicketMapper();
+                case TicketAmountMapper:
+                    return (T) new TicketAmountMapper();
                 default:
                     throw new IllegalArgumentException();
             }

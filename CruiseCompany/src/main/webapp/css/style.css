@@ -1,37 +1,66 @@
 .ticket-table{
+    margin-top: 100px;
     width: 100%;
     display: table;
 }
-
 .ticket-row{
     width: 100%;
     display: table-row;
 }
-
-.ticket-row:hover{
-    background: #67b168;
+.ticket-header{
+    width: 100%;
+    display: table-row;
 }
-
+.ticket-row:hover{
+    background-color: #5bc0de;
+}
 .ticket-cell{
+    padding: 5px;
     width: auto;
     display: table-cell;
     border-bottom: 1px solid gainsboro;
 }
 
-.route-table{
+.tour-table{
     width: 100%;
     display: table;
 }
+.tour-row{
+    width: 100%;
+    display: table-row;
+}
+.tour-header{
+    width: 100%;
+    display: table-row;
+}
+.tour-row:hover{
+    background: #67b168;
+}
+.tour-cell{
+    padding: 3px;
+    width: auto;
+    display: table-cell;
+    border-bottom: 1px solid gainsboro;
+}
 
+
+
+.route-table{
+    margin-top: 100px;
+    width: 100%;
+    display: table;
+}
 .route-row{
     width: 100%;
     display: table-row;
 }
-
+.route-header{
+    width: 100%;
+    display: table-row;
+}
 .route-row:hover{
     background: darkseagreen;
 }
-
 .route-cell{
     padding: 5px;
     width: auto;
@@ -39,3 +68,12 @@
     border-bottom: 1px solid darkseagreen;
 }
 
+.login {
+    border: 1px solid darkseagreen;
+    padding: 20px;
+}
+
+.registration {
+    border: 1px solid darkseagreen;
+    padding: 30px;
+}

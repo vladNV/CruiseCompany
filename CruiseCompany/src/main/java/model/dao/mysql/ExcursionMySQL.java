@@ -1,7 +1,10 @@
 package model.dao.mysql;
 
 import model.dao.interfaces.ExcursionDAO;
+import model.dao.mapper.EntityMapper;
+import model.dao.mapper.EnumMapper;
 import model.dao.mapper.ExcursionMapper;
+import model.dao.mapper.Mapper;
 import model.entity.Excursion;
 
 import java.sql.*;
@@ -106,6 +109,17 @@ public class ExcursionMySQL implements ExcursionDAO {
         }
     }
 
+    @Override
+    public List<Excursion> joinWithPort() {
+        try (PreparedStatement statement = connection.prepareStatement(PORT_JOIN)) {
+            statement.setInt(1, offset);
+            statement.setInt(2, limit);
+            Mapper<Excursion> mapper = EntityMapper.mapperFactory(EnumMapper.ExcursionMapper);
+            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void close() throws Exception {

@@ -8,9 +8,12 @@ public interface URI {
     String SIGN_UP_JSP = "/WEB-INF/registration.jsp";
     String SUCCESS_REG_JSP = "/WEB-INF/static/successReg.jsp";
     String TOUR_PAGE_JSP = "/WEB-INF/tour.jsp";
+    String EXCURSIONS_JSP = "/WEB-INF/excursions.jsp";
+    String TICKET_JSP = "/WEB-INF/ticket.jsp";
 
     String MAIN = "/main";
     String LOGIN = "/login";
     String SIGN_UP = "/registration";
+    String TICKET = "/ticket";
 
 }

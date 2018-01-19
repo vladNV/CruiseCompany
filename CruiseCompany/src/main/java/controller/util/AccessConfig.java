@@ -33,6 +33,7 @@ public class AccessConfig {
         access.put(Pattern.compile("/registration"), unauthorized);
         access.put(Pattern.compile("/logout"), authorized);
         access.put(Pattern.compile("/tour/\\d{1,5}"), all);
+        access.put(Pattern.compile("/ticket"), authorized);
     }
 
     private AccessConfig() {

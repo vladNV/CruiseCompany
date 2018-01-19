@@ -4,20 +4,26 @@ import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.URI;
 import model.dao.FactoryDAO;
+import model.entity.Ticket;
 import model.entity.Tour;
+import model.service.TicketService;
 import model.service.TourService;
+import model.util.AggregateOperation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OpenTour implements Action {
-    private TourService service;
+    private TourService serviceTour;
+    private TicketService serviceTicket;
 
     OpenTour() {
-        this.service = new TourService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));
+        this.serviceTour = new TourService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));
+        this.serviceTicket = new TicketService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));
     }
 
     @Override
@@ -26,9 +32,12 @@ public class OpenTour implements Action {
         String uri = request.getRequestURI();
         int tourId = getTourIdFromURI(uri);
         if (tourId == 0) return new ActionResponse(Act.REDIRECT, URI.MAIN);
-        Tour tour = service.allInformationAboutTour(tourId);
+        Tour tour = serviceTour.allInformationAboutTour(tourId);
+        List<AggregateOperation<Integer, Ticket>> ticketCategories =
+                serviceTicket.amountTicket(tourId);
         if (tour == null) return new ActionResponse(Act.NONE, "");
         request.setAttribute("tour", tour);
+        request.setAttribute("tour_tickets", ticketCategories);
         return new ActionResponse(Act.FORWARD, URI.TOUR_PAGE_JSP);
     }
 

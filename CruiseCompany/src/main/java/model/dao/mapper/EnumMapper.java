@@ -3,5 +3,6 @@ package model.dao.mapper;
 public enum  EnumMapper {
     UserMapper, PortMapper, RouteMapper,
     ShipMapper, TourMapper, ExcursionMapper,
-    TicketMapper, TourMapperWithoutShip
+    TicketMapper, TourMapperWithoutShip,
+    TicketAmountMapper
 }

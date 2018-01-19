@@ -9,19 +9,32 @@
 <body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
 <div class="container">
-    <div class="col-sm-offset-3">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
         <div class="login">
             <form action="login" method="post">
-                <input required name="login" class="form-control"
-                       placeholder="<fmt:message key="email" />">
-                <input required name="password" class="form-control"
-                       placeholder="<fmt:message key="password" />">
-                <c:import url="/WEB-INF/static/requestStatus.jsp"/>
-                <button class="btn btn-primary"><fmt:message key="sign_in"/></button>
+                <div class="form-group">
+                    ${requestScope.status}
+                </div>
+                <div class="form-group">
+                    <input required name="login" class="form-control"
+                           placeholder="<fmt:message key="email" />">
+                </div>
+                <div class="form-group">
+                    <input required name="password" class="form-control"
+                           placeholder="<fmt:message key="password" />">
+                </div>
+                <div class="form-group">
+                    <c:import url="/WEB-INF/static/requestStatus.jsp"/>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary"><fmt:message key="sign_in"/></button>
+                </div>
             </form>
         </div>
         <hr/>
     </div>
+    <div class="col-sm-4"></div>
 </div>
 </body>
 </html>

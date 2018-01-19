@@ -4,23 +4,27 @@
 <html>
 <head>
     <c:import url="/WEB-INF/static/head.jsp"/>
-    <title>Title</title>
+    <title><fmt:message key="tours"/></title>
 </head>
 <body>
     <c:import url="/WEB-INF/static/menu.jsp"/>
-    <c:if test="${sessionScope.user != null}">
-        <a href="${pageContext.request.contextPath}/logout">Logout</a>
-    </c:if>
     <div class="col-sm-12 center-block">
         <h2>Tours</h2>
-        <div class="ticket-table">
+        <div class="tour-table">
+            <div class="tour-header">
+                <div class="tour-cell"><fmt:message key="cruise_name"/></div>
+                <div class="tour-cell"><fmt:message key="deparute"/></div>
+                <div class="tour-cell"><fmt:message key="region"/></div>
+                <div class="tour-cell"><fmt:message key="duration"/></div>
+                <div class="tour-cell"><fmt:message key="ship"/></div>
+            </div>
             <c:forEach items="${requestScope.tours}" var="tour">
-                <a href="${pageContext.request.contextPath}/tour/${tour.id}" class="ticket-row">
-                    <div class="ticket-cell">${tour.name}</div>
-                    <div class="ticket-cell">${tour.departure}</div>
-                    <div class="ticket-cell">${tour.region}</div>
-                    <div class="ticket-cell">${tour.duration}</div>
-                    <div class="ticket-cell">${tour.ship.name}</div>
+                <a href="${pageContext.request.contextPath}/tour/${tour.id}" class="tour-row">
+                    <div class="tour-cell">${tour.name}</div>
+                    <div class="tour-cell">${tour.departure}</div>
+                    <div class="tour-cell">${tour.region}</div>
+                    <div class="tour-cell">${tour.duration}</div>
+                    <div class="tour-cell">${tour.ship.name}</div>
                 </a>
             </c:forEach>
         </div>

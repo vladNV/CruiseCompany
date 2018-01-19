@@ -42,6 +42,7 @@ public class UserService {
         return passwordEquals(password, user) ? user : null;
     }
 
+
     private boolean passwordEquals(String inPass, User user) {
         return user.getPassword().equals(inPass);
     }

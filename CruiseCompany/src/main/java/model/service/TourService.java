@@ -33,14 +33,12 @@ public class TourService {
     public Tour allInformationAboutTour(int tourId)  {
         Connection connect = FactoryMySQL.connect();
         try (TourDAO tourDAO = factory.tourDAO(connect);
-             TicketDAO ticketDAO = factory.ticketDAO(connect);
              RouteDAO routeDAO = factory.routeDAO(connect)) {
             connect.setAutoCommit(false);
             Tour tour = tourDAO.findTourWithShip(tourId);
             //optional ?
             if (tour == null) return null;
             tour.setRoutes(routeDAO.routesOfCruise(tourId));
-            tour.setTickets(ticketDAO.ticketsForCruise(tourId));
             connect.commit();
             return tour;
         } catch (Exception e) {
