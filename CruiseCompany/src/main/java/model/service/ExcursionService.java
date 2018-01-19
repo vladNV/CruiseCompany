@@ -15,9 +15,19 @@ public class ExcursionService {
     }
 
     public List<Excursion> showExcursions() {
-        ExcursionDAO excursionDAO = factory.excursionDAO(FactoryMySQL.connect());
-        return excursionDAO.joinWithPort();
+        try (ExcursionDAO excursionDAO = factory.excursionDAO(FactoryMySQL.connect());){
+            return excursionDAO.joinWithPort();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public List<Excursion> showCruiseExcursion(int tourId) {
+        try (ExcursionDAO excursionDAO = factory.excursionDAO(FactoryMySQL.connect());){
+            return excursionDAO.cruiseExcursion(tourId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

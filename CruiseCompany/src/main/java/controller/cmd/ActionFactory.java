@@ -17,6 +17,7 @@ public class ActionFactory {
         return current;
     }
 
+    // TODO fix me pls
     private String parseAction(String URI)  {
         URI = URI.replaceAll("/", "");
         URI = URI.replaceAll("\\d","");

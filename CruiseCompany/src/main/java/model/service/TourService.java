@@ -22,8 +22,8 @@ public class TourService {
 
     public List<Tour> showTours() {
         //TODO mysql connect change to connection pool
-        try {
-            return factory.tourDAO(FactoryMySQL.connect()).joinWithShip();
+        try (TourDAO tourDAO = factory.tourDAO(FactoryMySQL.connect())) {
+            return tourDAO.joinWithShip();
             // service exception
         } catch (Exception e) {
             throw new RuntimeException(e);

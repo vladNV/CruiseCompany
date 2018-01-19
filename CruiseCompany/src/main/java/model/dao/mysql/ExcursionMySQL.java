@@ -27,6 +27,10 @@ public class ExcursionMySQL implements ExcursionDAO {
             "select * from excursion limit ?, ?";
     private static final String PORT_JOIN =
             "select * from excursion join port using(idport) limit ?, ?";
+    private static final String EXCURSION_PORT =
+            "select * " +
+            "from route join port using (idport) join excursion using (idport)" +
+            "where idtour = ?";
 
     public int getLimit() {
         return limit;
@@ -115,6 +119,18 @@ public class ExcursionMySQL implements ExcursionDAO {
             statement.setInt(1, offset);
             statement.setInt(2, limit);
             Mapper<Excursion> mapper = EntityMapper.mapperFactory(EnumMapper.ExcursionMapper);
+            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Excursion> cruiseExcursion(int tourId) {
+        try (PreparedStatement statement = connection.prepareStatement(EXCURSION_PORT)){
+            statement.setInt(1, tourId);
+            Mapper<Excursion> mapper = EntityMapper
+                    .mapperFactory(EnumMapper.ExcursionMapper);
             return EntityMapper.extractWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);

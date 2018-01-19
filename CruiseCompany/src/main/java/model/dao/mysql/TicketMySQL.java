@@ -6,6 +6,7 @@ import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
 import model.entity.Ticket;
 import model.util.AggregateOperation;
+import model.util.TicketClass;
 
 import java.sql.*;
 import java.util.List;
@@ -30,6 +31,8 @@ public class TicketMySQL implements TicketDAO {
             "select count(*) as amount, departure, arrival, price, type " +
             "from ticket where idtour = ? and iduser is null " +
             "group by ticket.type";
+    private static final String FIND_BY_TYPE =
+            "select * from ticket where type = ? limit 1";
 
     TicketMySQL(final Connection connection) {
         this.connection = connection;
@@ -132,6 +135,18 @@ public class TicketMySQL implements TicketDAO {
             statement.setInt(3, limit);
             Mapper<Ticket> mapper = EntityMapper.mapperFactory(EnumMapper.TicketMapper);
             return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Ticket findTicketByType(TicketClass type) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_TYPE)) {
+            statement.setString(1, String.valueOf(type));
+            Mapper<Ticket> mapper = EntityMapper.
+                    mapperFactory(EnumMapper.TicketWithoutTourMapper);
+            return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

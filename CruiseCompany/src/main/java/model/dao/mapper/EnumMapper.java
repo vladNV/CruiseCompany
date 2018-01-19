@@ -4,5 +4,5 @@ public enum  EnumMapper {
     UserMapper, PortMapper, RouteMapper,
     ShipMapper, TourMapper, ExcursionMapper,
     TicketMapper, TourMapperWithoutShip,
-    TicketAmountMapper
+    TicketAmountMapper, TicketWithoutTourMapper
 }

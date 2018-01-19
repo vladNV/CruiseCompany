@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,7 @@ public class FilterAccess implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
         ifRoleNull(session);
-        HashMap<Pattern, LinkedList<Role>> h = initAccessMap();
+        HashMap<Pattern,  Set<Role>> h = initAccessMap();
         String path = req.getRequestURI();
         Pattern pattern = isCorrectPath(h, path);
         if (pattern == null) {
@@ -35,13 +36,13 @@ public class FilterAccess implements Filter {
             return;
         }
         if (!redirect(req, pattern)) {
-            resp.sendRedirect("/main");
+            resp.sendError(403);
             return;
         }
         chain.doFilter(request, response);
     }
 
-    private HashMap<Pattern, LinkedList<Role>> initAccessMap() {
+    private HashMap<Pattern, Set<Role>> initAccessMap() {
         return AccessConfig.getAccessConfig().getAccess();
     }
 
@@ -53,14 +54,14 @@ public class FilterAccess implements Filter {
 
     private boolean redirect(HttpServletRequest req, Pattern k) {
         HttpSession session = req.getSession();
-        HashMap<Pattern, LinkedList<Role>> h = initAccessMap();
-        LinkedList<Role> v = h.get(k);
+        HashMap<Pattern, Set<Role>> h = initAccessMap();
+        Set<Role> v = h.get(k);
         if (v == null) return false;
         Role current = (Role) session.getAttribute("role");
         return v.contains(current);
     }
 
-    private Pattern isCorrectPath(HashMap<Pattern, LinkedList<Role>> h, String path) {
+    private Pattern isCorrectPath(HashMap<Pattern, Set<Role>> h, String path) {
         Matcher matcher;
         for (Pattern k : h.keySet()) {
             matcher = k.matcher(path);

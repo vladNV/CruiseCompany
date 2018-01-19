@@ -14,7 +14,10 @@ public enum ActionEnum {
     EXCURSIONS      {{ action = new ShowExcursionList(); }},
     PROFILE         {{ action = new OpenProfile(); }},
     ADD_CRUISE      {{ action = new AddCruise(); }},
-    CHOOSE_TICKET   {{ action = new ChooseTicket(); }};
+    // TODO fix to TICKET
+    TICKETSTANDARD  {{ action = new ChooseTicket(); }},
+    TICKETPREMIUM   {{ action = new ChooseTicket(); }},
+    TICKETLUXE      {{ action = new ChooseTicket(); }};
 
 
     Action action;

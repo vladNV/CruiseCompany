@@ -6,23 +6,23 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class AccessConfig {
-    private HashMap<Pattern, LinkedList<Role>> access;
+    private HashMap<Pattern,  Set<Role>> access;
     private static AccessConfig instances;
-    public HashMap<Pattern, LinkedList<Role>> getAccess() {
+    public HashMap<Pattern,  Set<Role>> getAccess() {
         return access;
     }
 
     private void init() {
-        LinkedList<Role> all = new LinkedList<>(
+        Set<Role> all = new HashSet<>(
                 Arrays.asList(Role.GUEST, Role.USER, Role.ADMIN)
         );
-        LinkedList<Role> authorized = new LinkedList<>(
+        Set<Role> authorized = new HashSet<>(
                 Arrays.asList(Role.USER, Role.ADMIN)
         );
-        LinkedList<Role> unauthorized = new LinkedList<>(
+        Set<Role> unauthorized = new HashSet<>(
                 Collections.singletonList(Role.GUEST)
         );
-        LinkedList<Role> admin = new LinkedList<>(
+        Set<Role> admin = new HashSet<>(
                 Collections.singletonList(Role.ADMIN)
         );
         access = new HashMap<>();
@@ -33,7 +33,9 @@ public class AccessConfig {
         access.put(Pattern.compile("/registration"), unauthorized);
         access.put(Pattern.compile("/logout"), authorized);
         access.put(Pattern.compile("/tour/\\d{1,5}"), all);
-        access.put(Pattern.compile("/ticket"), authorized);
+        access.put(Pattern.compile("/ticket/standard"), authorized);
+        access.put(Pattern.compile("/ticket/premium"), authorized);
+        access.put(Pattern.compile("/ticket/luxe"), authorized);
     }
 
     private AccessConfig() {

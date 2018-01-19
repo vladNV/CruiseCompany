@@ -21,7 +21,7 @@
                            placeholder="<fmt:message key="email" />">
                 </div>
                 <div class="form-group">
-                    <input required name="password" class="form-control"
+                    <input type="password" required name="password" class="form-control"
                            placeholder="<fmt:message key="password" />">
                 </div>
                 <div class="form-group">

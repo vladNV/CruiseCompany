@@ -12,6 +12,7 @@ import model.util.AggregateOperation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -29,6 +30,7 @@ public class OpenTour implements Action {
     @Override
     public ActionResponse execute(HttpServletRequest request,
                                   HttpServletResponse response) {
+        HttpSession session = request.getSession();
         String uri = request.getRequestURI();
         int tourId = getTourIdFromURI(uri);
         if (tourId == 0) return new ActionResponse(Act.REDIRECT, URI.MAIN);
@@ -36,10 +38,11 @@ public class OpenTour implements Action {
         List<AggregateOperation<Integer, Ticket>> ticketCategories =
                 serviceTicket.amountTicket(tourId);
         if (tour == null) return new ActionResponse(Act.NONE, "");
-        request.setAttribute("tour", tour);
+        session.setAttribute("tour", tour);
         request.setAttribute("tour_tickets", ticketCategories);
         return new ActionResponse(Act.FORWARD, URI.TOUR_PAGE_JSP);
     }
+
 
     private int getTourIdFromURI(String URI) {
         Pattern pattern = Pattern.compile("[0-9]+");

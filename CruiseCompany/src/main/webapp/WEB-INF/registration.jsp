@@ -29,13 +29,15 @@
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message key="password"/>" type="password"
-                       required class="form-control" name=s"password">
+                       required class="form-control" name="password">
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message key="repeat_password"/>"
-                       name="repassword" required class="form-control">
+                       type="password" name="repassword" required class="form-control">
             </div>
-            <c:import url="/WEB-INF/static/requestStatus.jsp"/>
+            <div class="form-group">
+                <c:import url="/WEB-INF/static/requestStatus.jsp"/>
+            </div>
             <div class="form-group">
                 <button class="btn btn-primary pull-right"><fmt:message key="sign_up"/></button>
             </div>
