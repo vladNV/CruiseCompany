@@ -1,0 +1,41 @@
+.ticket-table{
+    width: 100%;
+    display: table;
+}
+
+.ticket-row{
+    width: 100%;
+    display: table-row;
+}
+
+.ticket-row:hover{
+    background: #67b168;
+}
+
+.ticket-cell{
+    width: auto;
+    display: table-cell;
+    border-bottom: 1px solid gainsboro;
+}
+
+.route-table{
+    width: 100%;
+    display: table;
+}
+
+.route-row{
+    width: 100%;
+    display: table-row;
+}
+
+.route-row:hover{
+    background: darkseagreen;
+}
+
+.route-cell{
+    padding: 5px;
+    width: auto;
+    display: table-cell;
+    border-bottom: 1px solid darkseagreen;
+}
+
