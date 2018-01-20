@@ -1,10 +1,6 @@
 package controller.cmd;
 
-import model.service.UserService;
-
 public enum ActionEnum {
-
-
     LOGIN           {{ action = new SignIn(); }},
     LOGOUT          {{ action = new SignOut(); }},
     REGISTRATION    {{ action = new SignUp(); }},
@@ -18,7 +14,6 @@ public enum ActionEnum {
     TICKETSTANDARD  {{ action = new ChooseTicket(); }},
     TICKETPREMIUM   {{ action = new ChooseTicket(); }},
     TICKETLUXE      {{ action = new ChooseTicket(); }};
-
 
     Action action;
     public Action getAction() {

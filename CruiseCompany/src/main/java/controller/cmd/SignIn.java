@@ -30,6 +30,7 @@ public class SignIn implements Action {
         HttpSession session = request.getSession();
         String login = request.getParameter(PARAM_LOGIN);
         String password = request.getParameter(PARAM_PASSWORD);
+        System.out.println(password);
         if (login == null || password == null) {
             return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
         }

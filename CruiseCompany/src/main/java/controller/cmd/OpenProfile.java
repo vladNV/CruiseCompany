@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 public class OpenProfile implements Action {
 
     @Override
-    public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
+    public ActionResponse execute(HttpServletRequest request,
+                                  HttpServletResponse response) {
         return null;
     }
 }

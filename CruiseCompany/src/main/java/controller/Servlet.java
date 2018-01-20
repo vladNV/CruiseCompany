@@ -59,7 +59,7 @@ public class Servlet extends HttpServlet {
 
     }
 
-    private void redirectToPage(String page,HttpServletResponse resp)
+    private void redirectToPage(String page, HttpServletResponse resp)
             throws IOException {
         if (page != null) {
             resp.sendRedirect(page);

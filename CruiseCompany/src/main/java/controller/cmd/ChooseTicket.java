@@ -5,7 +5,6 @@ import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.URI;
 import model.dao.FactoryDAO;
-import model.entity.Excursion;
 import model.entity.Ticket;
 import model.entity.Tour;
 import model.service.ExcursionService;

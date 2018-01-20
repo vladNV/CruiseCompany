@@ -1,7 +1,6 @@
 package controller.cmd;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Pattern;
 
 public class ActionFactory {
     public Action defineAction(HttpServletRequest request) {
