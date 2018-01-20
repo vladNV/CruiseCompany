@@ -45,8 +45,7 @@ public class SignIn implements Action {
                 return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }
