@@ -1,8 +1,6 @@
 package controller.util;
 
 public class ActionResponse {
-
-
     private Act act;
     private String path;
 

@@ -1,14 +1,13 @@
 package model.dao.mysql;
 
-        import model.dao.interfaces.UserDAO;
-        import model.dao.mapper.EntityMapper;
-        import model.dao.mapper.EnumMapper;
-        import model.dao.mapper.Mapper;
-        import model.dao.mapper.UserMapper;
-        import model.entity.User;
+import model.dao.interfaces.UserDAO;
+import model.dao.mapper.EntityMapper;
+import model.dao.mapper.EnumMapper;
+import model.dao.mapper.Mapper;
+import model.entity.User;
 
-        import java.sql.*;
-        import java.util.List;
+import java.sql.*;
+import java.util.List;
 
 public class UserMySQL implements UserDAO {
     private final Connection connection;
@@ -26,7 +25,7 @@ public class UserMySQL implements UserDAO {
     private static final String FIND_BY_LOGIN =
             "select * from user where email like ? limit 1";
 
-    public UserMySQL(final Connection connection) {
+    UserMySQL(final Connection connection) {
         this.connection = connection;
     }
 
@@ -45,7 +44,7 @@ public class UserMySQL implements UserDAO {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getEmail());
-            statement.executeUpdate();
+            statement.execute();
             return EntityMapper.getKey(statement.getGeneratedKeys());
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -62,7 +61,7 @@ public class UserMySQL implements UserDAO {
             statement.setString(3, user.getEmail());
             statement.setString(4, String.valueOf(user.getRole()));
             statement.setInt(5, user.getId());
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -111,8 +110,7 @@ public class UserMySQL implements UserDAO {
             Mapper<User> mapper = EntityMapper.mapperFactory(EnumMapper.UserMapper);
             return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }

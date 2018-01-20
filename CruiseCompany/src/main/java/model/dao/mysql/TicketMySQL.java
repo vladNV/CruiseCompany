@@ -81,7 +81,7 @@ public class TicketMySQL implements TicketDAO {
             statement.setTimestamp(4, Timestamp.valueOf(ticket.getDeparture()));
             statement.setLong(5, ticket.getPrice());
             statement.setString(6, String.valueOf(ticket.getType()));
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

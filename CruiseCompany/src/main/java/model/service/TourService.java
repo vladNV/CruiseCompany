@@ -24,7 +24,7 @@ public class TourService {
         //TODO mysql connect change to connection pool
         try (TourDAO tourDAO = factory.tourDAO(FactoryMySQL.connect())) {
             return tourDAO.joinWithShip();
-            // service exception
+            // service exceptions
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

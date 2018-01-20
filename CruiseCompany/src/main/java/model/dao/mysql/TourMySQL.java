@@ -29,7 +29,7 @@ public class TourMySQL implements TourDAO {
     private static final String FIND_TOUR_SHIP =
             "select * from tour join ship using(idship) where idtour = ?";
 
-    public TourMySQL(final Connection connection) {
+    TourMySQL(final Connection connection) {
         this.connection = connection;
     }
 
@@ -79,7 +79,7 @@ public class TourMySQL implements TourDAO {
             statement.setTimestamp(4, Timestamp.valueOf(tour.getDeparture()));
             statement.setString(5, tour.getRegion());
             statement.setInt(6, tour.getId());
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             try {
                 connection.rollback();

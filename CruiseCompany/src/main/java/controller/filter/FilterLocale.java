@@ -1,11 +1,8 @@
 package controller.filter;
 
-import controller.util.MessageManager;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
@@ -20,6 +17,7 @@ public class FilterLocale implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession();
+        // default locale
         if (session.getAttribute("locale") == null) {
             session.setAttribute("locale", Locale.ENGLISH);
         }
@@ -28,6 +26,6 @@ public class FilterLocale implements Filter {
 
     @Override
     public void destroy() {
-
+        // nothing
     }
 }

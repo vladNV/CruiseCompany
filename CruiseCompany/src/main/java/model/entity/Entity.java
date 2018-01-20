@@ -1,4 +1,4 @@
 package model.entity;
 
-public interface Entity {
-}
+// marked interface
+public interface Entity { }

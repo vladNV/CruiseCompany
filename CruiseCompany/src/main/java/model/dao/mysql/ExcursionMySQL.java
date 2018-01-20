@@ -48,7 +48,7 @@ public class ExcursionMySQL implements ExcursionDAO {
         this.offset = offset;
     }
 
-    public ExcursionMySQL(final Connection connection) {
+    ExcursionMySQL(final Connection connection) {
         this.connection = connection;
     }
 
@@ -59,14 +59,10 @@ public class ExcursionMySQL implements ExcursionDAO {
             statement.setInt(1, excursion.getPort().getId());
             statement.setLong(2, excursion.getPrice());
             statement.setString(3, excursion.getName());
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
+            return EntityMapper.getKey(statement.getGeneratedKeys());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return 0;
     }
 
     @Override
@@ -76,7 +72,7 @@ public class ExcursionMySQL implements ExcursionDAO {
             statement.setLong(2, excursion.getPrice());
             statement.setString(3, excursion.getName());
             statement.setInt(4, excursion.getId());
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +82,7 @@ public class ExcursionMySQL implements ExcursionDAO {
     public void delete(int id) {
         try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

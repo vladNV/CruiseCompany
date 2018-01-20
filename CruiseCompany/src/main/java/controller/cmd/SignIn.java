@@ -34,18 +34,15 @@ public class SignIn implements Action {
         if (login == null || password == null) {
             return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
         }
-        try {
-          User user = service.signIn(login, password);
-            if (user != null) {
-                session.setAttribute("user", user);
-                session.setAttribute("role", user.getRole());
-                return new ActionResponse(Act.REDIRECT, URI.MAIN);
-            } else {
-                request.setAttribute("wrong", getMessage("auth_invalid"));
-                return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        User user = service.signIn(login, password);
+        if (user != null) {
+            session.setAttribute("user", user);
+            session.setAttribute("role", user.getRole());
+            return new ActionResponse(Act.REDIRECT, URI.MAIN);
+        } else {
+            request.setAttribute("wrong", getMessage("auth_invalid"));
+            return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
         }
+
     }
 }

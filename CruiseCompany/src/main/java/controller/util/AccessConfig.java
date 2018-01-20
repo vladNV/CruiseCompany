@@ -6,10 +6,21 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class AccessConfig {
-    private HashMap<Pattern,  Set<Role>> access;
     private static AccessConfig instances;
-    public HashMap<Pattern,  Set<Role>> getAccess() {
-        return access;
+
+    private AccessConfig() {
+        init();
+    }
+
+    public static AccessConfig getAccessConfig() {
+        if (instances == null) {
+            synchronized (AccessConfig.class) {
+                if (instances == null) {
+                    instances = new AccessConfig();
+                }
+            }
+        }
+        return instances;
     }
 
     private void init() {
@@ -38,18 +49,8 @@ public class AccessConfig {
         access.put(Pattern.compile("/ticket/luxe"), authorized);
     }
 
-    private AccessConfig() {
-        init();
-    }
-
-    public static AccessConfig getAccessConfig() {
-        if (instances == null) {
-            synchronized (AccessConfig.class) {
-                if (instances == null) {
-                    instances = new AccessConfig();
-                }
-            }
-        }
-        return instances;
+    private HashMap<Pattern,  Set<Role>> access;
+    public HashMap<Pattern,  Set<Role>> getAccess() {
+        return access;
     }
 }

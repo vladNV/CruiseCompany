@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +35,7 @@ public class FilterAccess implements Filter {
             return;
         }
         if (!redirect(req, pattern)) {
-            resp.sendError(403);
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
         chain.doFilter(request, response);

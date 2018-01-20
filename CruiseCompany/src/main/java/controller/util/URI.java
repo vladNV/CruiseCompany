@@ -1,6 +1,7 @@
 package controller.util;
 
 public interface URI {
+    // URI (Uniform resource identifier)
     String LOGIN_JSP =   "/WEB-INF/login.jsp";
     String MAIN_JSP =    "/WEB-INF/main.jsp";
     String DEFAULT_JSP = "/index.jsp";

@@ -7,6 +7,7 @@ import java.sql.Connection;
 
 public abstract class FactoryDAO {
     public static final int MYSQL = 1;
+    public static final int ORACLE = 2;
 
     public abstract ExcursionDAO excursionDAO(Connection c);
     public abstract PortDAO portDAO(Connection c);

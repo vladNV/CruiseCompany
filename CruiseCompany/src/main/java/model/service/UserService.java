@@ -34,7 +34,7 @@ public class UserService {
         }
     }
 
-    public User signIn(String email, String password) throws SQLException {
+    public User signIn(String email, String password) {
         password = MD5.getHashCode(password);
         try (UserDAO userDAO = factory.userDAO(FactoryMySQL.connect())){
             User user = userDAO.findByEmail(email);

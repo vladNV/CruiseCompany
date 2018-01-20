@@ -40,6 +40,7 @@ public class Servlet extends HttpServlet {
         Action action = client.defineAction(req);
         ActionResponse actResp = action.execute(req, resp);
         if (actResp == null) {
+            // Internal error
             resp.sendError(500);
             return;
         }
@@ -54,6 +55,7 @@ public class Servlet extends HttpServlet {
                 redirectToPage(actResp.getPath(), resp);
                 break;
             default:
+                // Bad request
                 resp.sendError(400);
         }
 
@@ -64,6 +66,7 @@ public class Servlet extends HttpServlet {
         if (page != null) {
             resp.sendRedirect(page);
         } else {
+            // Page not found
             resp.sendError(404);
         }
     }
@@ -75,6 +78,7 @@ public class Servlet extends HttpServlet {
         if (page != null) {
             req.getRequestDispatcher(page).forward(req, resp);
         } else {
+            // Page not found
             resp.sendError(404);
         }
     }
@@ -86,12 +90,8 @@ public class Servlet extends HttpServlet {
         if (page != null) {
             req.getRequestDispatcher(page).include(req, resp);
         } else {
+            // Page not found
             resp.sendError(404);
         }
-    }
-
-    @Override
-    public String getServletName() {
-        return super.getServletName();
     }
 }
