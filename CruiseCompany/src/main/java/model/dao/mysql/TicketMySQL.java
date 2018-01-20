@@ -5,6 +5,7 @@ import model.dao.mapper.EntityMapper;
 import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
 import model.entity.Ticket;
+import model.exceptions.TicketPaidException;
 import model.util.AggregateOperation;
 import model.util.TicketClass;
 
@@ -33,6 +34,8 @@ public class TicketMySQL implements TicketDAO {
             "group by ticket.type";
     private static final String FIND_BY_TYPE =
             "select * from ticket where type = ? limit 1";
+    private static final String UPDATE_USER_TICKET =
+            "update ticket set iduser = ? where idticket = ? and iduser is null";
 
     TicketMySQL(final Connection connection) {
         this.connection = connection;
@@ -148,6 +151,24 @@ public class TicketMySQL implements TicketDAO {
                     mapperFactory(EnumMapper.TicketWithoutTourMapper);
             return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateTicket(Ticket ticket, int userId) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER_TICKET)){
+            statement.setInt(1, userId);
+            statement.setInt(2, ticket.getId());
+            int update = statement.executeUpdate();
+            if(update == 0) throw new TicketPaidException();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException roll) {
+                roll.printStackTrace();
+                throw new RuntimeException(roll);
+            }
             throw new RuntimeException(e);
         }
     }

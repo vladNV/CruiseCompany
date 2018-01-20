@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class UserService {
-
     private FactoryDAO factory;
 
     public UserService(FactoryDAO factory) {

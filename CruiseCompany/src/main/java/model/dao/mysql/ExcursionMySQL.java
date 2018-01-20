@@ -6,6 +6,8 @@ import model.dao.mapper.EnumMapper;
 import model.dao.mapper.ExcursionMapper;
 import model.dao.mapper.Mapper;
 import model.entity.Excursion;
+import model.entity.Ticket;
+import model.entity.User;
 
 import java.sql.*;
 import java.util.List;
@@ -31,6 +33,8 @@ public class ExcursionMySQL implements ExcursionDAO {
             "select * " +
             "from route join port using (idport) join excursion using (idport)" +
             "where idtour = ?";
+    private static final String USER_EXCURSION =
+            "insert into user_excursion(idexcursion, idticket) values(?, ?)";
 
     public int getLimit() {
         return limit;
@@ -128,6 +132,20 @@ public class ExcursionMySQL implements ExcursionDAO {
             Mapper<Excursion> mapper = EntityMapper
                     .mapperFactory(EnumMapper.ExcursionMapper);
             return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateUserExcursion(Ticket ticket, List<Excursion> excursions) {
+        try (PreparedStatement statement = connection.prepareStatement(USER_EXCURSION)){
+            for (Excursion e : excursions) {
+                statement.setInt(1, ticket.getId());
+                statement.setInt(2, e.getId());
+                statement.addBatch();
+            }
+            statement.executeBatch();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

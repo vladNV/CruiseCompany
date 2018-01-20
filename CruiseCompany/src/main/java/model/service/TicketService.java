@@ -1,12 +1,16 @@
 package model.service;
 
 import model.dao.FactoryDAO;
+import model.dao.interfaces.ExcursionDAO;
 import model.dao.interfaces.TicketDAO;
 import model.dao.mysql.FactoryMySQL;
+import model.entity.Excursion;
 import model.entity.Ticket;
+import model.entity.User;
 import model.util.AggregateOperation;
 import model.util.TicketClass;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class TicketService {
@@ -29,6 +33,22 @@ public class TicketService {
             return ticketDAO.findTicketByType(type);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public boolean buyTicket(Ticket ticket, List<Excursion> excursions,
+                             User user) {
+        Connection connect = FactoryMySQL.connect();
+        try (TicketDAO ticketDAO = factory.ticketDAO(connect);
+             ExcursionDAO excursionDAO = factory.excursionDAO(connect)){
+            connect.setAutoCommit(false);
+            ticketDAO.updateTicket(ticket, user.getId());
+            excursionDAO.updateUserExcursion(ticket, excursions);
+            connect.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

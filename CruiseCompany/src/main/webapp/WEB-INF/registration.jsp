@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="taglib.jsp"%>
-<fmt:bundle basename="messages">
 <html>
 <head>
     <title><fmt:message key="registration"/></title>
@@ -8,36 +7,39 @@
 </head>
 <body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
-<div class="container">
+<div class="wrapper">
+<div class="container content">
     <div class="col-sm-3"></div>
     <div class="col-sm-6 registration">
         <form class="form-group" action="registration" method="post">
             <div class="form-group">
-                <input placeholder="<fmt:message key="login"/>"
+                <input placeholder="<fmt:message bundle="${msg}" key="login"/>"
                        required class="form-control" name="login">
             </div>
             <div class="form-group">
-                <input type="email" placeholder="<fmt:message key="email"/>"
+                <input type="email" placeholder="<fmt:message bundle="${msg}" key="email"/>"
                        required class="form-control" name="email">
             </div>
             <div class="form-group">
-                <input placeholder="<fmt:message key="password"/>" type="password"
-                       required class="form-control" name="password">
+                <input placeholder="<fmt:message bundle="${msg}" key="password"/>"
+                       type="password" required class="form-control" name="password">
             </div>
             <div class="form-group">
-                <input placeholder="<fmt:message key="repeat_password"/>"
+                <input placeholder="<fmt:message bundle="${msg}" key="repeat_password"/>"
                        type="password" name="repassword" required class="form-control">
             </div>
             <div class="form-group">
                 <c:import url="/WEB-INF/static/requestStatus.jsp"/>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary pull-right"><fmt:message key="sign_up"/></button>
+                <button class="btn btn-primary pull-right">
+                    <fmt:message bundle="${msg}" key="sign_up"/></button>
             </div>
         </form>
     </div>
     <div class="col-sm-3"></div>
 </div>
+<c:import url="/WEB-INF/static/footer.jsp"/>
+</div>
 </body>
 </html>
-</fmt:bundle>

@@ -37,7 +37,7 @@ public class OpenTour implements Action {
         Tour tour = serviceTour.allInformationAboutTour(tourId);
         List<AggregateOperation<Integer, Ticket>> ticketCategories =
                 serviceTicket.amountTicket(tourId);
-        if (tour == null) return new ActionResponse(Act.NONE, "");
+        if (tour == null) return ActionResponse.Default();
         session.setAttribute("tour", tour);
         request.setAttribute("tour_tickets", ticketCategories);
         return new ActionResponse(Act.FORWARD, URI.TOUR_PAGE_JSP);

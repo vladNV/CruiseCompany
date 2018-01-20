@@ -16,4 +16,12 @@ public class ActionResponse {
     public String getPath() {
         return path;
     }
+
+    private static final ActionResponse none =
+            new ActionResponse(Act.NONE, URI.NONE);
+
+    public static ActionResponse Default() {
+        return none;
+    }
+
 }

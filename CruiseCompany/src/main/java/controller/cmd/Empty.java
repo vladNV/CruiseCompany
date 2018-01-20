@@ -10,6 +10,6 @@ public class Empty implements Action {
     @Override
     public ActionResponse execute(HttpServletRequest request,
                                   HttpServletResponse response) {
-        return new ActionResponse(Act.NONE, "");
+        return ActionResponse.Default();
     }
 }

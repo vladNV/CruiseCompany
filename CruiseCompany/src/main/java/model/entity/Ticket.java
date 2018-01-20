@@ -12,13 +12,14 @@ public class Ticket implements Cloneable, Serializable, Entity {
     private LocalDateTime arrival;
     private LocalDateTime departure;
     private long price;
+    private int amountPassengers;
     private TicketClass type;
     private CruiseDuration duration;
     private User user;
     private Tour tour;
 
     private Ticket(int id, LocalDateTime arrival, LocalDateTime departure,
-                   long price, TicketClass type,
+                   long price, int amountPassengers, TicketClass type,
                    User user, Tour tour) {
         this.id = id;
         this.arrival = arrival;
@@ -27,6 +28,7 @@ public class Ticket implements Cloneable, Serializable, Entity {
         this.type = type;
         this.user = user;
         this.tour = tour;
+        this.amountPassengers = amountPassengers;
         duration = new CruiseDuration(departure, arrival);
     }
 
@@ -50,6 +52,10 @@ public class Ticket implements Cloneable, Serializable, Entity {
         return price;
     }
 
+    public int getAmountPassengers() {
+        return amountPassengers;
+    }
+
     public TicketClass getType() {
         return type;
     }
@@ -71,6 +77,7 @@ public class Ticket implements Cloneable, Serializable, Entity {
         private LocalDateTime arrival;
         private LocalDateTime departure;
         private long price;
+        private int amountPassengers;
         private TicketClass type;
         private User user;
         private Tour tour;
@@ -95,6 +102,11 @@ public class Ticket implements Cloneable, Serializable, Entity {
             return this;
         }
 
+        public Builder amountPassengers(int amountPassengers) {
+            this.amountPassengers = amountPassengers;
+            return this;
+        }
+
         public Builder type(TicketClass type) {
             this.type = type;
             return this;
@@ -112,7 +124,8 @@ public class Ticket implements Cloneable, Serializable, Entity {
 
         public Ticket build() {
             return new Ticket(id, arrival, departure,
-                              price, type, user, tour);
+                              price, amountPassengers,
+                            type, user, tour);
         }
     }
 

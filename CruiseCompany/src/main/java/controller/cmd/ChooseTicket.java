@@ -32,12 +32,12 @@ public class ChooseTicket implements Action {
         HttpSession session = request.getSession();
         String ticketType = getTicketType(request.getRequestURI());
         if (ticketType == null || ticketType.isEmpty())
-            return new ActionResponse(Act.NONE, "");
+            return ActionResponse.Default();
         Ticket ticket = ticketService.chooseTicket(TicketClass
                 .valueOf(ticketType.toUpperCase()));
         Tour tour = (Tour) session.getAttribute("tour");
         if (ticket == null || tour == null)
-            return new ActionResponse(Act.NONE, "");
+            return ActionResponse.Default();
         session.setAttribute("ticket", ticket);
         request.setAttribute("excursions",
                 excursionService.showCruiseExcursion(tour.getId()));

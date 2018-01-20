@@ -5,6 +5,8 @@
     <title>Profile</title>
 </head>
 <body>
-
+<div class="wrapper">
+<c:import url="/WEB-INF/static/footer.jsp"/>
+</div>
 </body>
 </html>

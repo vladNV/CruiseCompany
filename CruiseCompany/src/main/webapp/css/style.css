@@ -1,5 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html,
+body {
+    height: 100%;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.content {
+    flex: 1 0 auto;
+}
+footer {
+    flex: 0 0 auto;
+    background: black;
+    height: 200px;
+}
+
 .ticket-table{
-    margin-top: 100px;
+    margin: 20px 0;
     width: 100%;
     display: table;
 }
@@ -43,10 +65,8 @@
     border-bottom: 1px solid gainsboro;
 }
 
-
-
 .route-table{
-    margin-top: 100px;
+    margin-top: 20px;
     width: 100%;
     display: table;
 }
@@ -76,4 +96,8 @@
 .registration {
     border: 1px solid darkseagreen;
     padding: 30px;
+}
+
+.form-page {
+    margin-bottom: 50px;
 }

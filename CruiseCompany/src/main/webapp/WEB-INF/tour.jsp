@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="taglib.jsp"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-<fmt:bundle basename="messages">
 <html>
 <head>
     <title>Tour</title>
@@ -9,10 +8,12 @@
 </head>
 <body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
+<div class="wrapper">
+<div class="content">
     <div class="col-sm-12">
         <h2>${sessionScope.tour.name}</h2>
     </div>
-    <div class="col-sm-12"style="margin-top: 100px;">
+    <div class="col-sm-12" style="margin-top: 100px;">
         <div class="col-sm-4">Tour map</div>
         <div class="col-sm-4">Tour description</div>
         <div class="col-sm-4">Ship image</div>
@@ -21,10 +22,10 @@
         <div class="col-sm-6">
             <div class="route-table">
                 <div class="route-header">
-                    <div class="route-cell"><fmt:message key="route"/></div>
-                    <div class="route-cell"><fmt:message key="deparute"/></div>
-                    <div class="route-cell"><fmt:message key="arrival"/></div>
-                    <div class="route-cell"><fmt:message key="port"/></div>
+                    <div class="route-cell"><fmt:message bundle="${msg}" key="route"/></div>
+                    <div class="route-cell"><fmt:message bundle="${msg}" key="departure"/></div>
+                    <div class="route-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
+                    <div class="route-cell"><fmt:message bundle="${msg}" key="port"/></div>
                 </div>
                 <c:forEach items="${sessionScope.tour.routes}" var="route">
                     <div class="route-row">
@@ -47,11 +48,11 @@
         <div class="col-sm-6">
             <div class="ticket-table">
                 <div class="ticket-header">
-                    <div class="ticket-cell"><fmt:message key="amount"/></div>
-                    <div class="ticket-cell"><fmt:message key="deparute"/></div>
-                    <div class="ticket-cell"><fmt:message key="arrival"/></div>
-                    <div class="ticket-cell"><fmt:message key="ticket_type"/></div>
-                    <div class="ticket-cell"><fmt:message key="price"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="amount"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="ticket_type"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="price"/></div>
                 </div>
                 <c:forEach items="${requestScope.tour_tickets}" var="a">
                     <a href="${pageContext.request.contextPath}/ticket/${fn:toLowerCase(a.entity.type)}"
@@ -76,6 +77,8 @@
             </div>
         </div>
     </div>
+</div>
+<c:import url="/WEB-INF/static/footer.jsp"/>
+</div>
 </body>
 </html>
-</fmt:bundle>
