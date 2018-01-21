@@ -3,19 +3,19 @@
 <%@include file="../taglib.jsp"%>
 <html>
 <head>
-    <title>400</title>
+    <title>500</title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
-<body background="">
+<body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
 <div class="wrapper">
     <div class="content container">
-        <h1>400</h1>
-        <fmt:message bundle="${msg}" key="error400"/>
+        <h1>500</h1>
+        <fmt:message bundle="${msg}" key="error500"/>
         <hr>
-    <a href="${pageContext.request.contextPath}/back">
-        <fmt:message bundle="${msg}" key="back"/>
-    </a>
+        <a href="${pageContext.request.contextPath}/back">
+            <fmt:message bundle="${msg}" key="back"/>
+        </a>
     </div>
     <c:import url="/WEB-INF/static/footer.jsp"/>
 </div>

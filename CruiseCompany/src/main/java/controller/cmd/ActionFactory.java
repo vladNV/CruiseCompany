@@ -1,11 +1,13 @@
 package controller.cmd;
 
+import controller.util.RequestParser;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class ActionFactory {
     public Action defineAction(HttpServletRequest request) {
         Action current = new Empty();
-        String action = parseAction(request.getRequestURI());
+        String action = RequestParser.getActionFromURI(request.getRequestURI());
         if (action == null || action.isEmpty()) return current;
         try {
             ActionEnum actionEnum = ActionEnum.valueOf(action.toUpperCase());
@@ -14,12 +16,5 @@ public class ActionFactory {
             request.setAttribute("wrongAction", action);
         }
         return current;
-    }
-
-    // TODO fix me pls
-    private String parseAction(String URI)  {
-        URI = URI.replaceAll("/", "");
-        URI = URI.replaceAll("\\d","");
-        return URI;
     }
 }

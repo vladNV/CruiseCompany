@@ -12,6 +12,7 @@ import model.util.TicketClass;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Set;
 
 public class TicketService {
     private FactoryDAO factory;
@@ -28,15 +29,15 @@ public class TicketService {
         }
     }
 
-    public Ticket chooseTicket(TicketClass type) {
+    public Ticket chooseTicket(TicketClass type, int tourId) {
         try (TicketDAO ticketDAO = factory.ticketDAO(FactoryMySQL.connect())) {
-            return ticketDAO.findTicketByType(type);
+            return ticketDAO.findTicketByType(type, tourId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean buyTicket(Ticket ticket, List<Excursion> excursions,
+    public boolean buyTicket(Ticket ticket, Set<Excursion> excursions,
                              User user) {
         Connection connect = FactoryMySQL.connect();
         try (TicketDAO ticketDAO = factory.ticketDAO(connect);

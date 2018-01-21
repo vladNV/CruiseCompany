@@ -10,7 +10,7 @@ public interface TicketDAO extends GenericDAO<Ticket> {
 
     List<Ticket> ticketsForCruise(int tourId);
     List<AggregateOperation<Integer, Ticket>> ticketForCategory(int tourId);
-    Ticket findTicketByType(TicketClass type);
+    Ticket findTicketByType(TicketClass type, int tourId);
     void updateTicket(Ticket ticket, int userId);
 
 }

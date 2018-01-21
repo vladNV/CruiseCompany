@@ -25,9 +25,6 @@ public class ShowTourList implements Action {
     @Override
     public ActionResponse execute(HttpServletRequest request,
                                   HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        Locale locale = (Locale) session.getAttribute("locale");
-        ResourceBundle res = ResourceBundle.getBundle("messages", locale);
         request.setAttribute("tours", service.showTours());
         return new ActionResponse(Act.FORWARD, URI.MAIN_JSP);
     }

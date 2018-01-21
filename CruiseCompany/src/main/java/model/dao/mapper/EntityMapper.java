@@ -74,6 +74,17 @@ public abstract class EntityMapper {
         }
     }
 
+    static class ExcursionWithoutPortMapper implements Mapper<Excursion> {
+        @Override
+        public Excursion extract(ResultSet rs) throws SQLException {
+            return Excursion.newExcursion()
+                    .id(rs.getInt("idexcursion"))
+                    .name(rs.getString("excursionname"))
+                    .price(rs.getLong("price"))
+                    .build();
+        }
+    }
+
     static class TicketMapper implements Mapper<Ticket> {
         @Override
         public Ticket extract(ResultSet rs) throws SQLException {
@@ -185,6 +196,8 @@ public abstract class EntityMapper {
                     return (T) new TicketAmountMapper();
                 case TicketWithoutTourMapper:
                     return (T) new TicketWithoutTourMapper();
+                case ExcursionWithoutPortMapper:
+                    return (T) new ExcursionWithoutPortMapper();
                 default:
                     throw new IllegalArgumentException();
             }

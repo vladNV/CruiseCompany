@@ -1,9 +1,6 @@
 package controller.cmd;
 
-import controller.regexp.RegexpURI;
-import controller.util.Act;
-import controller.util.ActionResponse;
-import controller.util.URI;
+import controller.util.*;
 import model.dao.FactoryDAO;
 import model.entity.Ticket;
 import model.entity.Tour;
@@ -14,8 +11,6 @@ import model.util.TicketClass;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChooseTicket implements Action {
     private TicketService ticketService;
@@ -30,27 +25,19 @@ public class ChooseTicket implements Action {
     public ActionResponse execute(HttpServletRequest request,
                                   HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String ticketType = getTicketType(request.getRequestURI());
-        if (ticketType == null || ticketType.isEmpty())
-            return ActionResponse.Default();
-        Ticket ticket = ticketService.chooseTicket(TicketClass
-                .valueOf(ticketType.toUpperCase()));
+        String ticketType = RequestParser.getTicketType(request.getRequestURI());
         Tour tour = (Tour) session.getAttribute("tour");
-        if (ticket == null || tour == null)
+        if (ticketType == null || ticketType.isEmpty() ||  tour == null)
             return ActionResponse.Default();
-        session.setAttribute("ticket", ticket);
+
+        Ticket ticket = ticketService.chooseTicket(TicketClass
+                .valueOf(ticketType.toUpperCase()), tour.getId());
+        if (ticket == null)
+            return ActionResponse.Default();
+        Cart cart = (Cart) session.getAttribute("cart");
+        cart.setTicket(ticket);
         request.setAttribute("excursions",
                 excursionService.showCruiseExcursion(tour.getId()));
         return new ActionResponse(Act.FORWARD, URI.TICKET_JSP);
-    }
-
-    private String getTicketType(String uri) {
-        String ticketType = "";
-        Pattern pattern = Pattern.compile(RegexpURI.TICKET_TYPE);
-        Matcher matcher = pattern.matcher(uri);
-        while (matcher.find()) {
-            ticketType = matcher.group();
-        }
-        return ticketType;
     }
 }

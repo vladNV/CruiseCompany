@@ -3,6 +3,7 @@ package controller.cmd;
 import static controller.util.MessageManager.getMessage;
 import controller.util.Act;
 import controller.util.ActionResponse;
+import controller.util.Cart;
 import controller.util.URI;
 import model.dao.FactoryDAO;
 import model.entity.User;
@@ -30,7 +31,6 @@ public class SignIn implements Action {
         HttpSession session = request.getSession();
         String login = request.getParameter(PARAM_LOGIN);
         String password = request.getParameter(PARAM_PASSWORD);
-        System.out.println(password);
         if (login == null || password == null) {
             return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
         }
@@ -38,6 +38,9 @@ public class SignIn implements Action {
         if (user != null) {
             session.setAttribute("user", user);
             session.setAttribute("role", user.getRole());
+            // create cart for user
+            Cart cart = new Cart();
+            session.setAttribute("cart", cart);
             return new ActionResponse(Act.REDIRECT, URI.MAIN);
         } else {
             request.setAttribute("wrong", getMessage("auth_invalid"));

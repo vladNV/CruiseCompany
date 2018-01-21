@@ -30,4 +30,12 @@ public class ExcursionService {
         }
     }
 
+    public Excursion getExcursion(int id) {
+        try (ExcursionDAO excursionDAO = factory.excursionDAO(FactoryMySQL.connect());){
+            return excursionDAO.findById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

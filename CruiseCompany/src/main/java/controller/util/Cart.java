@@ -3,19 +3,19 @@ package controller.util;
 import model.entity.Excursion;
 import model.entity.Ticket;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Cart {
     private Ticket ticket;
-    private List<Excursion> excursions = new ArrayList<>();
+    private Set<Excursion> excursions = new HashSet<>();
 
     public boolean isEmpty() {
         return excursions.isEmpty();
     }
 
-    public boolean add(Excursion excursion) {
-        return excursions.add(excursion);
+    public boolean add(Excursion e) {
+        return excursions.add(e);
     }
 
     public boolean remove(Excursion e) {
@@ -30,7 +30,15 @@ public class Cart {
         this.ticket = ticket;
     }
 
-    public List<Excursion> getExcursions() {
+    public Set<Excursion> getExcursions() {
         return excursions;
+    }
+
+    public long getPrice(int amount) {
+        long excursionPrice = 0;
+        for (Excursion excursion : excursions) {
+            excursionPrice += excursion.getPrice();
+        }
+        return amount * ticket.getPrice() + excursionPrice;
     }
 }

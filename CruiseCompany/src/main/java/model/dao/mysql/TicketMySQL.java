@@ -19,23 +19,24 @@ public class TicketMySQL implements TicketDAO {
 
     private static final String INSERT =
             "insert into " +
-                    "ticket(idtour, iduser, arrival, departure, price, type) " +
-                    "values(?, ?, ?, ?, ?, ?)";
+            "ticket(idtour, iduser, arrival, departure, price, type) " +
+            "values(?, ?, ?, ?, ?, ?)";
     private static final String UPDATE =
             "update ticket set idtour = ?, iduser = ?, arrival = ?, " +
             "departure = ?, price = ?, type = ?";
     private static final String FIND =
             "select * from ticket where idticket = ?";
-    private static final String TICKETS_TOUR =
+    private static final String     TICKETS_TOUR =
             "select * from ticket where idtour = ? limit ?, ?";
     private static final String QUANTITY_TICKET =
             "select count(*) as amount, departure, arrival, price, type " +
             "from ticket where idtour = ? and iduser is null " +
             "group by ticket.type";
     private static final String FIND_BY_TYPE =
-            "select * from ticket where type = ? limit 1";
+            "select * from ticket where type = ? and idtour = ? limit 1";
     private static final String UPDATE_USER_TICKET =
-            "update ticket set iduser = ? where idticket = ? and iduser is null";
+            "update ticket set iduser = ?, amount_passengers = ? " +
+            "where idticket = ? and iduser is null";
 
     TicketMySQL(final Connection connection) {
         this.connection = connection;
@@ -144,9 +145,10 @@ public class TicketMySQL implements TicketDAO {
     }
 
     @Override
-    public Ticket findTicketByType(TicketClass type) {
+    public Ticket findTicketByType(TicketClass type, int tourId) {
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_TYPE)) {
             statement.setString(1, String.valueOf(type));
+            statement.setInt(2, tourId);
             Mapper<Ticket> mapper = EntityMapper.
                     mapperFactory(EnumMapper.TicketWithoutTourMapper);
             return EntityMapper.extractIf(statement.executeQuery(), mapper);
@@ -159,7 +161,8 @@ public class TicketMySQL implements TicketDAO {
     public void updateTicket(Ticket ticket, int userId) {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER_TICKET)){
             statement.setInt(1, userId);
-            statement.setInt(2, ticket.getId());
+            statement.setInt(2, ticket.getAmountPassengers());
+            statement.setInt(3, ticket.getId());
             int update = statement.executeUpdate();
             if(update == 0) throw new TicketPaidException();
         } catch (SQLException e) {

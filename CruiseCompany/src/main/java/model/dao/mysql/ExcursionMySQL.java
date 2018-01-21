@@ -11,6 +11,7 @@ import model.entity.User;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Set;
 
 public class ExcursionMySQL implements ExcursionDAO {
     private final Connection connection;
@@ -96,7 +97,9 @@ public class ExcursionMySQL implements ExcursionDAO {
     public Excursion findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)) {
             statement.setInt(1, id);
-            return ExcursionMapper.extractIf(statement.executeQuery());
+            Mapper<Excursion> mapper = EntityMapper
+                    .mapperFactory(EnumMapper.ExcursionWithoutPortMapper);
+            return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -138,11 +141,11 @@ public class ExcursionMySQL implements ExcursionDAO {
     }
 
     @Override
-    public void updateUserExcursion(Ticket ticket, List<Excursion> excursions) {
+    public void updateUserExcursion(Ticket ticket, Set<Excursion> excursions) {
         try (PreparedStatement statement = connection.prepareStatement(USER_EXCURSION)){
             for (Excursion e : excursions) {
-                statement.setInt(1, ticket.getId());
-                statement.setInt(2, e.getId());
+                statement.setInt(1, e.getId());
+                statement.setInt(2, ticket.getId());
                 statement.addBatch();
             }
             statement.executeBatch();

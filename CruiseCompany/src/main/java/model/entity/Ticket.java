@@ -56,6 +56,10 @@ public class Ticket implements Cloneable, Serializable, Entity {
         return amountPassengers;
     }
 
+    public void setAmountPassengers(int amountPassengers) {
+        this.amountPassengers = amountPassengers;
+    }
+
     public TicketClass getType() {
         return type;
     }

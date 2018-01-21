@@ -2,6 +2,7 @@ package controller.cmd;
 
 import controller.util.Act;
 import controller.util.ActionResponse;
+import controller.util.RequestParser;
 import controller.util.URI;
 import model.dao.FactoryDAO;
 import model.entity.Ticket;
@@ -32,7 +33,7 @@ public class OpenTour implements Action {
                                   HttpServletResponse response) {
         HttpSession session = request.getSession();
         String uri = request.getRequestURI();
-        int tourId = getTourIdFromURI(uri);
+        int tourId = RequestParser.getIdFromURI(uri);
         if (tourId == 0) return new ActionResponse(Act.REDIRECT, URI.MAIN);
         Tour tour = serviceTour.allInformationAboutTour(tourId);
         List<AggregateOperation<Integer, Ticket>> ticketCategories =
@@ -43,20 +44,4 @@ public class OpenTour implements Action {
         return new ActionResponse(Act.FORWARD, URI.TOUR_PAGE_JSP);
     }
 
-
-    private int getTourIdFromURI(String URI) {
-        Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(URI);
-        int id;
-        String m = "";
-        while (matcher.find()) {
-            m = matcher.group();
-        }
-        try {
-            id = Integer.parseInt(m);
-        } catch (NumberFormatException e) {
-            id = 0;
-        }
-        return id;
-    }
 }

@@ -2,7 +2,7 @@
 <%@include file="taglib.jsp"%>
 <html>
 <head>
-    <title><fmt:message key="registration"/></title>
+    <title><fmt:message bundle="${msg}" key="registration"/></title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>

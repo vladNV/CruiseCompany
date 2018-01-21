@@ -14,19 +14,19 @@
     <div class="info-page col-sm-8">
         <div>
             <h3><fmt:message bundle="${msg}" key="ticket_type"/></h3>
-                ${sessionScope.ticket.type}
+                ${sessionScope.cart.ticket.type}
         </div>
         <div>
             <h3><fmt:message bundle="${msg}" key="departure"/></h3>
-                ${sessionScope.ticket.departure}
+                ${sessionScope.cart.ticket.departure}
         </div>
         <div>
             <h3><fmt:message bundle="${msg}" key="arrival"/></h3>
-                ${sessionScope.ticket.arrival}
+                ${sessionScope.cart.ticket.arrival}
         </div>
         <div>
             <h3><fmt:message bundle="${msg}" key="price"/></h3>
-                ${sessionScope.ticket.price}
+                ${sessionScope.cart.ticket.price}
         </div>
     </div>
     <div class="col-sm-2"></div>
@@ -39,6 +39,11 @@
             <div>
                 <h4><fmt:message bundle="${msg}" key="short_desc_excurs"/></h4>
             </div>
+            <div>
+                <c:if test="${requestScope.excursionStatus != null}">
+                    <fmt:message bundle="${msg}" key="${requestScope.excursionStatus}"/>
+                </c:if>
+            </div>
             <div class="ticket-header">
                 <div class="ticket-cell">
                     <fmt:message bundle="${msg}" key="excursion"/></div>
@@ -48,14 +53,34 @@
                     <fmt:message bundle="${msg}" key="country"/></div>
                 <div class="ticket-cell">
                     <fmt:message bundle="${msg}" key="price"/></div>
+                <div class="ticket-cell"></div>
+                <div class="ticket-cell"></div>
             </div>
             <c:forEach items="${requestScope.excursions}" var="excursion">
-                <a class="ticket-row" href="#">
+                <div class="ticket-row" href="#">
                     <div class="ticket-cell">${excursion.name}</div>
                     <div class="ticket-cell">${excursion.port.name}</div>
                     <div class="ticket-cell">${excursion.port.country}</div>
                     <div class="ticket-cell">${excursion.price}</div>
-                </a>
+                    <div class="ticket-cell">
+                        <form method="post"
+                              action="add_excursion">
+                            <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
+                            <button class="btn-link">
+                                <fmt:message bundle="${msg}" key="add"/>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="ticket-cell">
+                        <form method="post"
+                              action="remove_excursion">
+                            <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
+                            <button class="btn-link">
+                                <fmt:message bundle="${msg}" key="remove"/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </c:forEach>
         </div>
     </div>
@@ -70,7 +95,8 @@
                         <fmt:message bundle="${msg}" key="phone"/>
                         <span style="color:red">*</span>
                     </label>
-                    <input id="phone" placeholder="" required name="phone" class="form-control"/>
+                    <input id="phone" placeholder="" required
+                           name="phone" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="name">

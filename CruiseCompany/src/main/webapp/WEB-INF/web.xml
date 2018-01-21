@@ -22,6 +22,13 @@
     <error-code>404</error-code>
     <location>/WEB-INF/error/error404.jsp</location>
   </error-page>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/error/error400.jsp</location>
+  </error-page>
+
+
   <!-- Additional file type mappings -->
   <servlet-mapping>
     <servlet-name>default</servlet-name>
@@ -36,5 +43,11 @@
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.css</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
   </servlet-mapping>
 </web-app>

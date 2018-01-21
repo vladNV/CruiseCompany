@@ -4,6 +4,7 @@ import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.Cart;
 import controller.util.URI;
+import model.dao.FactoryDAO;
 import model.entity.Excursion;
 import model.entity.Ticket;
 import model.entity.User;
@@ -12,7 +13,7 @@ import model.service.TicketService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.util.Set;
 
 public class BuyTicket implements Action {
     private TicketService ticketService;
@@ -20,7 +21,7 @@ public class BuyTicket implements Action {
     private static final String CVV = "cvv";
     private static final String MONEY = "money";
 
-    BuyTicket() {}
+    BuyTicket() {ticketService = new TicketService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));}
 
     @Override
     public ActionResponse execute(HttpServletRequest request,
@@ -37,11 +38,13 @@ public class BuyTicket implements Action {
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) return ActionResponse.Default();
         Ticket ticket = cart.getTicket();
-        List<Excursion> excursions = cart.getExcursions();
+        Set<Excursion> excursions = cart.getExcursions();
         User user = (User) session.getAttribute("user");
         if (ticket == null || user == null) {
             return ActionResponse.Default();
         }
-        return new ActionResponse(Act.FORWARD, URI.SUCCESS_PAYMENT_JSP);
+        boolean res = ticketService.buyTicket(ticket, excursions, user);
+        return res ? new ActionResponse(Act.FORWARD, URI.SUCCESS_PAYMENT_JSP) :
+                new ActionResponse(Act.FORWARD, URI.FAILED_PAYMENT_JSP);
     }
 }
