@@ -4,6 +4,7 @@ import model.dao.FactoryDAO;
 import model.dao.interfaces.RouteDAO;
 import model.dao.interfaces.TicketDAO;
 import model.dao.interfaces.TourDAO;
+import model.dao.mysql.ConnectionPool;
 import model.dao.mysql.FactoryMySQL;
 import model.entity.Ticket;
 import model.entity.Tour;
@@ -21,8 +22,7 @@ public class TourService {
     }
 
     public List<Tour> showTours() {
-        //TODO mysql connect change to connection pool
-        try (TourDAO tourDAO = factory.tourDAO(FactoryMySQL.connect())) {
+        try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())) {
             return tourDAO.joinWithShip();
             // service exceptions
         } catch (Exception e) {
@@ -31,7 +31,7 @@ public class TourService {
     }
 
     public Tour allInformationAboutTour(int tourId)  {
-        Connection connect = FactoryMySQL.connect();
+        Connection connect = ConnectionPool.pool().connect();
         try (TourDAO tourDAO = factory.tourDAO(connect);
              RouteDAO routeDAO = factory.routeDAO(connect)) {
             connect.setAutoCommit(false);

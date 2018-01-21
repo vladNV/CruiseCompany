@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.params.ApplicationParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.URI;
@@ -18,7 +19,7 @@ public class SwitchLanguage implements Action {
     @Override
     public ActionResponse execute(HttpServletRequest request,
                                   HttpServletResponse response) {
-        request.getServletContext().setAttribute("locale", locale);
+        request.getServletContext().setAttribute(ApplicationParam.LOCALE, locale);
         return new ActionResponse(Act.REDIRECT, URI.MAIN);
     }
 }

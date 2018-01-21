@@ -12,7 +12,7 @@ public enum ActionEnum {
     MAIN                {{ action = new ShowTourList(); }},
     TOUR                {{ action = new OpenTour(); }},
     EXCURSIONS          {{ action = new ShowExcursionList(); }},
-    PROFILE             {{ action = new OpenProfile(); }},
+    PROFILE             {{ action = new ShowUserTickets(); }},
     ADD_CRUISE          {{ action = new AddCruise(); }},
     CONFIRM             {{ action = new Confirm(); }},
     ADD_EXCURSION       {{ action = new AddExcursion(); }},
@@ -21,7 +21,8 @@ public enum ActionEnum {
     PREMIUM             {{ action = new ChooseTicket(); }},
     LUXE                {{ action = new ChooseTicket(); }},
     UA                  {{ action = new SwitchLanguage(MessageManager.UKRAINE); }},
-    ENG                 {{ action = new SwitchLanguage(Locale.ENGLISH); }};
+    ENG                 {{ action = new SwitchLanguage(Locale.ENGLISH); }},
+    BUY                 {{ action = new BuyTicket(); }};
 
     Action action;
     public Action getAction() {

@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.params.RequestParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.RequestParser;
@@ -39,8 +40,9 @@ public class OpenTour implements Action {
         List<AggregateOperation<Integer, Ticket>> ticketCategories =
                 serviceTicket.amountTicket(tourId);
         if (tour == null) return ActionResponse.Default();
+        // tour session ?
         session.setAttribute("tour", tour);
-        request.setAttribute("tour_tickets", ticketCategories);
+        request.setAttribute(RequestParam.TOUR_TICKETS, ticketCategories);
         return new ActionResponse(Act.FORWARD, URI.TOUR_PAGE_JSP);
     }
 

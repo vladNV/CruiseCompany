@@ -5,25 +5,16 @@ import model.dao.mapper.EntityMapper;
 import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
 import model.entity.User;
+import model.exceptions.ServiceException;
 
 import java.sql.*;
 import java.util.List;
+import static model.dao.queries.UserSQL.*;
 
 public class UserMySQL implements UserDAO {
     private final Connection connection;
     private int limit;
     private int offset;
-
-    private static final String INSERT =
-            "insert into user(login, password, email) values (?, ?, ?)";
-    private static final String UPDATE =
-            "update user set login = ?, password = ?, email = ?, role = ? where iduser = ?";
-    private static final String FIND =
-            "select * from user where iduser = ?";
-    private static final String FIND_ALL =
-            "select * from user limit ?, ?";
-    private static final String FIND_BY_LOGIN =
-            "select * from user where email like ? limit 1";
 
     UserMySQL(final Connection connection) {
         this.connection = connection;
@@ -110,6 +101,43 @@ public class UserMySQL implements UserDAO {
             Mapper<User> mapper = EntityMapper.mapperFactory(EnumMapper.UserMapper);
             return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void takeMoney(long card, int CVV, long money) throws ServiceException {
+        try (PreparedStatement statement = connection.prepareStatement(TAKE_MONEY)){
+            statement.setLong(1, money);
+            statement.setLong(2, card);
+            statement.setInt(3, CVV);
+            statement.setLong(4, money);
+            int update = statement.executeUpdate();
+            if(update == 0) throw new ServiceException("have.not.money");
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException roll) {
+                roll.printStackTrace();
+                throw new RuntimeException(roll);
+            }
+        }
+    }
+
+    @Override
+    public void putMoney(long card, long money) {
+        try (PreparedStatement statement = connection.prepareStatement(PUT_MONEY)){
+            statement.setLong(1, money);
+            statement.setLong(2, card);
+            int update = statement.executeUpdate();
+            if (update == 0) throw new SQLException("payment error!");
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException roll) {
+                roll.printStackTrace();
+                throw new RuntimeException(roll);
+            }
             throw new RuntimeException(e);
         }
     }

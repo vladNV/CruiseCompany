@@ -1,5 +1,7 @@
 package controller.cmd;
 
+import controller.params.RequestParam;
+import controller.params.SessionParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.Cart;
@@ -8,6 +10,7 @@ import model.dao.FactoryDAO;
 import model.entity.Excursion;
 import model.entity.Ticket;
 import model.entity.User;
+import model.exceptions.ServiceException;
 import model.service.TicketService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,8 @@ public class BuyTicket implements Action {
     private static final String CVV = "cvv";
     private static final String MONEY = "money";
 
-    BuyTicket() {ticketService = new TicketService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));}
+    BuyTicket() {ticketService = new TicketService(FactoryDAO
+            .getDAOImpl(FactoryDAO.MYSQL));}
 
     @Override
     public ActionResponse execute(HttpServletRequest request,
@@ -35,16 +39,31 @@ public class BuyTicket implements Action {
                     || price == null || price.isEmpty()) {
             return ActionResponse.Default();
         }
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart cart = (Cart) session.getAttribute(SessionParam.CART);
         if (cart == null) return ActionResponse.Default();
         Ticket ticket = cart.getTicket();
         Set<Excursion> excursions = cart.getExcursions();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(SessionParam.USER);
         if (ticket == null || user == null) {
             return ActionResponse.Default();
         }
-        boolean res = ticketService.buyTicket(ticket, excursions, user);
-        return res ? new ActionResponse(Act.FORWARD, URI.SUCCESS_PAYMENT_JSP) :
-                new ActionResponse(Act.FORWARD, URI.FAILED_PAYMENT_JSP);
+        long c, money;
+        int CVV;
+        try {
+            c = Long.parseLong(card);
+            CVV = Integer.parseInt(cvv);
+            money = Long.parseLong(price);
+        } catch (NumberFormatException e) {
+            return ActionResponse.Default();
+        }
+        try {
+            ticketService.buyTicket(ticket, excursions, user, money, c, CVV);
+        } catch (ServiceException e) {
+            request.setAttribute(RequestParam.CAUSE, e.getExceptionCause());
+            return new ActionResponse(Act.FORWARD, URI.FAILED_PAYMENT_JSP);
+        } catch (RuntimeException e) {
+            return null;
+        }
+        return new ActionResponse(Act.FORWARD, URI.SUCCESS_PAYMENT_JSP);
     }
 }

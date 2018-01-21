@@ -1,6 +1,7 @@
 package controller.cmd;
 
-import com.sun.deploy.net.HttpUtils;
+import controller.params.RequestParam;
+import controller.params.SessionParam;
 import controller.util.*;
 import model.dao.FactoryDAO;
 import model.entity.Excursion;
@@ -23,7 +24,7 @@ public class AddExcursion implements Action {
                                   HttpServletResponse response) {
         HttpSession session = request.getSession();
         String excursion = request.getParameter(PARAM_ID);
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart cart = (Cart) session.getAttribute(SessionParam.CART);
         int excursionId;
         try {
             excursionId = Integer.parseInt(excursion);
@@ -34,7 +35,7 @@ public class AddExcursion implements Action {
         Excursion ex = service.getExcursion(excursionId);
         if (ex == null) return ActionResponse.Default();
         String answer = cart.add(ex) ? "item.added" : "item.already.added";
-        request.setAttribute("excursionStatus", answer);
+        request.setAttribute(RequestParam.EXCURSION_STATUS, answer);
         return new ActionResponse(Act.FORWARD, URI.TICKET_JSP);
     }
 }

@@ -1,8 +1,8 @@
 package controller.cmd;
 
+import controller.params.RequestParam;
 import controller.util.RequestParser;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class ActionFactory {
@@ -14,7 +14,7 @@ public class ActionFactory {
             ActionEnum actionEnum = ActionEnum.valueOf(action.toUpperCase());
             current = actionEnum.getAction();
         } catch (IllegalArgumentException e) {
-            request.setAttribute("wrongAction", action);
+            request.setAttribute(RequestParam.WRONG_ACTION, action);
         }
         return current;
     }

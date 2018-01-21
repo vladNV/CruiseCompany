@@ -29,7 +29,7 @@
                 </c:when>
                 <c:otherwise>
                     <li><a href="${pageContext.request.contextPath}/profile">
-                        <fmt:message key="profile"/>
+                            ${sessionScope.user.email}
                     </a></li>
                     <li><a href="${pageContext.request.contextPath}/logout">
                         <fmt:message key="sign_out"/></a></li>

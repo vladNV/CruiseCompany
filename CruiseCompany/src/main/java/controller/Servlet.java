@@ -2,8 +2,8 @@ package controller;
 
 import controller.cmd.Action;
 import controller.cmd.ActionFactory;
+import controller.params.SessionParam;
 import controller.util.ActionResponse;
-import controller.util.CookieUtil;
 import controller.util.MessageManager;
 
 import javax.servlet.ServletConfig;
@@ -35,8 +35,9 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
+        // ???
         HttpSession session = req.getSession();
-        session.setAttribute("path", req.getRequestURI());
+        session.setAttribute(SessionParam.USER, req.getRequestURI());
         ActionFactory client = new ActionFactory();
         Action action = client.defineAction(req);
         ActionResponse actResp = action.execute(req, resp);

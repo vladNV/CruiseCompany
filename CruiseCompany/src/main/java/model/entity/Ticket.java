@@ -72,6 +72,10 @@ public class Ticket implements Cloneable, Serializable, Entity {
         return tour;
     }
 
+    public void setTour(Tour tour) {
+        this.tour = tour;
+    }
+
     public static Builder newTicket() {
         return new Builder();
     }

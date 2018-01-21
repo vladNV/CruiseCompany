@@ -174,6 +174,10 @@ public abstract class EntityMapper {
         return 0;
     }
 
+    public static boolean exist(ResultSet rs) throws SQLException {
+        return rs.next();
+    }
+
     @SuppressWarnings("unchecked")
     public static  <T extends Mapper<?>> T mapperFactory(EnumMapper type) {
         try {

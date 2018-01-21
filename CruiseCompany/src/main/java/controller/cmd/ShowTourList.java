@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.params.RequestParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.URI;
@@ -25,7 +26,7 @@ public class ShowTourList implements Action {
     @Override
     public ActionResponse execute(HttpServletRequest request,
                                   HttpServletResponse response) {
-        request.setAttribute("tours", service.showTours());
+        request.setAttribute(RequestParam.TOURS, service.showTours());
         return new ActionResponse(Act.FORWARD, URI.MAIN_JSP);
     }
 }

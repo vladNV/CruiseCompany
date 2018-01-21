@@ -21,7 +21,7 @@ public class ShipMySQL implements ShipDAO {
     private static final String FIND_ALL
             = "select * from ship limit ?, ?";
 
-    public ShipMySQL(final Connection connection) {
+    ShipMySQL(final Connection connection) {
         this.connection = connection;
     }
 

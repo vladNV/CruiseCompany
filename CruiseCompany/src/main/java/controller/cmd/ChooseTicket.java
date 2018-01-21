@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.params.SessionParam;
 import controller.util.*;
 import model.dao.FactoryDAO;
 import model.entity.Ticket;
@@ -29,14 +30,15 @@ public class ChooseTicket implements Action {
         Tour tour = (Tour) session.getAttribute("tour");
         if (ticketType == null || ticketType.isEmpty() ||  tour == null)
             return ActionResponse.Default();
-
+        // join with tour ?
         Ticket ticket = ticketService.chooseTicket(TicketClass
                 .valueOf(ticketType.toUpperCase()), tour.getId());
         if (ticket == null)
             return ActionResponse.Default();
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart cart = (Cart) session.getAttribute(SessionParam.CART);
+        ticket.setTour(tour);
         cart.setTicket(ticket);
-        session.setAttribute("excursions",
+        session.setAttribute(SessionParam.EXCURSIONS,
                 excursionService.showCruiseExcursion(tour.getId()));
         return new ActionResponse(Act.FORWARD, URI.TICKET_JSP);
     }

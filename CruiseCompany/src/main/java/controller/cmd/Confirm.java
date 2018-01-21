@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.params.RequestParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.Cart;
@@ -40,7 +41,7 @@ public class Confirm implements Action {
         Ticket ticket = cart.getTicket();
         ticket.setAmountPassengers(a);
         long price = cart.getPrice(a);
-        request.setAttribute("price", price);
+        request.setAttribute(RequestParam.PRICE, price);
         return new ActionResponse(Act.FORWARD, URI.PAYMENT_JSP);
     }
 }

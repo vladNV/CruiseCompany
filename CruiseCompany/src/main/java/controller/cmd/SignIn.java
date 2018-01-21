@@ -1,6 +1,8 @@
 package controller.cmd;
 
 import static controller.util.MessageManager.getMessage;
+
+import controller.params.SessionParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.Cart;
@@ -36,12 +38,12 @@ public class SignIn implements Action {
         }
         User user = service.signIn(login, password);
         if (user != null) {
-            session.setAttribute("user", user);
-            session.setAttribute("role", user.getRole());
+            session.setAttribute(SessionParam.USER, user);
+            session.setAttribute(SessionParam.USER, user.getRole());
             // create cart for user
             Cart cart = new Cart();
-            session.setAttribute("cart", cart);
-            String redirectTo = (String) session.getAttribute("lastPath");
+            session.setAttribute(SessionParam.CART, cart);
+            String redirectTo = (String) session.getAttribute(SessionParam.LASTPATH);
             System.out.println(redirectTo);
             if (redirectTo == null) return new ActionResponse(Act.REDIRECT, URI.MAIN);
             return new ActionResponse(Act.REDIRECT, redirectTo);

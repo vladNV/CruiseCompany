@@ -45,6 +45,7 @@ public class FactoryMySQL extends FactoryDAO {
         return new ShipMySQL(c);
     }
 
+    @Deprecated
     public static Connection connect()  {
         ResourceBundle properties = ResourceBundle.getBundle("mysql");
         try {

@@ -1,6 +1,8 @@
 package controller.cmd;
 
 import static controller.util.MessageManager.getMessage;
+
+import controller.params.RequestParam;
 import controller.util.Act;
 import controller.util.ActionResponse;
 import controller.util.URI;
@@ -35,11 +37,11 @@ public class SignUp implements Action {
             return actResp;
         }
         if (!service.uniqueEmail(email)) {
-            request.setAttribute("wrong", getMessage("email_not_unique"));
+            request.setAttribute(RequestParam.WRONG, getMessage("email_not_unique"));
             return actResp;
         }
         if (!password.equals(repassword)) {
-            request.setAttribute("wrong", getMessage("password_notequals"));
+            request.setAttribute(RequestParam.WRONG, getMessage("password_notequals"));
             return actResp;
         }
         service.registration(password, login, email);

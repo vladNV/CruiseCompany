@@ -2,6 +2,7 @@ package model.service;
 
 import model.dao.FactoryDAO;
 import model.dao.interfaces.UserDAO;
+import model.dao.mysql.ConnectionPool;
 import model.dao.mysql.FactoryMySQL;
 import model.entity.User;
 import model.util.MD5;
@@ -23,7 +24,7 @@ public class UserService {
                 .login(login)
                 .email(email)
                 .build();
-        try (UserDAO userDAO = factory.userDAO(FactoryMySQL.connect())) {
+        try (UserDAO userDAO = factory.userDAO(ConnectionPool.pool().connect())) {
             int id = userDAO.insert(user);
             if (id < 0) return false;
             user.setId(id);
@@ -35,7 +36,7 @@ public class UserService {
 
     public User signIn(String email, String password) {
         password = MD5.getHashCode(password);
-        try (UserDAO userDAO = factory.userDAO(FactoryMySQL.connect())){
+        try (UserDAO userDAO = factory.userDAO(ConnectionPool.pool().connect())){
             User user = userDAO.findByEmail(email);
             if (user == null) return null;
             return passwordEquals(password, user) ? user : null;
@@ -45,7 +46,7 @@ public class UserService {
     }
 
     public boolean uniqueEmail(String email) {
-        User existUser = factory.userDAO(FactoryMySQL.connect()).findByEmail(email);
+        User existUser = factory.userDAO(ConnectionPool.pool().connect()).findByEmail(email);
         return existUser == null;
     }
 
