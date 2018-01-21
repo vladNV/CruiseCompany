@@ -1,5 +1,9 @@
 package controller.cmd;
 
+import controller.util.MessageManager;
+
+import java.util.Locale;
+
 public enum ActionEnum {
     LOGIN               {{ action = new SignIn(); }},
     LOGOUT              {{ action = new SignOut(); }},
@@ -15,7 +19,9 @@ public enum ActionEnum {
     REMOVE_EXCURSION    {{ action = new RemoveExcursion(); }},
     STANDARD            {{ action = new ChooseTicket(); }},
     PREMIUM             {{ action = new ChooseTicket(); }},
-    LUXE                {{ action = new ChooseTicket(); }};
+    LUXE                {{ action = new ChooseTicket(); }},
+    UA                  {{ action = new SwitchLanguage(MessageManager.UKRAINE); }},
+    ENG                 {{ action = new SwitchLanguage(Locale.ENGLISH); }};
 
     Action action;
     public Action getAction() {

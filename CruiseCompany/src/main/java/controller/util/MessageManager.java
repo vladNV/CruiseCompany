@@ -21,7 +21,7 @@ public class MessageManager {
     }
 
     private static ResourceBundle resource = ResourceBundle.getBundle("messages", Locale.ENGLISH);
-    private static Locale UKRAINE = new Locale("ua","UA");
+    public static Locale UKRAINE = new Locale("uk","UA");
 
     public static String getMessage(String key) {
         return resource.getString(key);

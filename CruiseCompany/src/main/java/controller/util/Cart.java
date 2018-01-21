@@ -27,6 +27,7 @@ public class Cart {
     }
 
     public void setTicket(Ticket ticket) {
+        excursions = new HashSet<>();
         this.ticket = ticket;
     }
 

@@ -8,6 +8,13 @@
             <li><a href="${pageContext.request.contextPath}/main"><fmt:message key="tours"/></a></li>
             <li><a href="#"><fmt:message key="excurs"/></a></li>
             <li><a href="#"><fmt:message key="buy_ticket"/></a></li>
+            <li>
+                <fmt:message key="language"/>
+                <select name="language" id="language" onchange="location = this.value;">
+                    <option value="${pageContext.request.contextPath}/eng">ENG</option>
+                    <option value="${pageContext.request.contextPath}/ua">UA</option>
+                </select>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <c:choose>

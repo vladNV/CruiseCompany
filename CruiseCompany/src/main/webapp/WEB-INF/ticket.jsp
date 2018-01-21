@@ -56,7 +56,7 @@
                 <div class="ticket-cell"></div>
                 <div class="ticket-cell"></div>
             </div>
-            <c:forEach items="${requestScope.excursions}" var="excursion">
+            <c:forEach items="${sessionScope.excursions}" var="excursion">
                 <div class="ticket-row" href="#">
                     <div class="ticket-cell">${excursion.name}</div>
                     <div class="ticket-cell">${excursion.port.name}</div>
@@ -73,12 +73,12 @@
                     </div>
                     <div class="ticket-cell">
                         <form method="post"
-                              action="remove_excursion">
-                            <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
-                            <button class="btn-link">
-                                <fmt:message bundle="${msg}" key="remove"/>
-                            </button>
-                        </form>
+                                                             action="remove_excursion">
+                        <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
+                        <button class="btn-link">
+                            <fmt:message bundle="${msg}" key="remove"/>
+                        </button>
+                    </form>
                     </div>
                 </div>
             </c:forEach>

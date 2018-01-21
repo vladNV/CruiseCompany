@@ -36,7 +36,7 @@ public class ChooseTicket implements Action {
             return ActionResponse.Default();
         Cart cart = (Cart) session.getAttribute("cart");
         cart.setTicket(ticket);
-        request.setAttribute("excursions",
+        session.setAttribute("excursions",
                 excursionService.showCruiseExcursion(tour.getId()));
         return new ActionResponse(Act.FORWARD, URI.TICKET_JSP);
     }

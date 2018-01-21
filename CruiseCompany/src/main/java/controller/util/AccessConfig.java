@@ -50,6 +50,8 @@ public class AccessConfig {
         access.put(Pattern.compile("/ticket/confirm"), authorized);
         access.put(Pattern.compile("/ticket/add_excursion"), authorized);
         access.put(Pattern.compile("/ticket/remove_excursion"), authorized);
+        access.put(Pattern.compile("/ua"), all);
+        access.put(Pattern.compile("/eng"), all);
     }
 
     private HashMap<Pattern,  Set<Role>> access;

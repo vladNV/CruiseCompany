@@ -34,7 +34,7 @@ public class RemoveExcursion implements Action {
         if (ex == null) return ActionResponse.Default();
         String answer = cart.remove(ex) ?
                 "item.removed" : "item.already.removed";
-        session.setAttribute("excursionStatus", answer);
+        request.setAttribute("excursionStatus", answer);
         return new ActionResponse(Act.FORWARD, URI.TICKET_JSP);
     }
 }

@@ -43,20 +43,6 @@
                                 <div class="ticket-cell">${excursion.port.name}</div>
                                 <div class="ticket-cell">${excursion.port.country}</div>
                                 <div class="ticket-cell">${excursion.price}</div>
-                                <div class="ticket-cell">
-                                    <form method="post" action="${pageContext.request.contextPath}/ticket/add_excursion/${excursion.id}">
-                                        <button class="btn btn-success">
-                                            <fmt:message bundle="${msg}" key="add"/>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="ticket-cell">
-                                    <form method="post" action="${pageContext.request.contextPath}/ticket/remove_excursion/${excursion.id}">
-                                        <button class="btn btn-danger">
-                                            <fmt:message bundle="${msg}" key="remove"/>
-                                        </button>
-                                    </form>
-                                </div>
                             </a>
                         </c:forEach>
                     </div>
@@ -65,22 +51,24 @@
                     </b> - ${requestScope.price}</span></h4>
                 </div>
                 <div class="col-sm-5" style="border: 1px solid gainsboro">
-                    <c:forEach items="${sessionScope.tour.routes}" var="route">
-                        <div class="route-row">
-                            <div class="route-cell">
-                                    ${route.name}
+                    <div class="route-table">
+                        <c:forEach items="${sessionScope.tour.routes}" var="route">
+                            <div class="route-row">
+                                <div class="route-cell">
+                                        ${route.name}
+                                </div>
+                                <div class="route-cell">
+                                        ${route.departure}
+                                </div>
+                                <div class="route-cell">
+                                        ${route.arrival}
+                                </div>
+                                <div class="route-cell">
+                                        ${route.port.name}
+                                </div>
                             </div>
-                            <div class="route-cell">
-                                    ${route.departure}
-                            </div>
-                            <div class="route-cell">
-                                    ${route.arrival}
-                            </div>
-                            <div class="route-cell">
-                                    ${route.port.name}
-                            </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
                 <div class="col-sm-1"></div>
             </div>

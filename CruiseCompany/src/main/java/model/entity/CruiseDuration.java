@@ -1,9 +1,10 @@
 package model.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class CruiseDuration {
+public class CruiseDuration implements Serializable {
     private long days;
     private long hours;
     private long minutes;
