@@ -2,6 +2,7 @@ package controller.cmd;
 
 import controller.util.RequestParser;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class ActionFactory {

@@ -112,3 +112,7 @@ footer {
 .link-btn:hover {
     text-decoration: underline;
 }
+
+.btn {
+    border-radius: 0 !important;
+}

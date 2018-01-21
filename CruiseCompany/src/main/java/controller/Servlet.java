@@ -3,14 +3,13 @@ package controller;
 import controller.cmd.Action;
 import controller.cmd.ActionFactory;
 import controller.util.ActionResponse;
+import controller.util.CookieUtil;
 import controller.util.MessageManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet(name = "Servlet", urlPatterns = {"/"})
@@ -36,6 +35,8 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        session.setAttribute("path", req.getRequestURI());
         ActionFactory client = new ActionFactory();
         Action action = client.defineAction(req);
         ActionResponse actResp = action.execute(req, resp);
@@ -94,4 +95,5 @@ public class Servlet extends HttpServlet {
             resp.sendError(404);
         }
     }
+
 }

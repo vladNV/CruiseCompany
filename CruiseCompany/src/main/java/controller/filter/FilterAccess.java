@@ -31,10 +31,12 @@ public class FilterAccess implements Filter {
         String path = req.getRequestURI();
         Pattern pattern = isCorrectPath(h, path);
         if (pattern == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND ,path);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, path);
             return;
         }
         if (!redirect(req, pattern)) {
+            // Set<Set<Role>> roles = (Set<Set<Role>>) h.values();
+
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

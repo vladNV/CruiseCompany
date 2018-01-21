@@ -15,12 +15,12 @@ public class FilterLocale implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpSession session = req.getSession();
-        // default locale
-        if (session.getAttribute("locale") == null) {
-            session.setAttribute("locale", Locale.ENGLISH);
-        }
+        //HttpServletRequest req = (HttpServletRequest) request;
+        //HttpSession session = req.getSession();
+//        // default locale
+//        if (session.getAttribute("locale") == null) {
+//            session.setAttribute("locale", Locale.ENGLISH);
+//        }
         chain.doFilter(request, response);
     }
 

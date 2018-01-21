@@ -41,7 +41,11 @@ public class SignIn implements Action {
             // create cart for user
             Cart cart = new Cart();
             session.setAttribute("cart", cart);
-            return new ActionResponse(Act.REDIRECT, URI.MAIN);
+            String redirectTo = (String) session.getAttribute("lastPath");
+            System.out.println(redirectTo);
+            if (redirectTo == null) return new ActionResponse(Act.REDIRECT, URI.MAIN);
+            return new ActionResponse(Act.REDIRECT, redirectTo);
+
         } else {
             request.setAttribute("wrong", getMessage("auth_invalid"));
             return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);

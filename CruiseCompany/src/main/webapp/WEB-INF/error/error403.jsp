@@ -8,6 +8,7 @@
 </head>
 <body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
+<c:set var="lastPath" value="${sessionScope.path}" scope="session"/>
 <div class="wrapper">
     <div class="content container">
         <h1>403</h1>
