@@ -2,8 +2,8 @@ package model.dao.mysql;
 
 import model.dao.interfaces.ShipDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.ShipMapper;
 import model.entity.Ship;
 
 import java.sql.Connection;
@@ -57,7 +57,7 @@ public class ShipMySQL implements ShipDAO {
     public Ship findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            Mapper<Ship> mapper = EntityMapper.mapperFactory(EnumMapper.ShipMapper);
+            Mapper<Ship> mapper = new ShipMapper();
             return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -69,8 +69,8 @@ public class ShipMySQL implements ShipDAO {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)){
             statement.setInt(1, offset);
             statement.setInt(2, limit);
-            Mapper<Ship> mapper = EntityMapper.mapperFactory(EnumMapper.ShipMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Ship> mapper = new ShipMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

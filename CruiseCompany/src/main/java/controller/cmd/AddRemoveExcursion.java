@@ -48,6 +48,8 @@ public class AddRemoveExcursion implements Action {
         } else {
             answer = cart.remove(ex) ? "item.removed" : "item.already.removed";
         }
+        request.setAttribute(RequestParam.EXCURSIONS, service
+                .showCruiseExcursion(cart.getTicket().getTour().getId()));
         request.setAttribute(RequestParam.EXCURSION_STATUS, answer);
         return new Forward(URI.TICKET_JSP);
     }

@@ -8,6 +8,7 @@ public interface RequestParam {
     String OLD_TICKETS = "oldTickets";
     String TOUR_TICKETS = "tour_tickets";
     String TOURS = "tours";
+    String TOUR = "tour";
     String PRICE = "price";
     String EXCURSIONS = "excursions";
     String WRONG = "wrong";

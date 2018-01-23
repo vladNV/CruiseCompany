@@ -9,5 +9,6 @@ public interface TourDAO extends GenericDAO<Tour> {
 
     List<Tour> joinWithShip();
     Tour findTourWithShip(int tourId);
+    // Tour chooseTour(int tourId);
 
 }

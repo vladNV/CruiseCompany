@@ -2,8 +2,9 @@ package model.dao.mysql;
 
 import model.dao.interfaces.TicketDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.TicketMapper;
+import model.dao.mapper.aggregation.TicketAmount;
 import model.entity.Ticket;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
@@ -80,8 +81,8 @@ public class TicketMySQL implements TicketDAO {
     public Ticket findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            Mapper<Ticket> mapper = EntityMapper.mapperFactory(EnumMapper.TicketMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<Ticket> mapper = new TicketMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,9 +97,8 @@ public class TicketMySQL implements TicketDAO {
     public List<AggregateOperation<Integer, Ticket>> ticketForCategory(int tourId) {
         try (PreparedStatement statement = connection.prepareStatement(QUANTITY_TICKET)){
             statement.setInt(1, tourId);
-            Mapper<AggregateOperation<Integer, Ticket>> mapper =
-                    EntityMapper.mapperFactory(EnumMapper.TicketAmountMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<AggregateOperation<Integer, Ticket>> mapper = new TicketAmount();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -108,9 +108,8 @@ public class TicketMySQL implements TicketDAO {
     public List<Ticket> userTickets(int userId) {
         try (PreparedStatement statement = connection.prepareStatement(USER_TICKETS)){
             statement.setInt(1, userId);
-            Mapper<Ticket> mapper = EntityMapper
-                    .mapperFactory(EnumMapper.TicketWithoutTourMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Ticket> mapper = new TicketMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -122,8 +121,8 @@ public class TicketMySQL implements TicketDAO {
             statement.setInt(1, tourId);
             statement.setInt(2, offset);
             statement.setInt(3, limit);
-            Mapper<Ticket> mapper = EntityMapper.mapperFactory(EnumMapper.TicketMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Ticket> mapper = new TicketMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -134,9 +133,8 @@ public class TicketMySQL implements TicketDAO {
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_TYPE)) {
             statement.setString(1, String.valueOf(type));
             statement.setInt(2, tourId);
-            Mapper<Ticket> mapper = EntityMapper.
-                    mapperFactory(EnumMapper.TicketMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<Ticket> mapper = new TicketMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -56,14 +56,14 @@
                 <div class="ticket-cell"></div>
                 <div class="ticket-cell"></div>
             </div>
-            <c:forEach items="${sessionScope.excursions}" var="excursion">
+            <c:forEach items="${requestScope.excursions}" var="excursion">
                 <div class="ticket-row" href="#">
                     <div class="ticket-cell">${excursion.name}</div>
                     <div class="ticket-cell">${excursion.port.name}</div>
                     <div class="ticket-cell">${excursion.port.country}</div>
                     <div class="ticket-cell">${excursion.price}</div>
                     <div class="ticket-cell">
-                        <form method="post" action="excursion">
+                        <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
                             <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
                             <input type="hidden" name="command" value="add">
                             <button class="btn-link">
@@ -72,7 +72,7 @@
                         </form>
                     </div>
                     <div class="ticket-cell">
-                        <form method="post" action="excursion">
+                        <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
                         <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
                         <input type="hidden" name="command" value="remove">
                         <button class="btn-link">

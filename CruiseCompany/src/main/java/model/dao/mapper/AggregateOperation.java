@@ -23,8 +23,8 @@ public class AggregateOperation<I extends Number, E extends Entity>
         return entity;
     }
 
-    public static <I extends Number, E extends Entity> List<E> entities(
-            List<AggregateOperation<I, E>> list) {
+    public static <I extends Number, E extends Entity> List<E>
+    entities(List<AggregateOperation<I, E>> list) {
         List<E> entities = new ArrayList<>();
         for (AggregateOperation<I, E> e : list) {
             entities.add(e.getEntity());

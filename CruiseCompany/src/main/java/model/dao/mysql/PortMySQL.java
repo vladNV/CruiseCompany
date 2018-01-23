@@ -2,8 +2,8 @@ package model.dao.mysql;
 
 import model.dao.interfaces.PortDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.PortMapper;
 import model.entity.Port;
 
 import java.sql.*;
@@ -71,8 +71,8 @@ public class PortMySQL implements PortDAO {
     public Port findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            Mapper<Port> mapper = EntityMapper.mapperFactory(EnumMapper.PortMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<Port> mapper = new PortMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -84,8 +84,8 @@ public class PortMySQL implements PortDAO {
                 .prepareStatement(FIND_ALL)){
             statement.setInt(1, offset);
             statement.setInt(2, limit);
-            Mapper<Port> mapper = EntityMapper.mapperFactory(EnumMapper.PortMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Port> mapper = new PortMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

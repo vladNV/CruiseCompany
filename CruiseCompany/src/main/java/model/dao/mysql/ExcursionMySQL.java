@@ -4,8 +4,9 @@ import static model.dao.queries.ExcursionSQL.*;
 
 import model.dao.interfaces.ExcursionDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
+import model.dao.mapper.ExcursionMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.join.ExcursionPortJoin;
 import model.entity.Excursion;
 import model.entity.Ticket;
 
@@ -78,9 +79,8 @@ public class ExcursionMySQL implements ExcursionDAO {
     public Excursion findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)) {
             statement.setInt(1, id);
-            Mapper<Excursion> mapper = EntityMapper
-                    .mapperFactory(EnumMapper.ExcursionWithoutPortMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<Excursion> mapper = new ExcursionMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -91,9 +91,8 @@ public class ExcursionMySQL implements ExcursionDAO {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
             statement.setInt(1, offset);
             statement.setInt(2, limit);
-            Mapper<Excursion> mapper = EntityMapper
-                    .mapperFactory(EnumMapper.ExcursionWithoutPortMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Excursion> mapper = new ExcursionMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -104,8 +103,8 @@ public class ExcursionMySQL implements ExcursionDAO {
         try (PreparedStatement statement = connection.prepareStatement(PORT_JOIN)) {
             statement.setInt(1, offset);
             statement.setInt(2, limit);
-            Mapper<Excursion> mapper = EntityMapper.mapperFactory(EnumMapper.ExcursionMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Excursion> mapper = new ExcursionPortJoin();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -115,9 +114,8 @@ public class ExcursionMySQL implements ExcursionDAO {
     public List<Excursion> cruiseExcursion(int tourId) {
         try (PreparedStatement statement = connection.prepareStatement(EXCURSION_PORT)){
             statement.setInt(1, tourId);
-            Mapper<Excursion> mapper = EntityMapper
-                    .mapperFactory(EnumMapper.ExcursionMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Excursion> mapper = new ExcursionMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

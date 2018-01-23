@@ -2,8 +2,8 @@ package model.dao.mysql;
 
 import model.dao.interfaces.RouteDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.RouteMapper;
 import model.entity.Route;
 
 import java.sql.*;
@@ -79,9 +79,8 @@ public class RouteMySQL implements RouteDAO {
         try (PreparedStatement statement = connection
                 .prepareStatement(TOUR_ROUTES)) {
             statement.setInt(1, tourId);
-            Mapper<Route> mapper = EntityMapper.mapperFactory(EnumMapper.RouteMapper);
-            return EntityMapper
-                    .extractWhile(statement.executeQuery(), mapper);
+            Mapper<Route> mapper = new RouteMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
