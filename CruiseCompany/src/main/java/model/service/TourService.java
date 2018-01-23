@@ -24,7 +24,6 @@ public class TourService {
     public List<Tour> showTours() {
         try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())) {
             return tourDAO.joinWithShip();
-            // service exceptions
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

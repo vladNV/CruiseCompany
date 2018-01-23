@@ -2,8 +2,9 @@ package model.dao.mysql;
 
 import model.dao.interfaces.TourDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.TourMapper;
+import model.dao.mapper.join.TourShipJoin;
 import model.entity.Tour;
 
 import java.sql.*;
@@ -87,8 +88,8 @@ public class TourMySQL implements TourDAO {
     public Tour findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            Mapper<Tour> mapper = EntityMapper.mapperFactory(EnumMapper.TourMapperWithoutShip);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<Tour> mapper = new TourMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -109,9 +110,8 @@ public class TourMySQL implements TourDAO {
     public List<Tour> joinWithShip() {
         try (PreparedStatement statement = connection
                 .prepareStatement(TOUR_WITH_SHIP)){
-            Mapper<Tour> mapper = EntityMapper
-                    .mapperFactory(EnumMapper.TourMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<Tour> mapper = new TourShipJoin();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -127,8 +127,8 @@ public class TourMySQL implements TourDAO {
     public Tour findTourWithShip(int tourId) {
         try (PreparedStatement statement = connection.prepareStatement(FIND_TOUR_SHIP)){
             statement.setInt(1, tourId);
-            Mapper<Tour> mapper = EntityMapper.mapperFactory(EnumMapper.TourMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<Tour> mapper = new TourShipJoin();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             try {
                 connection.rollback();

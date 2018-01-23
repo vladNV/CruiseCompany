@@ -2,8 +2,8 @@ package model.dao.mysql;
 
 import model.dao.interfaces.UserDAO;
 import model.dao.mapper.EntityMapper;
-import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
+import model.dao.mapper.UserMapper;
 import model.entity.User;
 import model.exceptions.ServiceException;
 
@@ -67,8 +67,8 @@ public class UserMySQL implements UserDAO {
     public User findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            Mapper<User> mapper = EntityMapper.mapperFactory(EnumMapper.UserMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<User> mapper = new UserMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -79,8 +79,8 @@ public class UserMySQL implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
             statement.setInt(1, offset);
             statement.setInt(2, limit);
-            Mapper<User> mapper = EntityMapper.mapperFactory(EnumMapper.UserMapper);
-            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
+            Mapper<User> mapper = new UserMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -91,8 +91,8 @@ public class UserMySQL implements UserDAO {
         try (PreparedStatement statement = connection
                 .prepareStatement(FIND_BY_LOGIN)){
             statement.setString(1, email);
-            Mapper<User> mapper = EntityMapper.mapperFactory(EnumMapper.UserMapper);
-            return EntityMapper.extractIf(statement.executeQuery(), mapper);
+            Mapper<User> mapper = new UserMapper();
+            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
