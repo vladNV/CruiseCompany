@@ -1,4 +1,4 @@
-package model.util;
+package model.entity;
 
 public enum  Role {
     GUEST, USER, ADMIN, BANNED

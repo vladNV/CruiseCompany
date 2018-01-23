@@ -6,6 +6,8 @@
     <title><fmt:message bundle="${msg}" key="to.pay"/></title>
 </head>
 <body>
+<c:set var="ticket" value="${sessionScope.cart.ticket}" scope="session"/>
+<c:set var="excursions" value="${sessionScope.cart.excursions}" scope="session"/>
     <c:import url="/WEB-INF/static/menu.jsp"/>
     <div class="wrapper">
         <div class="content">
@@ -20,29 +22,29 @@
                 <div class="col-sm-2"></div>
                 <div class="col-sm-4">
                     <b><fmt:message bundle="${msg}" key="cruise_name"/>: </b>
-                    ${sessionScope.tour.name} <br>
+                    ${sessionScope.ticket.tour.name} <br>
                     <b><fmt:message bundle="${msg}" key="region"/>: </b>
-                    ${sessionScope.tour.region}<br>
+                    ${sessionScope.ticket.tour.region}<br>
                     <b><fmt:message bundle="${msg}" key="arrival"/>: </b>
-                    ${sessionScope.tour.arrival} <br>
+                    ${sessionScope.ticket.tour.arrival} <br>
                     <b><fmt:message bundle="${msg}" key="departure"/>: </b>
-                    ${sessionScope.tour.departure} <br>
+                    ${sessionScope.ticket.tour.departure} <br>
                     <b><fmt:message bundle="${msg}" key="duration"/>: </b>
-                    ${sessionScope.tour.duration.days} <fmt:message bundle="${msg}" key="days"/>
-                    ${sessionScope.tour.duration.hours} <fmt:message bundle="${msg}" key="hours"/>
-                    ${sessionScope.tour.duration.minutes} <fmt:message bundle="${msg}" key="minutes"/>
+                    ${sessionScope.ticket.tour.duration.days} <fmt:message bundle="${msg}" key="days"/>
+                    ${sessionScope.ticket.tour.duration.hours} <fmt:message bundle="${msg}" key="hours"/>
+                    ${sessionScope.ticket.tour.duration.minutes} <fmt:message bundle="${msg}" key="minutes"/>
                     <br>
                     <b><fmt:message bundle="${msg}" key="ticket_type"/>: </b>
-                    ${sessionScope.cart.ticket.type} <br>
+                    ${sessionScope.ticket.type} <br>
                     <b><fmt:message bundle="${msg}" key="amount"/>: </b>
-                    ${sessionScope.cart.ticket.amountPassengers} <br>
+                    ${sessionScope.ticket.amountPassengers} <br>
                     <div class="ticket-table">
-                        <c:forEach items="${sessionScope.cart.excursions}" var="excursion">
+                        <c:forEach items="${sessionScope.excursions}" var="e">
                             <a class="ticket-row" href="#">
-                                <div class="ticket-cell">${excursion.name}</div>
-                                <div class="ticket-cell">${excursion.port.name}</div>
-                                <div class="ticket-cell">${excursion.port.country}</div>
-                                <div class="ticket-cell">${excursion.price}</div>
+                                <div class="ticket-cell">${e.name}</div>
+                                <div class="ticket-cell">${e.port.name}</div>
+                                <div class="ticket-cell">${e.port.country}</div>
+                                <div class="ticket-cell">${e.price}</div>
                             </a>
                         </c:forEach>
                     </div>
@@ -52,7 +54,7 @@
                 </div>
                 <div class="col-sm-5" style="border: 1px solid gainsboro">
                     <div class="route-table">
-                        <c:forEach items="${sessionScope.tour.routes}" var="route">
+                        <c:forEach items="${sessionScope.ticket.tour.routes}" var="route">
                             <div class="route-row">
                                 <div class="route-cell">
                                         ${route.name}

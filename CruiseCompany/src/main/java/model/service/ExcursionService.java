@@ -11,8 +11,8 @@ import java.util.List;
 public class ExcursionService {
     private FactoryDAO factory;
 
-    public ExcursionService(FactoryDAO factory) {
-        this.factory = factory;
+    public ExcursionService() {
+        factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
 
     public List<Excursion> showExcursions() {

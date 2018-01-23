@@ -1,5 +1,7 @@
 package controller.util;
 
+import controller.exceptions.CommandException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +42,25 @@ public class RequestParser {
             ticketType = matcher.group();
         }
         return ticketType;
+    }
+
+    public static boolean validate(String param, String regex) {
+        return param.matches(regex);
+    }
+
+    public static void nullCheck(Object ... params) {
+        for (Object o : params) {
+            if (o == null) {
+                throw new CommandException("null params");
+            }
+        }
+    }
+
+    public static boolean isNull(Object ... params) {
+        for (Object o : params) {
+            if (o == null) return true;
+        }
+        return false;
     }
 
 }

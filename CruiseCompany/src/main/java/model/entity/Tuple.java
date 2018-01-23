@@ -1,4 +1,4 @@
-package model.util;
+package model.entity;
 
 public class Tuple<X, Y> {
     private final X x;

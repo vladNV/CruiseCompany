@@ -1,12 +1,16 @@
 package controller.cmd;
 
 import static controller.util.MessageManager.getMessage;
+import static controller.util.RequestParser.isNull;
+import static controller.util.RequestParser.nullCheck;
+import static controller.util.RequestParser.validate;
 
+import controller.params.RequestParam;
 import controller.params.SessionParam;
-import controller.util.Act;
-import controller.util.ActionResponse;
-import controller.util.Cart;
-import controller.util.URI;
+import controller.servlet.Forward;
+import controller.servlet.Redirect;
+import controller.servlet.ServletAction;
+import controller.util.*;
 import model.dao.FactoryDAO;
 import model.entity.User;
 import model.service.UserService;
@@ -19,38 +23,39 @@ import java.sql.SQLException;
 public class SignIn implements Action {
 
     private UserService service;
-    private static final String PARAM_LOGIN = "login";
+    private static final String PARAM_EMAIL = "login";
     private static final String PARAM_PASSWORD = "password";
 
     SignIn() {
-        this.service = new UserService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));
+        this.service = new UserService();
     }
 
-    //TODO add 500Exception
     @Override
-    public ActionResponse execute(HttpServletRequest request,
-                                  HttpServletResponse response) {
+    public ServletAction execute(HttpServletRequest request,
+                                 HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String login = request.getParameter(PARAM_LOGIN);
+        Forward forward = new Forward(URI.LOGIN_JSP);
+        String email = request.getParameter(PARAM_EMAIL);
         String password = request.getParameter(PARAM_PASSWORD);
-        if (login == null || password == null) {
-            return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
+        if (isNull(email, password)) {
+            return forward;
         }
-        User user = service.signIn(login, password);
+        if (!validate(email, RegexpParam.EMAIL)
+                || !validate(password, RegexpParam.PASSWORD)) {
+            request.setAttribute(RequestParam.WRONG, "auth_invalid");
+            return forward;
+        }
+        User user = service.signIn(email, password);
         if (user != null) {
             session.setAttribute(SessionParam.USER, user);
-            session.setAttribute(SessionParam.USER, user.getRole());
-            // create cart for user
-            Cart cart = new Cart();
-            session.setAttribute(SessionParam.CART, cart);
+            session.setAttribute(SessionParam.ROLE, user.getRole());
+            session.setAttribute(SessionParam.CART, new Cart());
             String redirectTo = (String) session.getAttribute(SessionParam.LASTPATH);
-            System.out.println(redirectTo);
-            if (redirectTo == null) return new ActionResponse(Act.REDIRECT, URI.MAIN);
-            return new ActionResponse(Act.REDIRECT, redirectTo);
-
+            if (redirectTo == null) return new Redirect(URI.MAIN);
+            return new Redirect(redirectTo);
         } else {
-            request.setAttribute("wrong", getMessage("auth_invalid"));
-            return new ActionResponse(Act.FORWARD, URI.LOGIN_JSP);
+            request.setAttribute(RequestParam.WRONG, "auth_invalid");
+            return forward;
         }
 
     }

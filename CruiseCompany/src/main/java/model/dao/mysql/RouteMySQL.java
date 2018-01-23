@@ -9,21 +9,13 @@ import model.entity.Route;
 import java.sql.*;
 import java.util.List;
 
+import static model.dao.queries.RouteSQL.*;
+
 public class RouteMySQL implements RouteDAO {
     private final Connection connection;
 
-    private static final String INSERT =
-            "insert into route(idtour, departure, arrival, idport, routename) " +
-            "values (?, ?, ?, ?, ?)";
-    private static final String UPDATE =
-            "update route set idtour = ?, departure = ?, arrival = ?, " +
-                    "idport = ?, routename = ? where idroute = ?";
-    private static final String DELETE =
-            "delete from route where idroute = ?";
-    private static final String TOUR_ROUTES =
-            "select * from route join port using(idport) where idtour = ?";
 
-    public RouteMySQL(final Connection connection) {
+    RouteMySQL(final Connection connection) {
         this.connection = connection;
     }
 
@@ -38,7 +30,7 @@ public class RouteMySQL implements RouteDAO {
                     .valueOf(route.getArrival()));
             statement.setInt(4, route.getPort().getId());
             statement.setString(5, route.getName());
-            return statement.getGeneratedKeys().getInt(1);
+            return EntityMapper.getKey(statement.getGeneratedKeys());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -83,13 +75,6 @@ public class RouteMySQL implements RouteDAO {
 
 
     @Override
-    public void close() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
-    }
-
-    @Override
     public List<Route> routesOfCruise(int tourId) {
         try (PreparedStatement statement = connection
                 .prepareStatement(TOUR_ROUTES)) {
@@ -101,4 +86,12 @@ public class RouteMySQL implements RouteDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null) {
+            connection.close();
+        }
+    }
+
 }

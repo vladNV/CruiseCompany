@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class UserService {
     private FactoryDAO factory;
 
-    public UserService(FactoryDAO factory) {
-        this.factory = factory;
+    public UserService() {
+        factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
 
     public boolean registration(String pass, String login, String email) {

@@ -29,7 +29,18 @@
                        type="password" name="repassword" required class="form-control">
             </div>
             <div class="form-group">
-                <c:import url="/WEB-INF/static/requestStatus.jsp"/>
+            <c:if test="${requestScope.wrong != null}">
+                <fmt:message bundle="${msg}" key="${requestScope.wrong}"/><br>
+            </c:if>
+            <c:if test="${requestScope.wrongEmail != null}">
+                <fmt:message bundle="${msg}" key="${requestScope.wrongEmail}"/><br>
+            </c:if>
+            <c:if test="${requestScope.wrongPass != null}">
+                <fmt:message bundle="${msg}" key="${requestScope.wrongPass}"/><br>
+            </c:if>
+            <c:if test="${requestScope.wrongLogin != null}">
+                <fmt:message bundle="${msg}" key="${requestScope.wrongLogin}"/><br>
+            </c:if>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary pull-right">

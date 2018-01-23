@@ -1,29 +1,22 @@
 package model.dao.mysql;
 
 import model.dao.interfaces.PortDAO;
-import model.dao.mapper.PortMapper;
+import model.dao.mapper.EntityMapper;
+import model.dao.mapper.EnumMapper;
+import model.dao.mapper.Mapper;
 import model.entity.Port;
 
 import java.sql.*;
 import java.util.List;
+
+import static model.dao.queries.PortSQL.*;
 
 public class PortMySQL implements PortDAO {
     private final Connection connection;
     private int limit;
     private int offset;
 
-    private static final String INSERT =
-            "insert into port(portname, city, country) values (?, ?, ?)";
-    private static final String UPDATE =
-            "update port set portname = ?, city = ?, country = ? where idport = ?";
-    private static final String DELETE =
-            "delete from port where idport = ?";
-    private static final String FIND =
-            "select * from port where idport = ?";
-    private static final String FIND_ALL =
-            "select * from port limit ?, ?";
-
-    public PortMySQL(final Connection connection) {
+    PortMySQL(final Connection connection) {
         this.connection = connection;
     }
 
@@ -50,14 +43,10 @@ public class PortMySQL implements PortDAO {
             statement.setString(1, port.getName());
             statement.setString(2, port.getCity());
             statement.setString(3, port.getCountry());
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
+            return EntityMapper.getKey(statement.getGeneratedKeys());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return 0;
     }
 
     @Override
@@ -82,7 +71,8 @@ public class PortMySQL implements PortDAO {
     public Port findById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            return PortMapper.extractIf(statement.executeQuery());
+            Mapper<Port> mapper = EntityMapper.mapperFactory(EnumMapper.PortMapper);
+            return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -94,7 +84,8 @@ public class PortMySQL implements PortDAO {
                 .prepareStatement(FIND_ALL)){
             statement.setInt(1, offset);
             statement.setInt(2, limit);
-            return PortMapper.extractWhile(statement.executeQuery());
+            Mapper<Port> mapper = EntityMapper.mapperFactory(EnumMapper.PortMapper);
+            return EntityMapper.extractWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

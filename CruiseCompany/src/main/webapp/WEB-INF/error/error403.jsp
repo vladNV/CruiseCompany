@@ -11,12 +11,18 @@
 <c:set var="lastPath" value="${sessionScope.path}" scope="session"/>
 <div class="wrapper">
     <div class="content container">
-        <h1>403</h1>
         <fmt:message bundle="${msg}" key="error403"/>
         <hr>
-        <a href="${pageContext.request.contextPath}/back">
-            <fmt:message bundle="${msg}" key="back"/>
-        </a>
+        <c:choose>
+            <c:when test="${sessionScope.role == 'GUEST'}">
+                <a href="${pageContext.request.contextPath}/back">
+                    <fmt:message bundle="${msg}" key="back"/>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <c:redirect url="/WEB-INF/main.jsp"/>
+            </c:otherwise>
+        </c:choose>
     </div>
     <c:import url="/WEB-INF/static/footer.jsp"/>
 </div>

@@ -1,7 +1,8 @@
 package controller.filter;
 
+import controller.params.SessionParam;
 import controller.util.AccessConfig;
-import model.util.Role;
+import model.entity.Role;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -35,8 +36,6 @@ public class FilterAccess implements Filter {
             return;
         }
         if (!redirect(req, pattern)) {
-            // Set<Set<Role>> roles = (Set<Set<Role>>) h.values();
-
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -48,8 +47,8 @@ public class FilterAccess implements Filter {
     }
 
     private void ifRoleNull(HttpSession session) {
-        if (session.getAttribute("role") == null) {
-            session.setAttribute("role", Role.GUEST);
+        if (session.getAttribute(SessionParam.ROLE) == null) {
+            session.setAttribute(SessionParam.ROLE, Role.GUEST);
         }
     }
 
@@ -58,7 +57,7 @@ public class FilterAccess implements Filter {
         HashMap<Pattern, Set<Role>> h = initAccessMap();
         Set<Role> v = h.get(k);
         if (v == null) return false;
-        Role current = (Role) session.getAttribute("role");
+        Role current = (Role) session.getAttribute(SessionParam.ROLE);
         return v.contains(current);
     }
 

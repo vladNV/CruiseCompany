@@ -1,7 +1,5 @@
 package model.entity;
 
-import model.util.TicketClass;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

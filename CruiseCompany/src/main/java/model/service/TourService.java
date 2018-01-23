@@ -17,8 +17,8 @@ public class TourService {
 
     private FactoryDAO factory;
 
-    public TourService(FactoryDAO factory) {
-        this.factory = factory;
+    public TourService() {
+        factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
 
     public List<Tour> showTours() {

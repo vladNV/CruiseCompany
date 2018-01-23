@@ -63,18 +63,18 @@
                     <div class="ticket-cell">${excursion.port.country}</div>
                     <div class="ticket-cell">${excursion.price}</div>
                     <div class="ticket-cell">
-                        <form method="post"
-                              action="add_excursion">
+                        <form method="post" action="excursion">
                             <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
+                            <input type="hidden" name="command" value="add">
                             <button class="btn-link">
                                 <fmt:message bundle="${msg}" key="add"/>
                             </button>
                         </form>
                     </div>
                     <div class="ticket-cell">
-                        <form method="post"
-                                                             action="remove_excursion">
+                        <form method="post" action="excursion">
                         <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
+                        <input type="hidden" name="command" value="remove">
                         <button class="btn-link">
                             <fmt:message bundle="${msg}" key="remove"/>
                         </button>
@@ -89,7 +89,7 @@
     <hr />
     <div class="col-sm-2"></div>
     <div class="form-page col-sm-4">
-            <form action="confirm" method="post">
+            <form action="${pageContext.request.contextPath}/ticket/confirm" method="post">
                 <div class="form-group">
                     <label for="phone">
                         <fmt:message bundle="${msg}" key="phone"/>

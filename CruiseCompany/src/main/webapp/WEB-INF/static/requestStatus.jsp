@@ -2,7 +2,11 @@
 <%@include file="../taglib.jsp"%>
 <%@ page isELIgnored="false" %>
 <br />
-${requestScope.wrong}
+<c:if test="${requestScope.wrong ne null}">
+    <fmt:message bundle="${msg}" key="${requestScope.wrong}"/>
+</c:if>
 <br />
-${requestScope.pageError}
+<c:if test="${requestScope.pageError ne null}">
+    <fmt:message bundle="${msg}" key="${requestScope.pageError}"/>
+</c:if>
 <br />

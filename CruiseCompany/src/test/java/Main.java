@@ -16,6 +16,11 @@ public class Main {
 //        duration = duration.plusHours(hours);
 //        System.out.println(days);
 //        System.out.println(hours);
+        HashMap<String, Integer> h = new HashMap<>();
+        System.out.println(h.put("A", 2));
+        System.out.println(h.put("A", 3));
+        System.out.println(h.putIfAbsent("A", 4));
+        System.out.println(h);
 
     }
 }

@@ -9,25 +9,12 @@ import model.entity.Tour;
 import java.sql.*;
 import java.util.List;
 
+import static model.dao.queries.TourSQL.*;
+
 public class TourMySQL implements TourDAO {
     private final Connection connection;
     private int offset;
     private int limit;
-
-    private static final String INSERT =
-            "insert into tour(tourname, idship, arrival, departure, region) " +
-            "values(?, ?, ?, ?, ?)";
-    private static final String UPDATE =
-            "update tour set tourname = ?, idship = ?, arrival = ?, " +
-            "departure = ?, region = ? where idtour = ?";
-    private static final String FIND =
-            "select * from tour where idtour = ?";
-    private static final String FIND_ALL =
-            "select * from tour limit ?, ?";
-    private static final String TOUR_WITH_SHIP =
-            "select * from tour join ship using(idship)";
-    private static final String FIND_TOUR_SHIP =
-            "select * from tour join ship using(idship) where idtour = ?";
 
     TourMySQL(final Connection connection) {
         this.connection = connection;
@@ -119,13 +106,6 @@ public class TourMySQL implements TourDAO {
     }
 
     @Override
-    public void close() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
-    }
-
-    @Override
     public List<Tour> joinWithShip() {
         try (PreparedStatement statement = connection
                 .prepareStatement(TOUR_WITH_SHIP)){
@@ -157,6 +137,13 @@ public class TourMySQL implements TourDAO {
                 throw new RuntimeException(roll);
             }
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null) {
+            connection.close();
         }
     }
 }

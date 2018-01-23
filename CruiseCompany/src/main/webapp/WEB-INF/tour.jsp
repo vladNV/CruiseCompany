@@ -8,10 +8,11 @@
 </head>
 <body>
 <c:import url="/WEB-INF/static/menu.jsp"/>
+<c:set scope="request" value="${requestScope.tour.id}" var="tourId"/>
 <div class="wrapper">
 <div class="content">
     <div class="col-sm-12">
-        <h2>${sessionScope.tour.name}</h2>
+        <h2>${requestScope.tour.name}</h2>
     </div>
     <div class="col-sm-12" style="margin-top: 100px;">
         <div class="col-sm-4">Tour map</div>
@@ -27,7 +28,7 @@
                     <div class="route-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
                     <div class="route-cell"><fmt:message bundle="${msg}" key="port"/></div>
                 </div>
-                <c:forEach items="${sessionScope.tour.routes}" var="route">
+                <c:forEach items="${requestScope.tour.routes}" var="route">
                     <div class="route-row">
                         <div class="route-cell">
                             ${route.name}
@@ -55,7 +56,7 @@
                     <div class="ticket-cell"><fmt:message bundle="${msg}" key="price"/></div>
                 </div>
                 <c:forEach items="${requestScope.tour_tickets}" var="a">
-                    <a href="${pageContext.request.contextPath}/ticket/${fn:toLowerCase(a.entity.type)}"
+                    <a href="${pageContext.request.contextPath}/ticket/${requestScope.tourId}/${fn:toLowerCase(a.entity.type)}"
                        class="ticket-row">
                         <div class="ticket-cell">
                             ${a.agg}

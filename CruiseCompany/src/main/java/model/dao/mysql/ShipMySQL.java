@@ -11,15 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import static model.dao.queries.ShipSQL.*;
+
 public class ShipMySQL implements ShipDAO {
     private final Connection connection;
     private int limit;
     private int offset;
-
-    private static final String FIND
-            = "select * from ship where idship = ?";
-    private static final String FIND_ALL
-            = "select * from ship limit ?, ?";
 
     ShipMySQL(final Connection connection) {
         this.connection = connection;

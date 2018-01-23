@@ -1,8 +1,8 @@
 package controller.cmd;
 
 import controller.params.ApplicationParam;
-import controller.util.Act;
-import controller.util.ActionResponse;
+import controller.servlet.Redirect;
+import controller.servlet.ServletAction;
 import controller.util.URI;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +17,9 @@ public class SwitchLanguage implements Action {
     }
 
     @Override
-    public ActionResponse execute(HttpServletRequest request,
-                                  HttpServletResponse response) {
+    public ServletAction execute(HttpServletRequest request,
+                                 HttpServletResponse response) {
         request.getServletContext().setAttribute(ApplicationParam.LOCALE, locale);
-        return new ActionResponse(Act.REDIRECT, URI.MAIN);
+        return new Redirect(URI.MAIN);
     }
 }

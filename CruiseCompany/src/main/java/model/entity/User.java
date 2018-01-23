@@ -1,7 +1,5 @@
 package model.entity;
 
-import model.util.Role;
-
 import java.io.Serializable;
 import java.util.List;
 

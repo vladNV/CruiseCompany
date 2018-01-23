@@ -30,7 +30,7 @@
 
   <error-page>
     <error-code>500</error-code>
-    <location>/WEB-INF/error/error400.jsp</location>
+    <location>/WEB-INF/error/error500.jsp</location>
   </error-page>
 
 

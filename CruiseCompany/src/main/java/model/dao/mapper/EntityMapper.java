@@ -2,14 +2,12 @@ package model.dao.mapper;
 
 import model.entity.*;
 import model.entity.Entity;
-import model.util.AggregateOperation;
-import model.util.Role;
-import model.util.TicketClass;
+import model.entity.Role;
+import model.entity.TicketClass;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class EntityMapper {
 
@@ -94,7 +92,21 @@ public abstract class EntityMapper {
                     .departure(rs.getTimestamp("departure").toLocalDateTime())
                     .price(rs.getLong("price"))
                     .type(TicketClass.valueOf(rs.getString("type")))
-                    .tour(extractIfWithoutNext(rs, mapperFactory(EnumMapper.TourMapper)))
+                    .tour(extractIfWithoutNext(rs, mapperFactory(EnumMapper.TourMapperWithoutShip)))
+                    .build();
+        }
+    }
+
+    static class TourWithoutShipMapper implements Mapper<Tour> {
+
+        @Override
+        public Tour extract(ResultSet rs) throws SQLException {
+            return Tour.newTour()
+                    .id(rs.getInt("idtour"))
+                    .arrival(rs.getTimestamp("arrival").toLocalDateTime())
+                    .departure(rs.getTimestamp("departure").toLocalDateTime())
+                    .name(rs.getString("tourname"))
+                    .region(rs.getString("region"))
                     .build();
         }
     }
@@ -128,7 +140,6 @@ public abstract class EntityMapper {
 
     static class TicketAmountMapper
             implements Mapper<AggregateOperation<Integer, Ticket>> {
-
         @Override
         public AggregateOperation<Integer, Ticket>
         extract(ResultSet rs) throws SQLException {
@@ -202,6 +213,8 @@ public abstract class EntityMapper {
                     return (T) new TicketWithoutTourMapper();
                 case ExcursionWithoutPortMapper:
                     return (T) new ExcursionWithoutPortMapper();
+                case TourMapperWithoutShip:
+                    return (T) new TourWithoutShipMapper();
                 default:
                     throw new IllegalArgumentException();
             }

@@ -1,12 +1,10 @@
 package controller.cmd;
 
 import controller.params.RequestParam;
-import controller.util.Act;
-import controller.util.ActionResponse;
+import controller.servlet.Forward;
+import controller.servlet.ServletAction;
 import controller.util.URI;
 import model.dao.FactoryDAO;
-import model.dao.mysql.FactoryMySQL;
-import model.entity.Excursion;
 import model.service.ExcursionService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +15,13 @@ public class ShowExcursionList implements Action {
     private ExcursionService service;
 
     ShowExcursionList() {
-        this.service = new ExcursionService(FactoryDAO.getDAOImpl(FactoryDAO.MYSQL));
+        this.service = new ExcursionService();
     }
 
     @Override
-    public ActionResponse execute(HttpServletRequest request,
-                                  HttpServletResponse response) {
+    public ServletAction execute(HttpServletRequest request,
+                                 HttpServletResponse response) {
         request.setAttribute(RequestParam.EXCURSIONS, service.showExcursions());
-        return new ActionResponse(Act.FORWARD, URI.EXCURSIONS_JSP);
+        return new Forward(URI.EXCURSIONS_JSP);
     }
 }

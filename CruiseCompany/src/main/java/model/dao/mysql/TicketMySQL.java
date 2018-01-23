@@ -6,8 +6,8 @@ import model.dao.mapper.EnumMapper;
 import model.dao.mapper.Mapper;
 import model.entity.Ticket;
 import model.exceptions.ServiceException;
-import model.util.AggregateOperation;
-import model.util.TicketClass;
+import model.dao.mapper.AggregateOperation;
+import model.entity.TicketClass;
 
 import static model.dao.queries.TicketSQL.*;
 import java.sql.*;
@@ -93,13 +93,6 @@ public class TicketMySQL implements TicketDAO {
     }
 
     @Override
-    public void close() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
-    }
-
-    @Override
     public List<AggregateOperation<Integer, Ticket>> ticketForCategory(int tourId) {
         try (PreparedStatement statement = connection.prepareStatement(QUANTITY_TICKET)){
             statement.setInt(1, tourId);
@@ -142,7 +135,7 @@ public class TicketMySQL implements TicketDAO {
             statement.setString(1, String.valueOf(type));
             statement.setInt(2, tourId);
             Mapper<Ticket> mapper = EntityMapper.
-                    mapperFactory(EnumMapper.TicketWithoutTourMapper);
+                    mapperFactory(EnumMapper.TicketMapper);
             return EntityMapper.extractIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -156,7 +149,7 @@ public class TicketMySQL implements TicketDAO {
             statement.setInt(2, ticket.getAmountPassengers());
             statement.setInt(3, ticket.getId());
             int update = statement.executeUpdate();
-            if(update == 0) throw new ServiceException("was.bought");
+            if(update == 0) throw new ServiceException("ticket.was.bought");
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -184,6 +177,13 @@ public class TicketMySQL implements TicketDAO {
                 throw new RuntimeException(roll);
             }
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null) {
+            connection.close();
         }
     }
 }

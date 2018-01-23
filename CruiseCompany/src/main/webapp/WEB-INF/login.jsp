@@ -14,9 +14,6 @@
         <div class="login">
             <form action="login" method="post">
                 <div class="form-group">
-                    ${requestScope.status}
-                </div>
-                <div class="form-group">
                     <input required name="login" class="form-control"
                            placeholder="<fmt:message bundle="${msg}" key="email" />">
                 </div>

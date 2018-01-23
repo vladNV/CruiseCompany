@@ -1,11 +1,9 @@
 package model.dao.interfaces;
 
 import model.entity.Ticket;
-import model.entity.User;
 import model.exceptions.ServiceException;
-import model.util.AggregateOperation;
-import model.util.TicketClass;
-import model.util.Tuple;
+import model.dao.mapper.AggregateOperation;
+import model.entity.TicketClass;
 
 import java.util.List;
 

@@ -87,13 +87,6 @@ public class UserMySQL implements UserDAO {
     }
 
     @Override
-    public void close() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
-    }
-
-    @Override
     public User findByEmail(String email) {
         try (PreparedStatement statement = connection
                 .prepareStatement(FIND_BY_LOGIN)){
@@ -139,6 +132,13 @@ public class UserMySQL implements UserDAO {
                 throw new RuntimeException(roll);
             }
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null) {
+            connection.close();
         }
     }
 }
