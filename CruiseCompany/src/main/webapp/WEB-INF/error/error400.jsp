@@ -13,7 +13,7 @@
         <h1>400</h1>
         <fmt:message bundle="${msg}" key="error400"/>
         <hr>
-    <a href="${pageContext.request.contextPath}/back">
+    <a onclick="window.history.back();">
         <fmt:message bundle="${msg}" key="back"/>
     </a>
     </div>

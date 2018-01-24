@@ -24,7 +24,8 @@ public class ExcursionService {
     }
 
     public List<Excursion> showCruiseExcursion(int tourId) {
-        try (ExcursionDAO excursionDAO = factory.excursionDAO(ConnectionPool.pool().connect())){
+        try (ExcursionDAO excursionDAO = factory
+                .excursionDAO(ConnectionPool.pool().connect())){
             return excursionDAO.cruiseExcursion(tourId);
         } catch (Exception e) {
             throw new RuntimeException(e);

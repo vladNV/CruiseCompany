@@ -13,27 +13,9 @@ import static model.dao.queries.PortSQL.*;
 
 public class PortMySQL implements PortDAO {
     private final Connection connection;
-    private int limit;
-    private int offset;
 
     PortMySQL(final Connection connection) {
         this.connection = connection;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     @Override
@@ -82,8 +64,6 @@ public class PortMySQL implements PortDAO {
     public List<Port> findAll() {
         try (PreparedStatement statement = connection
                 .prepareStatement(FIND_ALL)){
-            statement.setInt(1, offset);
-            statement.setInt(2, limit);
             Mapper<Port> mapper = new PortMapper();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {

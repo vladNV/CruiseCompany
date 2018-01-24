@@ -20,7 +20,9 @@ public enum ActionEnum {
     LUXE                {{ action = new ChooseTicket(); }},
     UA                  {{ action = new SwitchLanguage(MessageManager.UKRAINE); }},
     ENG                 {{ action = new SwitchLanguage(Locale.ENGLISH); }},
-    BUY                 {{ action = new BuyTicket(); }};
+    BUY                 {{ action = new BuyTicket(); }},
+    SEARCH              {{ action = new Search(); }},
+    STEP2               {{ action = new AddTickets();}};
 
     Action action;
     public Action getAction() {

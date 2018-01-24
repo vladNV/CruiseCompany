@@ -20,7 +20,7 @@
                 </a>
             </c:when>
             <c:otherwise>
-                <c:redirect url="/WEB-INF/main.jsp"/>
+                <c:redirect url="${pageContext.request.contextPath}/main"/>
             </c:otherwise>
         </c:choose>
     </div>

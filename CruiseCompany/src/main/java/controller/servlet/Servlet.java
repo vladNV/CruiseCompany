@@ -10,10 +10,15 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import java.io.IOException;
 
 @WebServlet(name = "Servlet", urlPatterns = {"/"})
 public class Servlet extends HttpServlet {
+    public static final String GET = "GET";
+    public static final String POST = "POST";
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -44,7 +49,7 @@ public class Servlet extends HttpServlet {
             dispatcher.action(req, resp);
         } catch (CommandException e) {
             e.printStackTrace();
-            resp.sendError(403, e.getMessage());
+            resp.sendError(400, e.getMessage());
         } catch (RuntimeException e) {
             e.printStackTrace();
             resp.sendError(500);

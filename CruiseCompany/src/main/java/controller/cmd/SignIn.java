@@ -1,8 +1,6 @@
 package controller.cmd;
 
-import static controller.util.MessageManager.getMessage;
 import static controller.util.RequestParser.isNull;
-import static controller.util.RequestParser.nullCheck;
 import static controller.util.RequestParser.validate;
 
 import controller.params.RequestParam;
@@ -11,14 +9,12 @@ import controller.servlet.Forward;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
 import controller.util.*;
-import model.dao.FactoryDAO;
 import model.entity.User;
 import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 
 public class SignIn implements Action {
 

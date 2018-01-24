@@ -9,33 +9,16 @@ import model.entity.Ship;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static model.dao.queries.ShipSQL.*;
 
 public class ShipMySQL implements ShipDAO {
     private final Connection connection;
-    private int limit;
-    private int offset;
 
     ShipMySQL(final Connection connection) {
         this.connection = connection;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     @Override
@@ -67,13 +50,17 @@ public class ShipMySQL implements ShipDAO {
     @Override
     public List<Ship> findAll() {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)){
-            statement.setInt(1, offset);
-            statement.setInt(2, limit);
             Mapper<Ship> mapper = new ShipMapper();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Ship findFreeShip(int id, LocalDateTime departure,
+                             LocalDateTime arrival) {
+        return null;
     }
 
     @Override

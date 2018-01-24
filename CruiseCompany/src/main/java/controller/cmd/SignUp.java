@@ -6,10 +6,8 @@ import static controller.util.RequestParser.validate;
 import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
-import controller.util.MessageManager;
 import controller.util.RegexpParam;
 import controller.util.URI;
-import model.dao.FactoryDAO;
 import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;

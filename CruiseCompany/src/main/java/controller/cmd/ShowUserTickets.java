@@ -5,7 +5,6 @@ import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.URI;
-import model.dao.FactoryDAO;
 import model.entity.Ticket;
 import model.entity.User;
 import model.service.TicketService;

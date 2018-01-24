@@ -48,6 +48,15 @@ public class RequestParser {
         return param.matches(regex);
     }
 
+    public static boolean validate(String params[], String regex) {
+        for (String param: params) {
+            if (!param.matches(regex)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void nullCheck(Object ... params) {
         for (Object o : params) {
             if (o == null) {

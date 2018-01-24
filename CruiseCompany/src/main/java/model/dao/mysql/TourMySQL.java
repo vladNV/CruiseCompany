@@ -124,6 +124,17 @@ public class TourMySQL implements TourDAO {
     }
 
     @Override
+    public List<Tour> search(String region) {
+        try (PreparedStatement statement = connection.prepareStatement(SEARCH_FOR_REGION)){
+            statement.setString(1, region);
+            Mapper<Tour> mapper = new TourShipJoin();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Tour findTourWithShip(int tourId) {
         try (PreparedStatement statement = connection.prepareStatement(FIND_TOUR_SHIP)){
             statement.setInt(1, tourId);

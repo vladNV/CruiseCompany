@@ -44,6 +44,10 @@ public class AccessConfig {
         access.put(Pattern.compile("/eng"), all);
         access.put(Pattern.compile("/ticket/buy"), authorized);
         access.put(Pattern.compile("/profile"), authorized);
+        access.put(Pattern.compile("/add_cruise"), admin);
+        access.put(Pattern.compile("/step2"), admin);
+        access.put(Pattern.compile("/step3"), admin);
+        access.put(Pattern.compile("/search"), all);
     }
 
 

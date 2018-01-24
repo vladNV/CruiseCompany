@@ -44,4 +44,28 @@ public class TourService {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Tour> searchTourForRegion(String region) {
+        try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())) {
+            return tourDAO.search(region);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createNewTour(Tour tour) {
+        Connection connect = ConnectionPool.pool().connect();
+        try (TourDAO tourDAO = factory.tourDAO(connect);
+             TicketDAO ticketDAO = factory.ticketDAO(connect);
+             RouteDAO routeDAO = factory.routeDAO(connect)){
+            connect.setAutoCommit(false);
+            tour.setId(tourDAO.insert(tour));
+            routeDAO.setRoutes(tour.getRoutes(), tour.getId());
+            ticketDAO.setTicketsOnTour(tour);
+            connect.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -30,6 +30,9 @@ public class Confirm implements Action {
         Cart cart = (Cart) session.getAttribute(SessionParam.CART);
         nullCheck(cart, phone, name, surname, amount);
         validate(name, RegexpParam.NAME);
+        validate(surname, RegexpParam.NAME);
+        validate(amount, RegexpParam.NUMBER);
+        validate(phone, RegexpParam.PHONE);
         int quantity = Integer.parseInt(amount);
         cart.getTicket().setAmountPassengers(quantity);
         request.setAttribute(RequestParam.PRICE,  cart.getPrice(quantity));

@@ -1,6 +1,5 @@
 package controller.cmd;
 
-import controller.exceptions.CommandException;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
@@ -8,7 +7,6 @@ import controller.servlet.ServletAction;
 import controller.util.Cart;
 import controller.util.RegexpParam;
 import controller.util.URI;
-import model.dao.FactoryDAO;
 import model.entity.Excursion;
 import model.service.ExcursionService;
 

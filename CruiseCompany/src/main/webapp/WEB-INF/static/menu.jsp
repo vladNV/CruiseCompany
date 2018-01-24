@@ -28,6 +28,13 @@
                     </a></li>
                 </c:when>
                 <c:otherwise>
+                    <c:if test="${sessionScope.role == 'ADMIN'}">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/add_cruise">
+                                Admin
+                            </a>
+                        </li>
+                    </c:if>
                     <li><a href="${pageContext.request.contextPath}/profile">
                             ${sessionScope.user.email}
                     </a></li>

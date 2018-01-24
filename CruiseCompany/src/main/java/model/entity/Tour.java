@@ -36,6 +36,10 @@ public class Tour implements Cloneable, Serializable, Entity {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -74,6 +78,10 @@ public class Tour implements Cloneable, Serializable, Entity {
 
     public Ship getShip() {
         return ship;
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = ship;
     }
 
     public static Builder newTour() {

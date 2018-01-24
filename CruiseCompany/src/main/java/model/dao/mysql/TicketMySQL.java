@@ -6,6 +6,7 @@ import model.dao.mapper.Mapper;
 import model.dao.mapper.TicketMapper;
 import model.dao.mapper.aggregation.TicketAmount;
 import model.entity.Ticket;
+import model.entity.Tour;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
 import model.entity.TicketClass;
@@ -16,27 +17,9 @@ import java.util.List;
 
 public class TicketMySQL implements TicketDAO {
     private final Connection connection;
-    private int offset;
-    private int limit;
 
     TicketMySQL(final Connection connection) {
         this.connection = connection;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
     }
 
     @Override
@@ -105,9 +88,9 @@ public class TicketMySQL implements TicketDAO {
     }
 
     @Override
-    public List<Ticket> userTickets(int userId) {
+    public List<Ticket> ticketsForId(int id) {
         try (PreparedStatement statement = connection.prepareStatement(USER_TICKETS)){
-            statement.setInt(1, userId);
+            statement.setInt(1, id);
             Mapper<Ticket> mapper = new TicketMapper();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
@@ -115,18 +98,6 @@ public class TicketMySQL implements TicketDAO {
         }
     }
 
-    @Override
-    public List<Ticket> ticketsForCruise(int tourId) {
-        try (PreparedStatement statement = connection.prepareStatement(TICKETS_TOUR)) {
-            statement.setInt(1, tourId);
-            statement.setInt(2, offset);
-            statement.setInt(3, limit);
-            Mapper<Ticket> mapper = new TicketMapper();
-            return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public Ticket findTicketByType(TicketClass type, int tourId) {
@@ -172,6 +143,28 @@ public class TicketMySQL implements TicketDAO {
                 connection.rollback();
             } catch (SQLException roll) {
                 roll.printStackTrace();
+                throw new RuntimeException(roll);
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void setTicketsOnTour(Tour tour) {
+        try (PreparedStatement statement = connection.prepareStatement(INSERT)){
+            for (Ticket ticket : tour.getTickets()) {
+                statement.setInt(1, tour.getId());
+                statement.setTimestamp(2, Timestamp.valueOf(tour.getArrival()));
+                statement.setTimestamp(3, Timestamp.valueOf(tour.getDeparture()));
+                statement.setLong(4, ticket.getPrice());
+                statement.setString(5, String.valueOf(ticket.getType()));
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException roll) {
                 throw new RuntimeException(roll);
             }
             throw new RuntimeException(e);

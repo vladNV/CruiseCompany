@@ -116,3 +116,5 @@ footer {
 .btn {
     border-radius: 0 !important;
 }
+
+table td {white-space: nowrap;}

@@ -4,7 +4,6 @@ import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.URI;
-import model.dao.FactoryDAO;
 import model.service.ExcursionService;
 
 import javax.servlet.http.HttpServletRequest;

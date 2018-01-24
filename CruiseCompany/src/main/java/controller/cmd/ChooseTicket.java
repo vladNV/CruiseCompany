@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static controller.util.RequestParser.nullCheck;
-import static controller.util.RequestParser.validate;
 
 public class ChooseTicket implements Action {
     private TicketService ticketService;
@@ -43,7 +43,7 @@ public class ChooseTicket implements Action {
         nullCheck(ticket, tour);
         ticket.setTour(tour);
         cart.setTicket(ticket);
-        request.setAttribute(SessionParam.EXCURSIONS,
+        request.setAttribute(RequestParam.EXCURSIONS,
                 excursionService.showCruiseExcursion(tourId));
         return new Forward(URI.TICKET_JSP);
     }

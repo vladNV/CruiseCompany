@@ -87,6 +87,28 @@ public class RouteMySQL implements RouteDAO {
     }
 
     @Override
+    public void setRoutes(List<Route> routes, int tourId) {
+        try (PreparedStatement statement = connection.prepareStatement(INSERT)) {
+            for (Route route : routes) {
+                statement.setInt(1, tourId);
+                statement.setTimestamp(2, Timestamp.valueOf(route.getDeparture()));
+                statement.setTimestamp(3, Timestamp.valueOf(route.getArrival()));
+                statement.setInt(4, route.getPort().getId());
+                statement.setString(5, route.getName());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException roll) {
+                throw new RuntimeException(roll);
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void close() throws Exception {
         if (connection != null) {
             connection.close();

@@ -69,7 +69,7 @@ public class TicketService {
     userTickets(int userId, LocalDateTime to) {
         try (TicketDAO ticketDAO = factory
                 .ticketDAO(ConnectionPool.pool().connect())) {
-            List<Ticket> all = ticketDAO.userTickets(userId);
+            List<Ticket> all = ticketDAO.ticketsForId(userId);
             return delimListForDate(to, all);
         } catch (Exception e) {
             throw new RuntimeException(e);

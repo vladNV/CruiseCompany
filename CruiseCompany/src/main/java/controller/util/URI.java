@@ -14,6 +14,8 @@ public interface URI {
     String PAYMENT_JSP = "/WEB-INF/payment.jsp";
     String SUCCESS_PAYMENT_JSP = "/WEB-INF/static/successPayment.jsp";
     String FAILED_PAYMENT_JSP = "/WEB-INF/static/failedPayment.jsp";
+    String ADD_CRUISE_JSP = "/WEB-INF/addCruise.jsp";
+    String ADD_TICKET_JSP = "/WEB-INF/step2.jsp";
 
     String SLASH = "/";
     String MAIN = "/main";

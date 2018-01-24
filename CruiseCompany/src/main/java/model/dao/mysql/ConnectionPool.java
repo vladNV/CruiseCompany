@@ -33,10 +33,9 @@ public final class ConnectionPool  {
         source.setUsername(properties.getString("name"));
         source.setPassword(properties.getString("password"));
         source.setDriverClassName(properties.getString("driver"));
-        source.setMaxOpenPreparedStatements(50);
+        source.setMaxOpenPreparedStatements(100);
         source.setInitialSize(10);
-        source.setMaxIdle(10);
-        source.setMinIdle(2);
+        source.setMaxIdle(1);
         this.source = source;
     }
 
