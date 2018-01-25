@@ -15,8 +15,8 @@
         <hr>
         <c:choose>
             <c:when test="${sessionScope.role == 'GUEST'}">
-                <a href="${pageContext.request.contextPath}/back">
-                    <fmt:message bundle="${msg}" key="back"/>
+                <a href="${pageContext.request.contextPath}/main">
+                    <fmt:message bundle="${msg}" key="sign_in"/>
                 </a>
             </c:when>
             <c:otherwise>

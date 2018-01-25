@@ -19,11 +19,14 @@
             <form method="post" action="${pageContext.request.contextPath}/addCruise">
                 <div class="form-group">
                     <label for="tourName">Tour name:</label>
-                    <input required class="form-control" name="name" id="tourName">
+                    <input required class="form-control" pattern="[A-za-z\s-,\.]{5,200}"
+                           name="name" id="tourName">
                 </div>
                 <div class="form-group">
                     <label for="region">Region:</label>
-                    <input required class="form-control" name="region" id="region">
+                    <input required class="form-control"
+                           pattern="[A-Za-z-,\.;:0-9\s]{5,100}"
+                           name="region" id="region">
                 </div>
                 <hr>
                     <h3 style="display: inline">Routes</h3>

@@ -5,8 +5,8 @@ public interface ShipSQL {
 
     String FIND_ALL =  "select * from ship";
 
-    String FREE_SHIP = "select ship.* from ship left join tour using(idship) " +
-                       "where tour.departure or tour.arrival " +
-                       "not between ? and ?";
+    String FREE_SHIP = "select * from ship left join tour using(idship) " +
+                       "where (tour.departure  or tour.arrival) is null " +
+                       "or ? < tour.departure or ?  > tour.arrival";
 
 }

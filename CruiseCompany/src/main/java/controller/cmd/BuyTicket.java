@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
+import static controller.util.RequestParser.isNull;
 import static controller.util.RequestParser.nullCheck;
 import static controller.util.RequestParser.validate;
 

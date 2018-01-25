@@ -1,6 +1,5 @@
 import controller.util.RegexpParam;
 import org.junit.Test;
-import static controller.util.RequestParser.*;
 import static org.junit.Assert.*;
 
 public class RegexpTest {
@@ -17,6 +16,15 @@ public class RegexpTest {
         assertEquals(true, "100000".matches(RegexpParam.PRICE));
         assertEquals(false, "-12".matches(RegexpParam.NUMBER));
         assertEquals(false, "sdioahsadkjsdhaasd".matches(RegexpParam.PRICE));
+    }
+
+    @Test
+    public void regexpRoute() {
+        assertEquals(true, "Italy".matches(RegexpParam.ROUTE));
+        assertEquals(true, "Italy weekend".matches(RegexpParam.ROUTE));
+        assertEquals(true, "Italy, tour".matches(RegexpParam.ROUTE));
+        assertEquals(true, "French".matches(RegexpParam.ROUTE));
+        assertEquals(true, "Route 1".matches(RegexpParam.ROUTE));
     }
 
 

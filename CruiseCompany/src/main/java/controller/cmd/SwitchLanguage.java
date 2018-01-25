@@ -19,7 +19,7 @@ public class SwitchLanguage implements Action {
     @Override
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
-        request.getServletContext().setAttribute(ApplicationParam.LOCALE, locale);
+        request.getSession().setAttribute(ApplicationParam.LOCALE, locale);
         return new Redirect(URI.MAIN);
     }
 }

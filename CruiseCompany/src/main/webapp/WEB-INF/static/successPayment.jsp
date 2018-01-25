@@ -12,7 +12,7 @@
     <div class="content container">
         <h4><fmt:message bundle="${msg}" key="payment.success"/> </h4>
         <hr>
-        <a href="${pageContext.request.contextPath}/back">
+        <a onclick="window.history.back();">
             <fmt:message bundle="${msg}" key="back"/>
         </a>
     </div>

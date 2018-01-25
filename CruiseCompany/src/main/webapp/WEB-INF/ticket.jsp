@@ -26,7 +26,7 @@
         </div>
         <div>
             <h3><fmt:message bundle="${msg}" key="price"/></h3>
-                ${sessionScope.cart.ticket.price}
+                <c:out value="${sessionScope.cart.ticket.price / 1000}"/>
         </div>
     </div>
     <div class="col-sm-2"></div>
@@ -52,7 +52,7 @@
                 <div class="ticket-cell">
                     <fmt:message bundle="${msg}" key="country"/></div>
                 <div class="ticket-cell">
-                    <fmt:message bundle="${msg}" key="price"/></div>
+                    <fmt:message bundle="${msg}" key="person.for"/></div>
                 <div class="ticket-cell"></div>
                 <div class="ticket-cell"></div>
             </div>
@@ -61,23 +61,23 @@
                     <div class="ticket-cell">${excursion.name}</div>
                     <div class="ticket-cell">${excursion.port.name}</div>
                     <div class="ticket-cell">${excursion.port.country}</div>
-                    <div class="ticket-cell">${excursion.price}</div>
+                    <div class="ticket-cell">${excursion.price / 1000}</div>
                     <div class="ticket-cell">
                         <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
                             <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
                             <input type="hidden" name="command" value="add">
                             <button class="btn-link">
-                                <fmt:message bundle="${msg}" key="add"/>
+                                <span style="color:green;"><fmt:message bundle="${msg}" key="add"/></span>
                             </button>
                         </form>
                     </div>
                     <div class="ticket-cell">
                         <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
-                        <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
-                        <input type="hidden" name="command" value="remove">
-                        <button class="btn-link">
-                            <fmt:message bundle="${msg}" key="remove"/>
-                        </button>
+                            <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
+                            <input type="hidden" name="command" value="remove">
+                            <button class="btn-link">
+                                <span style="color:green;"><fmt:message bundle="${msg}" key="remove"/></span>
+                            </button>
                     </form>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <fmt:message bundle="${msg}" key="phone"/>
                         <span style="color:red">*</span>
                     </label>
-                    <input id="phone" placeholder="" required
+                    <input id="phone" placeholder="" required pattern="[1-9]{1}\d{1,15}"
                            min="9" max="12" name="phone" class="form-control"/>
                 </div>
                 <div class="form-group">
@@ -103,14 +103,16 @@
                         <fmt:message bundle="${msg}" key="name"/>
                         <span style="color:red">*</span>
                     </label>
-                    <input min="10" max="100" id="name" name="name" class="form-control"/>
+                    <input min="10" max="100" id="name" pattern="^[A-Za-z\-]{2,100}$"
+                           name="name" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="surname">
                         <fmt:message bundle="${msg}" key="surname"/>
                         <span style="color:red">*</span>
                     </label>
-                    <input min="10" max="100" id="surname" name="surname" class="form-control"/>
+                    <input min="10" max="100" id="surname" pattern="^[A-Za-z\-]{2,100}$"
+                           name="surname" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="amount">

@@ -13,10 +13,9 @@
             <div class="col-sm-5">
                 <b>Login:</b> ${sessionScope.user.login} <br>
                 <b>Email:</b> ${sessionScope.user.email} <br>
-                <b><fmt:message bundle="${msg}" key="country"/>${pageContext.request.localName}</b>
             </div>
             <div class="col-sm-7">
-                <h2>Active ticket</h2>
+                <h2><fmt:message bundle="${msg}" key="ticket.active"/> </h2>
                 <div class="ticket-table">
                     <div class="ticket-header">
                         <div class="ticket-cell">#</div>
@@ -41,7 +40,7 @@
                     </c:forEach>
                 </div>
                 <hr>
-                <h2>Old ticket</h2>
+                <h2><fmt:message bundle="${msg}" key="ticket.old"/></h2>
                 <div class="ticket-table">
                     <div class="ticket-header">
                         <div class="ticket-cell">#</div>

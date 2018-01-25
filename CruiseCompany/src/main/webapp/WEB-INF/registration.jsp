@@ -14,7 +14,8 @@
         <form class="form-group" action="registration" method="post">
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="login"/>"
-                       min="3" max="75" required class="form-control" name="login">
+                       min="3" max="75" required pattern="^[A-Za-z0-9_]{3,75}$"
+                       class="form-control" name="login">
             </div>
             <div class="form-group">
                 <input type="email" placeholder="<fmt:message bundle="${msg}" key="email"/>"
@@ -22,24 +23,35 @@
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="password"/>"
-                       min="4" max="16" type="password" required class="form-control" name="password">
+                       min="4" max="16" type="password" required pattern="[A-Za-z0-9]{4,16}"
+                       class="form-control" name="password">
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="repeat_password"/>"
-                       min="4" max="16" type="password" name="repassword" required class="form-control">
+                       min="4" max="16" type="password" name="repassword"
+                       pattern="[A-Za-z0-9]{4,16}"
+                       required class="form-control">
             </div>
             <div class="form-group">
             <c:if test="${requestScope.wrong != null}">
-                <fmt:message bundle="${msg}" key="${requestScope.wrong}"/><br>
+                <span style="color:red">
+                    <fmt:message bundle="${msg}" key="${requestScope.wrong}"/><br>
+                </span>
             </c:if>
             <c:if test="${requestScope.wrongEmail != null}">
-                <fmt:message bundle="${msg}" key="${requestScope.wrongEmail}"/><br>
+                <span style="color:red">
+                        <fmt:message bundle="${msg}" key="${requestScope.wrongEmail}"/><br>
+                </span>
             </c:if>
             <c:if test="${requestScope.wrongPass != null}">
-                <fmt:message bundle="${msg}" key="${requestScope.wrongPass}"/><br>
+                <span style="color:red">
+                    <fmt:message bundle="${msg}" key="${requestScope.wrongPass}"/><br>
+                </span>
             </c:if>
             <c:if test="${requestScope.wrongLogin != null}">
-                <fmt:message bundle="${msg}" key="${requestScope.wrongLogin}"/><br>
+                <span style="color:red">
+                    <fmt:message bundle="${msg}" key="${requestScope.wrongLogin}"/>
+                </span><br>
             </c:if>
             </div>
             <div class="form-group">

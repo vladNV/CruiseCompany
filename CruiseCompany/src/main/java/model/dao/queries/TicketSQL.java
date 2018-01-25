@@ -16,7 +16,7 @@ public interface TicketSQL {
                                   "iduser is null group by ticket.type";
 
       String FIND_BY_TYPE =       "select * from ticket join tour using (idtour) where type = ? " +
-                                  "and idtour = ? limit 1";
+                                  "and idtour = ? and iduser is null limit 1";
 
       String UPDATE_USER_TICKET = "update ticket set iduser = ?, amount_passengers = ? " +
                                   "where idticket = ? and iduser is null";

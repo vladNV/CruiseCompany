@@ -19,7 +19,6 @@ public class Servlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        logger.info(this.getServletName() + " init");
         config.getServletContext().setAttribute("msg", MessageManager.getManager());
         super.init(config);
     }
@@ -27,14 +26,14 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        logger.info(this.getServletName() + " get request");
+        logger.info(getServletName() + " get request");
         processRequest(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        logger.info(this.getServletName() + " post request");
+        logger.info(getServletName() + " post request");
         processRequest(req, resp);
     }
 

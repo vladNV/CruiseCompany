@@ -27,14 +27,12 @@
                     <h4>STANDARD TICKET:</h4>
                     <div class="form-group">
                         <label>Quantity
-                            <input required name="quantity"
-                                   min="1" max="3" type="number"
-                                   class="form-control" style="width: 15%;">
+                            <input required name="quantity" type="number"
+                                   class="form-control" pattern="[1-9]{1}[0-9]{2}">
                         </label>
                         <label>Price in dollars
-                            <input required  name="price"
-                                   type="number" class="form-control"
-                                   style="width: 25%;"/>
+                            <input required  name="price" pattern="[1-9]{1}\d{1,15}"
+                                   type="number" class="form-control"/>
                         </label>
                         <input type="hidden" name="type"
                                class="form-control" value="standard"/>
@@ -43,28 +41,26 @@
                     <div class="form-group">
                         <label>Quantity
                             <input required  name="quantity" type="number"
-                                   min="1"  max="3"
-                                   class="form-control"  style="width: 15%;"/>
+                                   pattern="[1-9]{1}[0-9]{2}"
+                                   class="form-control"/>
                         </label>
                         <label>Price in dollars
                             <input required  name="price" type="number"
                                    class="form-control"/>
                         </label>
                         <input type="hidden" name="type"
-                               class="form-control" value="premium"
-                               style="width: 25%;"/>
+                               class="form-control" value="premium"/>
                     </div>
                     <h4>LUXE TICKET:</h4>
                     <div class="form-group">
                         <label>Quantity
                             <input required name="quantity" type="number"
-                                   min="1" max="3" class="form-control"
-                                   style="width: 15%;"/>
+                                   class="form-control"
+                                   pattern="[1-9]{1}[0-9]{2}"/>
                         </label>
                         <label>Price in dollars
                             <input required name="price" type="number"
-                                   class="form-control"
-                                   style="width: 25%;"/>
+                                   pattern="[1-9]{1}\d{1,15}" class="form-control"/>
                         </label>
                         <input type="hidden" name="type"
                                class="form-control" value="luxe">

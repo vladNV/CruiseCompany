@@ -12,7 +12,7 @@
     <div class="content container">
         <fmt:message bundle="${msg}" key="error500"/>
         <hr>
-        <a href="${pageContext.request.contextPath}/back">
+        <a onclick="window.history.back();">
             <fmt:message bundle="${msg}" key="back"/>
         </a>
     </div>

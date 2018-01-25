@@ -12,10 +12,11 @@ public class ActionFactory {
 
     public Action defineAction(HttpServletRequest request) {
         String action = RequestParser.getActionFromURI(request.getRequestURI());
-        if (action == null || action.isEmpty())
+        if (action == null || action.isEmpty()) {
             logger.info("action is null");
             ServletAction.error("action is null");
-        try { ;
+        }
+        try {
             ActionEnum actionEnum = ActionEnum.valueOf(action.toUpperCase());
             logger.info("action");
             return actionEnum.getAction();

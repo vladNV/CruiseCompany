@@ -1,7 +1,7 @@
 package model.dao.queries;
 
 public interface ExcursionSQL {
-     String INSERT =  "insert into excursion(idport, price, excursionname) values (?,?,?)";
+     String INSERT =        "insert into excursion(idport, price, excursionname) values (?,?,?)";
 
      String UPDATE =        "update excursion set idport = ?, price = ?, " +
                             "excursionname = ? where idexcursion = ?";

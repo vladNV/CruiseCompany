@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <input type="password" required name="password" class="form-control"
-                           min="4" max="16"
+                           min="4" max="16" pattern="[A-Za-z0-9]{4,16}"
                            placeholder="<fmt:message bundle="${msg}" key="password" />">
                 </div>
                 <div class="form-group">

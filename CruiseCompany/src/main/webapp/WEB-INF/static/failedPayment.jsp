@@ -14,7 +14,7 @@
         <hr>
         <h5><fmt:message bundle="${msg}" key="${requestScope.cause}"/> </h5>
         <hr>
-        <a href="${pageContext.request.contextPath}/back">
+        <a onclick="window.history.back();">
             <fmt:message bundle="${msg}" key="back"/>
         </a>
     </div>
