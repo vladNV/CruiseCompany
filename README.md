@@ -36,3 +36,12 @@ final project
 стороне front-end).
 12 . В приложении должна быть реализована система Авторизации и
 Аутентификации
+
+Инструкция по запуску
+
+1) Скачать и распаковать архив с проектом или загрузить при помощи клиента Git (e.g. git clone https://github.com/vladNV/CruiseCompany)
+2) Подключиться к MySQL Server при помощи MySQL Workbench или командной строки.
+3) Создать схему базы данных и необходимые таблицы при помощи скрипта, create sql
+4) Запустить Apache Tomcat локально (e.g. %TOMCAT_HOME%/bin/startup.bat)
+5) Запустить приложение из корневой директории (с pom.xml) с командной строки при помощи: mvn tomcat7:deploy или mvn tomcat7: run-war
+6) Посмотреть сайт можно на http://localhost:8080/main
