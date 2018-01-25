@@ -2,7 +2,7 @@
 <%@include file="taglib.jsp"%>
 <html>
 <head>
-    <title>Authentication</title>
+    <title><fmt:message bundle="${msg}" key="auth" /></title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>
@@ -15,10 +15,12 @@
             <form action="login" method="post">
                 <div class="form-group">
                     <input required name="login" class="form-control"
+                           min="3" max="75"
                            placeholder="<fmt:message bundle="${msg}" key="email" />">
                 </div>
                 <div class="form-group">
                     <input type="password" required name="password" class="form-control"
+                           min="4" max="16"
                            placeholder="<fmt:message bundle="${msg}" key="password" />">
                 </div>
                 <div class="form-group">

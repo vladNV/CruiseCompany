@@ -3,7 +3,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title><fmt:message bundle="${msg}" key="auth_success"/></title>
+   <title><fmt:message bundle="${msg}" key="ticket"/></title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>

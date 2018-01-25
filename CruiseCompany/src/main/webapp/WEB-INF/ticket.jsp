@@ -2,7 +2,7 @@
 <%@include file="taglib.jsp"%>
 <html>
 <head>
-    <title>Ticket</title>
+    <title><fmt:message bundle="${msg}" key="ticket"/></title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>
@@ -96,21 +96,21 @@
                         <span style="color:red">*</span>
                     </label>
                     <input id="phone" placeholder="" required
-                           name="phone" class="form-control"/>
+                           min="9" max="12" name="phone" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="name">
                         <fmt:message bundle="${msg}" key="name"/>
                         <span style="color:red">*</span>
                     </label>
-                    <input id="name" name="name" class="form-control"/>
+                    <input min="10" max="100" id="name" name="name" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="surname">
                         <fmt:message bundle="${msg}" key="surname"/>
                         <span style="color:red">*</span>
                     </label>
-                    <input id="surname" name="surname" class="form-control"/>
+                    <input min="10" max="100" id="surname" name="surname" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="amount">

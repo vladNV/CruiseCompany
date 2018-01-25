@@ -7,9 +7,9 @@ public interface RegexpParam {
     String PRICE = "[1-9]{1}\\d{1,15}";
     String CVV = "[1-9]{1}\\d{2}";
     String NAME = "^[A-Za-z\\-]{2,100}$";
-    String TOUR_NAME = "^[A-za-z\\s-,.]{10,200}$";
-    String LOGIN = "^[A-Za-z0-9_]{3,100}$";
-    String PASSWORD = "[A-Za-z0-9]{4,100}";
+    String TOUR_NAME = "[A-za-z\\s-,\\.]{10,200}";
+    String LOGIN = "^[A-Za-z0-9_]{3,75}$";
+    String PASSWORD = "[A-Za-z0-9]{4,16}";
     String EMAIL = "[a-z0-9\\.]{3,40}@[a-z]{1,7}\\.[a-z]{2,3}";
     String PHONE = "\\d{10,12}";
     String LOCALE_DATE_TIME =

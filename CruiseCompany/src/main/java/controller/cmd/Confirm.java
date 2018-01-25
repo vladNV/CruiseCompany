@@ -29,10 +29,11 @@ public class Confirm implements Action {
         String amount = request.getParameter(PARAM_AMOUNT);
         Cart cart = (Cart) session.getAttribute(SessionParam.CART);
         nullCheck(cart, phone, name, surname, amount);
-        validate(name, RegexpParam.NAME);
-        validate(surname, RegexpParam.NAME);
-        validate(amount, RegexpParam.NUMBER);
-        validate(phone, RegexpParam.PHONE);
+        if (!validate(name, RegexpParam.NAME) || !validate(surname, RegexpParam.NAME)
+                || !validate(amount, RegexpParam.NUMBER)
+                    || !validate(phone, RegexpParam.PHONE)) {
+            request.setAttribute(RequestParam.WRONG, "incorrect.data");
+        }
         int quantity = Integer.parseInt(amount);
         cart.getTicket().setAmountPassengers(quantity);
         request.setAttribute(RequestParam.PRICE,  cart.getPrice(quantity));

@@ -40,9 +40,11 @@ public class BuyTicket implements Action {
         Ticket ticket = cart.getTicket();
         Set<Excursion> excursions = cart.getExcursions();
         nullCheck(ticket);
-        validate(card, RegexpParam.NUMBER);
-        validate(cvv, RegexpParam.CVV);
-        validate(price, RegexpParam.PRICE);
+        if (!validate(card, RegexpParam.NUMBER) || !validate(cvv, RegexpParam.CVV) ||
+                !validate(price, RegexpParam.PRICE)) {
+            request.setAttribute(RequestParam.WRONG, "incorrect.data");
+            return new Forward(URI.PAYMENT_JSP);
+        }
         long c = Long.parseLong(card);
         int CVV = Integer.parseInt(cvv);
         long money = Long.parseLong(price);

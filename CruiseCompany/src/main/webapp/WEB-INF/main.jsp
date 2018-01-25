@@ -41,6 +41,17 @@
                 </a>
             </c:forEach>
         </div>
+        <div class="col-sm-12">
+            <hr>
+            <div class="col-ms-4">
+                <c:forEach begin="1" end="${requestScope.page}" var="i">
+                    <a href="${pageContext.request.contextPath}/${requestScope.pathPage}/${i}">${i}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                </c:forEach>
+            </div>
+            <div class="col-sm-8">
+
+            </div>
+        </div>
     </div>
     <c:import url="/WEB-INF/static/footer.jsp"/>
     </div>

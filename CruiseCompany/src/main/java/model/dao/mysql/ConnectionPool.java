@@ -4,12 +4,15 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.log4j.Logger;
 
 public final class ConnectionPool  {
     private static ConnectionPool pool;
     private DataSource source;
     private static final ResourceBundle properties = ResourceBundle.getBundle("mysql");
+    private final static Logger logger = Logger.getLogger(ConnectionPool.class);
 
     private ConnectionPool (){
         // private constructor
@@ -20,6 +23,7 @@ public final class ConnectionPool  {
         if (pool == null) {
             synchronized (ConnectionPool.class) {
                 if (pool == null) {
+                    logger.info("connection pool created");
                     pool = new ConnectionPool();
                 }
             }
@@ -40,9 +44,11 @@ public final class ConnectionPool  {
     }
 
     public final Connection connect() {
+        logger.info("connect");
         try {
             return this.source.getConnection();
         } catch (SQLException e) {
+            logger.info("connection error", e);
             throw new RuntimeException(e);
         }
     }

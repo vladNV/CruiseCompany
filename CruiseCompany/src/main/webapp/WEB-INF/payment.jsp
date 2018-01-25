@@ -40,12 +40,12 @@
                     ${sessionScope.ticket.amountPassengers} <br>
                     <div class="ticket-table">
                         <c:forEach items="${sessionScope.excursions}" var="e">
-                            <a class="ticket-row" href="#">
+                            <div class="ticket-row">
                                 <div class="ticket-cell">${e.name}</div>
                                 <div class="ticket-cell">${e.port.name}</div>
                                 <div class="ticket-cell">${e.port.country}</div>
                                 <div class="ticket-cell">${e.price}</div>
-                            </a>
+                            </div>
                         </c:forEach>
                     </div>
                     <h4><span style="color: red"><b>
@@ -82,12 +82,14 @@
                         <div class="form-group">
                             <label for="card"> <fmt:message bundle="${msg}" key="card_number"/> VIZA\Specialistcard
                                 <span style="color:red">*</span>
-                                <input required class="form-control" id="card" name="card"/>
+                                <input required class="form-control" id="card"
+                                       min="4" max="12" name="card"/>
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="cvv">CVV2\CVC <span style="color:red">*</span>
-                                <input required class="form-control" id="cvv" name="cvv" type="password">
+                                <input required class="form-control" id="cvv"
+                                       min="3" max="3" name="cvv" type="password">
                             </label>
                         </div>
                         <input type="hidden" value="${requestScope.price}" name="money">

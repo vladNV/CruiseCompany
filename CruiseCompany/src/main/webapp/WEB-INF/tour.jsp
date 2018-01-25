@@ -3,7 +3,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <html>
 <head>
-    <title>Tour</title>
+    <title>${requestScope.tour.name}</title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>
@@ -13,11 +13,6 @@
 <div class="content">
     <div class="col-sm-12">
         <h2>${requestScope.tour.name}</h2>
-    </div>
-    <div class="col-sm-12" style="margin-top: 100px;">
-        <div class="col-sm-4">Tour map</div>
-        <div class="col-sm-4">Tour description</div>
-        <div class="col-sm-4">Ship image</div>
     </div>
     <div class="col-sm-12">
         <div class="col-sm-6">

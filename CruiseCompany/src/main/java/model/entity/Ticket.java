@@ -131,7 +131,7 @@ public class Ticket implements Cloneable, Serializable, Entity {
         public Ticket build() {
             return new Ticket(id, arrival, departure,
                               price, amountPassengers,
-                            type, user, tour);
+                              type, user, tour);
         }
     }
 

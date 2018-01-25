@@ -30,7 +30,7 @@
                 <c:otherwise>
                     <c:if test="${sessionScope.role == 'ADMIN'}">
                         <li>
-                            <a href="${pageContext.request.contextPath}/add_cruise">
+                            <a href="${pageContext.request.contextPath}/cruiseEditor">
                                 Admin
                             </a>
                         </li>

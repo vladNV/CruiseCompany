@@ -3,7 +3,7 @@
 <%@include file="../taglib.jsp"%>
 <html>
 <head>
-    <title>404</title>
+    <title><fmt:message bundle="${msg}" key="title.404"/></title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>

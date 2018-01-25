@@ -6,6 +6,7 @@ import model.dao.mapper.Mapper;
 import model.dao.mapper.UserMapper;
 import model.entity.User;
 import model.exceptions.ServiceException;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.List;
@@ -13,23 +14,15 @@ import static model.dao.queries.UserSQL.*;
 
 public class UserMySQL implements UserDAO {
     private final Connection connection;
-    private int limit;
-    private int offset;
+    private final static Logger logger = Logger.getLogger(UserMySQL.class);
 
     UserMySQL(final Connection connection) {
         this.connection = connection;
     }
 
-    public int getLimit() {
-        return limit;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
     @Override
     public int insert(User user) {
+        logger.info("insert");
         try (PreparedStatement statement = connection
                 .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
             statement.setString(1, user.getLogin());
@@ -38,8 +31,7 @@ public class UserMySQL implements UserDAO {
             statement.execute();
             return EntityMapper.getKey(statement.getGeneratedKeys());
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getSQLState());
+            logger.error(e.getSQLState(), e);
             throw new RuntimeException(e);
         }
     }
@@ -54,6 +46,7 @@ public class UserMySQL implements UserDAO {
             statement.setInt(5, user.getId());
             statement.execute();
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -70,6 +63,7 @@ public class UserMySQL implements UserDAO {
             Mapper<User> mapper = new UserMapper();
             return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -77,11 +71,10 @@ public class UserMySQL implements UserDAO {
     @Override
     public List<User> findAll() {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
-            statement.setInt(1, offset);
-            statement.setInt(2, limit);
             Mapper<User> mapper = new UserMapper();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -94,12 +87,14 @@ public class UserMySQL implements UserDAO {
             Mapper<User> mapper = new UserMapper();
             return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void takeMoney(long card, int CVV, long money) throws ServiceException {
+        logger.info("transaction take money on card " + card + ", money " + money);
         try (PreparedStatement statement = connection.prepareStatement(TAKE_MONEY)){
             statement.setLong(1, money);
             statement.setLong(2, card);
@@ -111,14 +106,17 @@ public class UserMySQL implements UserDAO {
             try {
                 connection.rollback();
             } catch (SQLException roll) {
-                roll.printStackTrace();
+                logger.error("rollback error ", roll);
                 throw new RuntimeException(roll);
             }
+            logger.error(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void putMoney(long card, long money) {
+        logger.info("transaction put money on card " + card + ", money " + money);
         try (PreparedStatement statement = connection.prepareStatement(PUT_MONEY)){
             statement.setLong(1, money);
             statement.setLong(2, card);
@@ -128,9 +126,10 @@ public class UserMySQL implements UserDAO {
             try {
                 connection.rollback();
             } catch (SQLException roll) {
-                roll.printStackTrace();
+                logger.error("rollback error ", roll);
                 throw new RuntimeException(roll);
             }
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

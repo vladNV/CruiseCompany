@@ -2,7 +2,7 @@
 <%@include file="taglib.jsp"%>
 <html>
 <head>
-    <title>Profile</title>
+    <title><fmt:message bundle="${msg}" key="profile"/></title>
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>
@@ -13,9 +13,7 @@
             <div class="col-sm-5">
                 <b>Login:</b> ${sessionScope.user.login} <br>
                 <b>Email:</b> ${sessionScope.user.email} <br>
-                <b>Country: </b><br>
-                <hr>
-                <h2>Your history</h2>
+                <b><fmt:message bundle="${msg}" key="country"/>${pageContext.request.localName}</b>
             </div>
             <div class="col-sm-7">
                 <h2>Active ticket</h2>

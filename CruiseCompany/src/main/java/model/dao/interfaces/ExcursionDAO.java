@@ -2,7 +2,6 @@ package model.dao.interfaces;
 
 import model.entity.Excursion;
 import model.entity.Ticket;
-import model.entity.User;
 
 import java.util.List;
 import java.util.Set;

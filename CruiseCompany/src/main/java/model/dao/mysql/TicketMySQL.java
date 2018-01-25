@@ -10,6 +10,7 @@ import model.entity.Tour;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
 import model.entity.TicketClass;
+import org.apache.log4j.Logger;
 
 import static model.dao.queries.TicketSQL.*;
 import java.sql.*;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class TicketMySQL implements TicketDAO {
     private final Connection connection;
+    private final static Logger logger = Logger.getLogger(TicketMySQL.class);
 
     TicketMySQL(final Connection connection) {
         this.connection = connection;
@@ -24,6 +26,7 @@ public class TicketMySQL implements TicketDAO {
 
     @Override
     public int insert(Ticket ticket) {
+        logger.info("insert");
         try (PreparedStatement statement = connection
                 .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
             statement.setInt(1, ticket.getTour().getId());
@@ -36,12 +39,14 @@ public class TicketMySQL implements TicketDAO {
             statement.setString(6, ticket.getType().name());
             return statement.getGeneratedKeys().getInt(1);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Ticket ticket) {
+        logger.info("update");
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setInt(1, ticket.getUser().getId());
             statement.setInt(2, ticket.getTour().getId());
@@ -51,6 +56,7 @@ public class TicketMySQL implements TicketDAO {
             statement.setString(6, String.valueOf(ticket.getType()));
             statement.execute();
         } catch (SQLException e) {
+            logger.info(e);
             throw new RuntimeException(e);
         }
     }
@@ -62,11 +68,13 @@ public class TicketMySQL implements TicketDAO {
 
     @Override
     public Ticket findById(int id) {
+        logger.info("find by id");
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
             Mapper<Ticket> mapper = new TicketMapper();
             return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -78,11 +86,13 @@ public class TicketMySQL implements TicketDAO {
 
     @Override
     public List<AggregateOperation<Integer, Ticket>> ticketForCategory(int tourId) {
+        logger.info("ticket for category");
         try (PreparedStatement statement = connection.prepareStatement(QUANTITY_TICKET)){
             statement.setInt(1, tourId);
             Mapper<AggregateOperation<Integer, Ticket>> mapper = new TicketAmount();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -94,6 +104,7 @@ public class TicketMySQL implements TicketDAO {
             Mapper<Ticket> mapper = new TicketMapper();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -107,12 +118,14 @@ public class TicketMySQL implements TicketDAO {
             Mapper<Ticket> mapper = new TicketMapper();
             return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void updateTicket(Ticket ticket, int userId) throws ServiceException {
+        logger.info("update ticket");
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER_TICKET)){
             statement.setInt(1, userId);
             statement.setInt(2, ticket.getAmountPassengers());
@@ -121,11 +134,13 @@ public class TicketMySQL implements TicketDAO {
             if(update == 0) throw new ServiceException("ticket.was.bought");
         } catch (SQLException e) {
             try {
+                logger.info("connection update ticket rollback");
                 connection.rollback();
             } catch (SQLException roll) {
-                roll.printStackTrace();
+                logger.error("rollback error ", e);
                 throw new RuntimeException(roll);
             }
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -133,6 +148,7 @@ public class TicketMySQL implements TicketDAO {
     @Override
     public void existTicket(int userId, int tourId)
             throws ServiceException {
+        logger.info("exist ticket");
         try (PreparedStatement statement = connection.prepareStatement(EXIST_TICKET)) {
             statement.setInt(1, tourId);
             statement.setInt(2, userId);
@@ -140,17 +156,20 @@ public class TicketMySQL implements TicketDAO {
             if (result) throw new ServiceException("already.bought");
         } catch (SQLException e) {
             try {
+                logger.info("connection exist ticket rollback");
                 connection.rollback();
             } catch (SQLException roll) {
-                roll.printStackTrace();
+                logger.error("rollback error ", e);
                 throw new RuntimeException(roll);
             }
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void setTicketsOnTour(Tour tour) {
+        logger.info("set tickets on tour");
         try (PreparedStatement statement = connection.prepareStatement(INSERT)){
             for (Ticket ticket : tour.getTickets()) {
                 statement.setInt(1, tour.getId());
@@ -163,10 +182,13 @@ public class TicketMySQL implements TicketDAO {
             statement.executeBatch();
         } catch (SQLException e) {
             try {
+                logger.info("connection set tickets on tour rollback");
                 connection.rollback();
             } catch (SQLException roll) {
+                logger.error("rollback error ", e);
                 throw new RuntimeException(roll);
             }
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

@@ -43,7 +43,6 @@ public class SignUp implements Action {
             request.setAttribute(RequestParam.WRONG, "password_notequals");
             return forward;
         }
-        // TODO ONE QUERY
         if (!service.uniqueEmail(email)) {
             request.setAttribute(RequestParam.WRONG,"email_not_unique");
             return forward;

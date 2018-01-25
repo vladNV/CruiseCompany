@@ -14,19 +14,19 @@
         <form class="form-group" action="registration" method="post">
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="login"/>"
-                       required class="form-control" name="login">
+                       min="3" max="75" required class="form-control" name="login">
             </div>
             <div class="form-group">
                 <input type="email" placeholder="<fmt:message bundle="${msg}" key="email"/>"
-                       required class="form-control" name="email">
+                       min="5" max="100" required class="form-control" name="email">
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="password"/>"
-                       type="password" required class="form-control" name="password">
+                       min="4" max="16" type="password" required class="form-control" name="password">
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="repeat_password"/>"
-                       type="password" name="repassword" required class="form-control">
+                       min="4" max="16" type="password" name="repassword" required class="form-control">
             </div>
             <div class="form-group">
             <c:if test="${requestScope.wrong != null}">

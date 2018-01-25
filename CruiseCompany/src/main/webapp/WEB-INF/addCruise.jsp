@@ -7,6 +7,7 @@
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>
+<c:set var="ports" scope="request" value="${sessionScope.buildTour.ports}"/>
 <script>
     var MAX_ROUTE = 5;
     var current = 0;
@@ -15,7 +16,7 @@
     <c:import url="/WEB-INF/static/menu.jsp"/>
     <div class="container content">
         <div class="col-sm-6">
-            <form method="post" action="${pageContext.request.contextPath}/add_cruise">
+            <form method="post" action="${pageContext.request.contextPath}/addCruise">
                 <div class="form-group">
                     <label for="tourName">Tour name:</label>
                     <input required class="form-control" name="name" id="tourName">
@@ -34,7 +35,8 @@
                         <thead>
                         <tr>
                             <th>Route name</th>
-                            <th>Date</th>
+                            <th>Departure</th>
+                            <th>Arrival</th>
                             <th>Port</th>
                         </tr>
                         </thead>
@@ -59,55 +61,66 @@
         function add(){
             var route = document.getElementById("route");
             var routeName = document.createElement("input");
-            var date = document.createElement("input");
+            var departure = document.createElement("input");
+            var arrival = document.createElement("input");
             var row = document.createElement("tr");
             var select = document.createElement("select");
             var defaultOption = document.createElement("option");
-            defaultOption.selected = true;
-            defaultOption.disabled = true;
-            defaultOption.text = "Empty option";
-            select.appendChild(defaultOption);
+
             var portsId = [
                 <c:forEach items="${requestScope.ports}" var="port" varStatus="currentStatus">
-                    "${port.id}"
-                    <c:if test="${not currentStatus.last}">
-                    ,
-                    </c:if>
+                "${port.id}"
+                <c:if test="${not currentStatus.last}">
+                ,
+                </c:if>
                 </c:forEach>
             ];
             var ports = [
                 <c:forEach items="${requestScope.ports}" var="port" varStatus="currentStatus">"${port.name} - ${port.country}"
                 <c:if test="${not currentStatus.last}">
-                        ,
-                    </c:if>
+                ,
+                </c:if>
                 </c:forEach>
             ];
+
+            defaultOption.selected = true;
+            defaultOption.disabled = true;
+            defaultOption.text = "Empty option";
+            select.appendChild(defaultOption);
             for (i = 0; i < ports.length; i++) {
                 var option = document.createElement("option");
                 option.value = portsId[i];
                 option.text = ports[i];
                 select.appendChild(option);
             }
+
             select.name = "port";
             routeName.name = "routeName";
-            date.name = "date";
-            date.type = "datetime-local";
+            departure.name = "departure";
+            departure.type = "datetime-local";
+            arrival.name = "arrival";
+            arrival.type = "datetime-local";
             routeName.className = "form-control";
-            date.className = "form-control";
+            departure.className = "form-control";
+            arrival.className = "form-control";
             routeName.placeholder = "Route name";
             routeName.required = true;
-            date.required = true;
+            departure.required = true;
+            arrival.required = true;
             routeName.style.width = "300px";
-            date.setAttribute("min",
+            departure.setAttribute("min",
+                "<%=LocalDateTime.now().withNano(0).withSecond(0)%>");
+            arrival.setAttribute("min",
                 "<%=LocalDateTime.now().withNano(0).withSecond(0)%>");
             var cell = [];
-            for (i = 0; i < 3; i++) {
+            for (i = 0; i < 4; i++) {
                 cell[i] = document.createElement("td");
             }
             cell[0].appendChild(routeName);
-            cell[1].appendChild(date);
-            cell[2].appendChild(select);
-            for (i = 0; i < 3; i++) {
+            cell[1].appendChild(departure);
+            cell[2].appendChild(arrival);
+            cell[3].appendChild(select);
+            for (i = 0; i < 4; i++) {
                 row.appendChild(cell[i]);
             }
             route.appendChild(row);

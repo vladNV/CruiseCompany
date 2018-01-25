@@ -22,7 +22,9 @@ public enum ActionEnum {
     ENG                 {{ action = new SwitchLanguage(Locale.ENGLISH); }},
     BUY                 {{ action = new BuyTicket(); }},
     SEARCH              {{ action = new Search(); }},
-    STEP2               {{ action = new AddTickets();}};
+    ADDCRUISE           {{ action = new AddCruise();}},
+    ADDTICKETS          {{ action = new AddTickets();}},
+    CRUISEEDITOR        {{ action = new CruiseEditor();}};
 
     Action action;
     public Action getAction() {

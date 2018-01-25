@@ -12,5 +12,8 @@ public interface RequestParam {
     String PRICE = "price";
     String EXCURSIONS = "excursions";
     String WRONG = "wrong";
+    String PORTS = "ports";
+    String PAGE = "page";
+    String URL = "pathPage";
 
 }
