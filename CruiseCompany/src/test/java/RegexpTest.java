@@ -11,7 +11,7 @@ public class RegexpTest {
 
     @Test
     public void regexpTour() {
-        assertEquals(true, "Tour name  ".matches(RegexpParam.TOUR_NAME));
+        assertEquals(true, "Tour name".matches(RegexpParam.TOUR_NAME));
         assertEquals(true, "12".matches(RegexpParam.NUMBER));
         assertEquals(true, "100000".matches(RegexpParam.PRICE));
         assertEquals(false, "-12".matches(RegexpParam.NUMBER));

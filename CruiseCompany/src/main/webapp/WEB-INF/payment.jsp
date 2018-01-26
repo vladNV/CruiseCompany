@@ -83,16 +83,16 @@
                             <label for="card"> <fmt:message bundle="${msg}" key="card_number"/> VIZA\Specialistcard
                                 <span style="color:red">*</span>
                                 <input required class="form-control" id="card"
-                                       pattern="[1-9]{1}[0-9]{0,9}" min="4" max="12" name="card"/>
+                                       pattern="[1-9]{1}[0-9]{0,9}" minlength="4" maxlength="12" name="card"/>
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="cvv">CVV2\CVC <span style="color:red">*</span>
                                 <input required class="form-control" id="cvv"
-                                      pattern="[1-9]{1}\d{2}" min="3" max="3" name="cvv" type="password">
+                                      pattern="[1-9]{1}\d{2}" minlength="3" maxlength="3" name="cvv" type="password">
                             </label>
                         </div>
-                        <input type="hidden" value="${requestScope.price / 1000}" name="money">
+                        <input type="hidden" value="${requestScope.price}" name="money">
                         <div class="form-group">
                             <button class="btn btn-lg btn-success">
                                 <fmt:message bundle="${msg}" key="buy"/>

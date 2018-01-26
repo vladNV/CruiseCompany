@@ -6,8 +6,6 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li><a href="${pageContext.request.contextPath}/main"><fmt:message key="tours"/></a></li>
-            <li><a href="#"><fmt:message key="excurs"/></a></li>
-            <li><a href="#"><fmt:message key="buy_ticket"/></a></li>
             <li>
                 <select name="language" style="margin-top: 16px;"
                         id="language" onchange="location = this.value;">

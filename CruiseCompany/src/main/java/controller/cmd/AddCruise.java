@@ -86,7 +86,7 @@ public class AddCruise implements Action {
         if (!validate(name, RegexpParam.TOUR_NAME)) {
             status += MessageManager.getMessage("incorrect.tourname") + "\n";
         }
-        if (!validate(region, RegexpParam.NAME)) {
+        if (!validate(region, RegexpParam.ROUTE)) {
             status += MessageManager.getMessage("incorrect.region") + "\n";
         }
         if (!validate(names, RegexpParam.TOUR_NAME)) {

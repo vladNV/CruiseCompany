@@ -57,7 +57,7 @@
                             ${a.agg}
                         </div>
                         <div class="ticket-cell">
-                            ${a.entity.departure}C:\Apache\apache-maven-3.3.9-bin\apache-maven-3.3.9\binC:\Apache\apache-maven-3.3.9-bin\apache-maven-3.3.9\bin
+                            ${a.entity.departure}
                         </div>
                         <div class="ticket-cell">
                             ${a.entity.arrival}
