@@ -8,6 +8,8 @@ import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.RegexpParam;
 import controller.util.URI;
+import futures.Param;
+import futures.Verify;
 import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,49 +31,43 @@ public class SignUp implements Action {
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
         Forward forward = new Forward(URI.SIGN_UP_JSP);
-        String password = request.getParameter(PARAM_PASSWORD);
-        String repassword = request.getParameter(PARAM_REPASSWORD);
-        String email = request.getParameter(PARAM_EMAIL);
-        String login = request.getParameter(PARAM_LOGIN);
-        if (isNull(password, repassword, email, login)) {
+
+        Param password = new Param();
+        password.setValue(request.getParameter(PARAM_PASSWORD));
+        password.setIncorrect("incorrect.password");
+        password.setRegexp(RegexpParam.PASSWORD);
+
+        Param repassword = new Param();
+        password.setValue(request.getParameter(PARAM_REPASSWORD));
+        password.setIncorrect("incorrect.password");
+        password.setRegexp(RegexpParam.PASSWORD);
+
+        Param login = new Param();
+        password.setValue(request.getParameter(PARAM_LOGIN));
+        password.setIncorrect("incorrect.password");
+        password.setRegexp(RegexpParam.LOGIN);
+
+        Param email = new Param();
+        password.setValue(request.getParameter(PARAM_EMAIL));
+        password.setIncorrect("incorrect.password");
+        password.setRegexp(RegexpParam.EMAIL);
+
+        Verify verify = new Verify();
+        if (verify.validate(email).validate(password)
+                .validate(repassword).validate(login)
+                .allRight()) {
+            request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return forward;
         }
-        if (!validateParam(request, login, password, repassword, email)) {
-            return forward;
-        }
-        if (!password.equals(repassword)) {
-            request.setAttribute(RequestParam.WRONG, "password_notequals");
-            return forward;
-        }
-        if (!service.uniqueEmail(email)) {
+
+        // TODO service exception
+        if (!service.uniqueEmail(email.getValue())) {
             request.setAttribute(RequestParam.WRONG,"email_not_unique");
             return forward;
         }
-        service.registration(password, login, email);
-        return new Forward(URI.SUCCESS_REG_JSP);
-    }
 
-    private static boolean validateParam(HttpServletRequest request,
-                                        String login, String password,
-                                        String repassword, String email) {
-        boolean isValid = true;
-        if (!validate(email, RegexpParam.EMAIL)) {
-            request.setAttribute("wrongEmail","incorrect.email");
-            isValid = false;
-        }
-        if (!validate(login, RegexpParam.LOGIN)) {
-            request.setAttribute("wrongLogin","incorrect.login");
-            isValid = false;
-        }
-        if (!validate(password, RegexpParam.PASSWORD)) {
-            request.setAttribute("wrongPass","incorrect.password");
-            isValid = false;
-        }
-        if (!validate(repassword, RegexpParam.PASSWORD)) {
-            request.setAttribute("wrongPass","incorrect.password");
-            isValid = false;
-        }
-        return isValid;
+        service.registration(password.getValue(), login.getValue(), email.getValue());
+        return new Forward(URI.SUCCESS_REG_JSP);
     }
 
 }

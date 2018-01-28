@@ -5,6 +5,8 @@ import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.*;
+import futures.Param;
+import futures.Verify;
 import model.entity.Excursion;
 import model.entity.Ticket;
 import model.entity.User;
@@ -16,15 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
-import static controller.util.RequestParser.isNull;
 import static controller.util.RequestParser.nullCheck;
-import static controller.util.RequestParser.validate;
 
 public class BuyTicket implements Action {
     private TicketService ticketService;
-    private static final String CARD = "card";
-    private static final String CVV = "cvv";
-    private static final String MONEY = "money";
+    private static final String PARAM_CARD = "card";
+    private static final String PARAM_CVV = "cvv";
+    private static final String PARAM_PRICE = "price";
 
     BuyTicket() {ticketService = new TicketService();}
 
@@ -32,23 +32,39 @@ public class BuyTicket implements Action {
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String card = request.getParameter(CARD);
-        String cvv = request.getParameter(CVV);
-        String price = request.getParameter(MONEY);
+        Param card = new Param();
+        card.setValue(request.getParameter(PARAM_CARD));
+        card.setIncorrect("incorrect.card");
+        card.setRegexp(RegexpParam.NUMBER);
+
+        Param cvv = new Param();
+        cvv.setValue(request.getParameter(PARAM_CVV));
+        cvv.setIncorrect("incorrect.cvv");
+        cvv.setRegexp(RegexpParam.CVV);
+
+        Param price = new Param();
+        price.setValue(request.getParameter(PARAM_PRICE));
+        price.setRegexp(RegexpParam.PRICE);
+        price.setIncorrect("incorrect.price");
+
         Cart cart = (Cart) session.getAttribute(SessionParam.CART);
         User user = (User) session.getAttribute(SessionParam.USER);
-        nullCheck(card, cvv, price, cart, user);
+        nullCheck(user, cart);
+
         Ticket ticket = cart.getTicket();
         Set<Excursion> excursions = cart.getExcursions();
         nullCheck(ticket);
-        if (!validate(card, RegexpParam.NUMBER) || !validate(cvv, RegexpParam.CVV) ||
-                !validate(price, RegexpParam.PRICE)) {
-            request.setAttribute(RequestParam.WRONG, "incorrect.data");
+
+        Verify verify = new Verify();
+
+        if (verify.validate(card).validate(price).validate(cvv).allRight()) {
+            request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return new Forward(URI.PAYMENT_JSP);
         }
-        long c = Long.parseLong(card);
-        int CVV = Integer.parseInt(cvv);
-        long money = Long.parseLong(price);
+
+        long c = card.toLong();
+        int CVV = cvv.toInt();
+        long money = price.toLong();
         try {
             ticketService.buyTicket(ticket, excursions, user, money, c, CVV);
         } catch (ServiceException e) {

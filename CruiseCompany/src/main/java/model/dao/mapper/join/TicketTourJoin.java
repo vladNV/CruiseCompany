@@ -24,8 +24,8 @@ public class TicketTourJoin implements Mapper<Ticket> {
         map.putIfAbsent(tour.getId(), tour);
         return Ticket.newTicket()
                 .id(rs.getInt("idticket"))
-                .arrival(rs.getTimestamp("arrival").toLocalDateTime())
-                .departure(rs.getTimestamp("departure").toLocalDateTime())
+                .person(rs.getString("person"))
+                .place(rs.getInt("place"))
                 .price(rs.getLong("price"))
                 .type(TicketClass.valueOf(rs.getString("type")))
                 .tour(map.get(rs.getInt("idtour")))

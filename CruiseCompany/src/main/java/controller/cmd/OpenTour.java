@@ -30,11 +30,10 @@ public class OpenTour implements Action {
                                  HttpServletResponse response) {
         int tourId = RequestParser.getIdFromURI(request.getRequestURI());
         Tour tour = serviceTour.allInformationAboutTour(tourId);
-        List<AggregateOperation<Integer, Ticket>> ticketCategories =
-                serviceTicket.amountTicket(tourId);
+        List<Ticket> tickets = serviceTicket.showTicketsForTour(tourId);
         nullCheck(tour);
         request.setAttribute(RequestParam.TOUR, tour);
-        request.setAttribute(RequestParam.TOUR_TICKETS, ticketCategories);
+        request.setAttribute(RequestParam.TOUR_TICKETS, tickets);
         return new Forward(URI.TOUR_PAGE_JSP);
     }
 

@@ -32,12 +32,14 @@ public class AccessConfig {
         access = new HashMap<>();
         access.put(Pattern.compile("/profile"), authorized);
         access.put(Pattern.compile("/login"), unauthorized);
+        access.put(Pattern.compile("/signin"), unauthorized);
+        access.put(Pattern.compile("/signup"), unauthorized);
         access.put(Pattern.compile("/main"), all);
         access.put(Pattern.compile("/"), all);
         access.put(Pattern.compile("/registration"), unauthorized);
         access.put(Pattern.compile("/logout"), authorized);
         access.put(Pattern.compile("/tour/\\d{1,5}"), all);
-        access.put(Pattern.compile("/ticket/\\d{1,5}/(standard|premium|luxe)"), authorized);
+        access.put(Pattern.compile("/ticket/\\d{1,5}"), authorized);
         access.put(Pattern.compile("/ticket/confirm"), authorized);
         access.put(Pattern.compile("/ticket/excursion"), authorized);
         access.put(Pattern.compile("/ua"), all);

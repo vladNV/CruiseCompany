@@ -44,29 +44,20 @@
         <div class="col-sm-6">
             <div class="ticket-table">
                 <div class="ticket-header">
-                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="amount"/></div>
-                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
-                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
                     <div class="ticket-cell"><fmt:message bundle="${msg}" key="ticket_type"/></div>
                     <div class="ticket-cell"><fmt:message bundle="${msg}" key="price"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="place"/> </div>
                 </div>
-                <c:forEach items="${requestScope.tour_tickets}" var="a">
-                    <a href="${pageContext.request.contextPath}/ticket/${requestScope.tourId}/${fn:toLowerCase(a.entity.type)}"
-                       class="ticket-row">
+                <c:forEach items="${requestScope.tour_tickets}" var="ticket">
+                    <a class="ticket-row" href="${pageContext.request.contextPath}/ticket/${ticket.id}">
                         <div class="ticket-cell">
-                            ${a.agg}
+                            ${ticket.type}
                         </div>
                         <div class="ticket-cell">
-                            ${a.entity.departure}
+                            <fmt:formatNumber value="${currency * ticket.price / 1000}" type="currency"/>
                         </div>
                         <div class="ticket-cell">
-                            ${a.entity.arrival}
-                        </div>
-                        <div class="ticket-cell">
-                            ${a.entity.type}
-                        </div>
-                        <div class="ticket-cell">
-                            ${a.entity.price / 1000}
+                            ${ticket.place}
                         </div>
                     </a>
                 </c:forEach>

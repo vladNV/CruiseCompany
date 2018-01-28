@@ -3,16 +3,13 @@ package model.service;
 import model.CruiseCompany;
 import model.dao.FactoryDAO;
 import model.dao.interfaces.ExcursionDAO;
+import model.dao.interfaces.RouteDAO;
 import model.dao.interfaces.TicketDAO;
 import model.dao.interfaces.UserDAO;
 import model.dao.mysql.ConnectionPool;
-import model.entity.Excursion;
-import model.entity.Ticket;
-import model.entity.User;
+import model.entity.*;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
-import model.entity.TicketClass;
-import model.entity.Tuple;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -40,15 +37,31 @@ public class TicketService {
         }
     }
 
-    public Ticket chooseTicket(TicketClass type, int tourId) {
-        logger.info("choose ticket: " + tourId + "," + type);
-        try (TicketDAO ticketDAO = factory.ticketDAO(ConnectionPool.pool().connect())) {
-            return ticketDAO.findTicketByType(type, tourId);
+    public List<Ticket> showTicketsForTour(int tourId) {
+        logger.info("show tickets for tour " + tourId);
+        try (TicketDAO ticketDAO = factory.ticketDAO(ConnectionPool.pool().connect())){
+            return ticketDAO.tourTickets(tourId);
         } catch (Exception e) {
             logger.error(e);
             throw new RuntimeException(e);
         }
     }
+
+    public Ticket chooseTicket(int ticketId) {
+        logger.info("choose ticket: " + ticketId);
+        Connection connection = ConnectionPool.pool().connect();
+        try (TicketDAO ticketDAO = factory.ticketDAO(connection);
+            RouteDAO routeDAO = factory.routeDAO(connection)) {
+            Ticket ticket = ticketDAO.getTourTicket(ticketId);
+            Tour tour = ticket.getTour();
+            tour.setRoutes(routeDAO.routesOfCruise(tour.getId()));
+            return ticket;
+        } catch (Exception e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void buyTicket(Ticket ticket, Set<Excursion> excursions,
                              User user, long money, long card, int cvv)
@@ -61,6 +74,7 @@ public class TicketService {
             logger.info("start transaction for " + ticket.getId() + " user, " + user.getId());
             connect.setAutoCommit(false);
             ticketDAO.existTicket(user.getId(), ticket.getTour().getId());
+            userDAO.existUser(card, cvv);
             userDAO.takeMoney(card, cvv, money);
             userDAO.putMoney(CruiseCompany.CARD, money);
             ticketDAO.updateTicket(ticket, user.getId());
@@ -77,11 +91,11 @@ public class TicketService {
     }
 
     public Tuple<List<Ticket>, List<Ticket>>
-    userTickets(int userId, LocalDateTime to) {
-        logger.info("user tickets: " + userId);
+    userTickets(User user, LocalDateTime to) {
+        logger.info("user tickets: " + user.getId());
         try (TicketDAO ticketDAO = factory
                 .ticketDAO(ConnectionPool.pool().connect())) {
-            List<Ticket> all = ticketDAO.ticketsForId(userId);
+            List<Ticket> all = ticketDAO.userTickets(user.getId());
             return delimListForDate(to, all);
         } catch (Exception e) {
             logger.error(e);
@@ -95,7 +109,7 @@ public class TicketService {
         List<Ticket> active = new ArrayList<>();
         List<Ticket> old = new ArrayList<>();
         for (Ticket t : all) {
-           if (t.getArrival().compareTo(to) > 0) {
+           if (t.getTour().getArrival().compareTo(to) > 0) {
                active.add(t);
            } else {
                old.add(t);
@@ -119,8 +133,6 @@ public class TicketService {
                 tickets.add(Ticket.newTicket()
                         .price(price)
                         .type(type)
-                        .departure(departure)
-                        .arrival(arrival)
                         .build());
             }
         }

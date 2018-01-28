@@ -1,3 +1,5 @@
+package serviceTest;
+
 import model.entity.Excursion;
 import model.service.ExcursionService;
 import org.junit.Before;

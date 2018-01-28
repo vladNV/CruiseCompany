@@ -13,7 +13,7 @@ public interface RegexpParam {
     String LOGIN = "^[A-Za-z0-9_]{3,75}$";
     String PASSWORD = "[A-Za-z0-9]{4,16}";
     String EMAIL = "[a-z0-9\\.]{3,40}@[a-z]{1,7}\\.[a-z]{2,3}";
-    String PHONE = "\\d{10,12}";
+    String PHONE = "\\+?[1-9]{1}\\d{8,13}";
     String LOCALE_DATE_TIME =
             "((20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])T" +
             "([01]?[0-9]|2[0-3]):[0-5][0-9]";

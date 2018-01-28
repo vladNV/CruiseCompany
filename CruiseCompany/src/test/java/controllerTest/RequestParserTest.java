@@ -1,3 +1,5 @@
+package controllerTest;
+
 import org.junit.Test;
 import static controller.util.RequestParser.*;
 import static org.junit.Assert.*;

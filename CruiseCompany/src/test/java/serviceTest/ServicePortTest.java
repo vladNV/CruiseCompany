@@ -1,3 +1,5 @@
+package serviceTest;
+
 import model.service.PortService;
 import org.junit.Before;
 import org.junit.Test;

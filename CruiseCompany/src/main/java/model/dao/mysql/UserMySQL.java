@@ -93,8 +93,22 @@ public class UserMySQL implements UserDAO {
     }
 
     @Override
+    public void existUser(long card, int CVV) throws ServiceException {
+       logger.info("transaction exist user card " + card + ", cvv " + CVV);
+       try (PreparedStatement statement = connection.prepareStatement(EXIST_CARD)){
+           statement.setLong(1, card);
+           statement.setInt(2, CVV);
+           if (! statement.executeQuery().next()) {
+               throw new ServiceException("account.notexist");
+           }
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
+    }
+
+    @Override
     public void takeMoney(long card, int CVV, long money) throws ServiceException {
-        logger.info("transaction take money on card " + card + ", money " + money);
+        logger.info("transaction take money from card " + card + ", money " + money);
         try (PreparedStatement statement = connection.prepareStatement(TAKE_MONEY)){
             statement.setLong(1, money);
             statement.setLong(2, card);

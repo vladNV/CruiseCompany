@@ -11,8 +11,8 @@ public class TicketMapper implements Mapper<Ticket> {
     public Ticket extract(ResultSet rs) throws SQLException {
         return Ticket.newTicket()
                 .id(rs.getInt("idticket"))
-                .arrival(rs.getTimestamp("arrival").toLocalDateTime())
-                .departure(rs.getTimestamp("departure").toLocalDateTime())
+                .place(rs.getInt("place"))
+                .person(rs.getString("person"))
                 .price(rs.getLong("price"))
                 .type(TicketClass.valueOf(rs.getString("type")))
                 .build();

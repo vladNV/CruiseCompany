@@ -1,3 +1,5 @@
+package serviceTest;
+
 import model.exceptions.RouteTimeException;
 import model.service.RouteService;
 import org.junit.Before;

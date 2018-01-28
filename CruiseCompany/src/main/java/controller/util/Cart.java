@@ -9,7 +9,6 @@ import java.util.Set;
 
 public class Cart {
     private Ticket ticket;
-    private Tour tour;
     private Set<Excursion> excursions = new HashSet<>();
 
     public Ticket getTicket() {
@@ -19,14 +18,6 @@ public class Cart {
     public void setTicket(Ticket ticket) {
         excursions = new HashSet<>();
         this.ticket = ticket;
-    }
-
-    public void setTour(Tour tour) {
-        this.tour = tour;
-    }
-
-    public Tour getTour() {
-        return tour;
     }
 
     public void setExcursions(Set<Excursion> excursions) {
@@ -58,7 +49,6 @@ public class Cart {
     }
 
     public void clear() {
-        this.tour = null;
         this.ticket = null;
         this.excursions = null;
     }

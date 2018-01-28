@@ -52,8 +52,10 @@
                         Add
                     </button>
                 </div>
-                <div class="form-group">
-                    ${requestScope.wrong}
+                <div class="form-group" style="color:red; font-weight: bold;">
+                    <c:forEach items="${requestScope.wrong}" var="i">
+                        <fmt:message bundle="${msg}" key="${i}"/> <br>
+                    </c:forEach>
                 </div>
             </form>
             <hr>

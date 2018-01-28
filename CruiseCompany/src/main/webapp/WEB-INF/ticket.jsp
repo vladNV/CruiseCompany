@@ -6,29 +6,32 @@
     <c:import url="/WEB-INF/static/head.jsp"/>
 </head>
 <body>
-<c:import url="/WEB-INF/static/menu.jsp"/>
+<c:set scope="session" var="tour" value="${sessionScope.cart.ticket.tour}"/>
 <div class="wrapper">
+<c:import url="/WEB-INF/static/menu.jsp"/>
 <div class="content">
 <div class="col-sm-12">
     <div class="col-sm-2"></div>
     <div class="info-page col-sm-8">
-        <div>
-            <h3><fmt:message bundle="${msg}" key="ticket_type"/></h3>
-                ${sessionScope.cart.ticket.type}
+        <b><fmt:message bundle="${msg}" key="cruise_name"/>:</b>
+        ${sessionScope.tour.name}<br>
+        <b><fmt:message bundle="${msg}" key="region"/>:</b>
+        ${sessionScope.tour.region}<br>
+        <b><fmt:message bundle="${msg}" key="departure"/>:</b>
+        ${sessionScope.tour.departure}<br>
+        <b><fmt:message bundle="${msg}" key="arrival"/>:</b>
+        ${sessionScope.tour.arrival}<br>
+        <b><fmt:message bundle="${msg}" key="duration"/>:</b>
+        ${sessionScope.tour.duration.days} <fmt:message bundle="${msg}" key="days"/>
+        ${sessionScope.tour.duration.hours} <fmt:message bundle="${msg}" key="hours"/>
+        ${sessionScope.tour.duration.minutes} <fmt:message bundle="${msg}" key="minutes"/><br>
+        <b><fmt:message bundle="${msg}" key="ticket_type"/>:</b>
+        ${sessionScope.cart.ticket.type}<br>
+        <b><fmt:message bundle="${msg}" key="place"/>:</b>
+        ${sessionScope.cart.ticket.place}<br>
+        <b><fmt:message bundle="${msg}" key="price"/>:</b>
+        <fmt:formatNumber value="${currency * sessionScope.cart.ticket.price / 1000}" type="currency"/>
         </div>
-        <div>
-            <h3><fmt:message bundle="${msg}" key="departure"/></h3>
-                ${sessionScope.cart.ticket.departure}
-        </div>
-        <div>
-            <h3><fmt:message bundle="${msg}" key="arrival"/></h3>
-                ${sessionScope.cart.ticket.arrival}
-        </div>
-        <div>
-            <h3><fmt:message bundle="${msg}" key="price"/></h3>
-                <c:out value="${sessionScope.cart.ticket.price / 1000}"/>
-        </div>
-    </div>
     <div class="col-sm-2"></div>
 </div>
 <div class="col-sm-12">
@@ -57,11 +60,13 @@
                 <div class="ticket-cell"></div>
             </div>
             <c:forEach items="${requestScope.excursions}" var="excursion">
-                <div class="ticket-row" href="#">
+                <div class="ticket-row">
                     <div class="ticket-cell">${excursion.name}</div>
                     <div class="ticket-cell">${excursion.port.name}</div>
                     <div class="ticket-cell">${excursion.port.country}</div>
-                    <div class="ticket-cell">${excursion.price / 1000}</div>
+                    <div class="ticket-cell">
+                        <fmt:formatNumber value="${currency * excursion.price / 1000}"
+                                                                 type="currency"/></div>
                     <div class="ticket-cell">
                         <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
                             <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
@@ -78,59 +83,76 @@
                             <button class="btn-link">
                                 <span style="color:green;"><fmt:message bundle="${msg}" key="remove"/></span>
                             </button>
-                    </form>
+                        </form>
                     </div>
                 </div>
             </c:forEach>
         </div>
     </div>
+    <div class="col-sm-2"></div>
 </div>
 <div class="col-sm-12">
     <hr />
     <div class="col-sm-2"></div>
     <div class="form-page col-sm-4">
-            <form action="${pageContext.request.contextPath}/ticket/confirm" method="post">
-                <div class="form-group">
-                    <label for="phone">
-                        <fmt:message bundle="${msg}" key="phone"/>
-                        <span style="color:red">*</span>
-                    </label>
-                    <input id="phone" placeholder="" required pattern="[1-9]{1}\d{1,15}"
-                           min="9" max="12" name="phone" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="name">
-                        <fmt:message bundle="${msg}" key="name"/>
-                        <span style="color:red">*</span>
-                    </label>
-                    <input min="10" max="100" id="name" pattern="^[A-Za-z\-]{2,100}$"
-                           name="name" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="surname">
-                        <fmt:message bundle="${msg}" key="surname"/>
-                        <span style="color:red">*</span>
-                    </label>
-                    <input min="10" max="100" id="surname" pattern="^[A-Za-z\-]{2,100}$"
-                           name="surname" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="amount">
-                        <fmt:message bundle="${msg}" key="passenger.amount"/>
-                        <span style="color:red">*</span>
-                    </label>
-                    <select id="amount" name="amount">
-                        <c:forEach begin="1" end="8" var="i">
-                            <option value="${i}">${i}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-lg">
-                        <fmt:message bundle="${msg}" key="confirm"/>
-                    </button>
-                </div>
-            </form>
+        <form action="${pageContext.request.contextPath}/ticket/confirm" method="post">
+            <div class="form-group">
+                <label for="phone">
+                    <fmt:message bundle="${msg}" key="phone"/><br>
+                    <fmt:message bundle="${msg}" key="confirm.phone"/>
+                    <span style="color:red">*</span>
+                </label>
+                <input id="phone" required
+                       pattern="\+?[1-9]{1}\d{8,13}"
+                       title="<fmt:message bundle="${msg}"
+                       key="confirm.phone"/>"
+                       minlength="9" maxlength="13"
+                       name="phone" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="name">
+                    <fmt:message bundle="${msg}" key="name"/>
+                    <span style="color:red">*</span>
+                </label>
+                <input minlength="2" maxlength="100" id="name"
+                       pattern="^[A-Za-z\-]{2,100}$"
+                       title="<fmt:message bundle="${msg}"
+                       key="confirm.name"/>"
+                       name="name" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="surname">
+                    <fmt:message bundle="${msg}" key="surname"/>
+                    <span style="color:red">*</span>
+                </label>
+                <input minlength="2" maxlength="100" id="surname"
+                       pattern="^[A-Za-z\-]{2,100}$"
+                       title="<fmt:message bundle="${msg}"
+                       key="confirm.name"/>"
+                       name="surname" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="amount">
+                    <fmt:message bundle="${msg}" key="passenger.amount"/>
+                    <span style="color:red">*</span>
+                </label>
+                <select id="amount" name="amount">
+                    <c:forEach begin="1" end="4" var="i">
+                        <option value="${i}">${i}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-lg">
+                    <fmt:message bundle="${msg}" key="confirm"/>
+                </button>
+            </div>
+            <div class="form-group" style="color:red; font-weight: bold;">
+                <c:forEach items="${requestScope.wrong}" var="i">
+                   <fmt:message bundle="${msg}" key="${i}"/> <br>
+                </c:forEach>
+            </div>
+        </form>
     </div>
     <div class="col-sm-6"></div>
 </div>

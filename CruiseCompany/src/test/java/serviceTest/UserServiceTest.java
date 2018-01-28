@@ -1,3 +1,5 @@
+package serviceTest;
+
 import model.service.UserService;
 import org.junit.Before;
 import org.junit.Test;

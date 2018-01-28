@@ -7,43 +7,37 @@ public class Ticket implements Cloneable, Serializable, Entity {
     private final static long serialVersionUID = 1L;
 
     private int id;
-    private LocalDateTime arrival;
-    private LocalDateTime departure;
     private long price;
     private int amountPassengers;
     private TicketClass type;
-    private CruiseDuration duration;
+    private String person;
+    private int place;
     private User user;
     private Tour tour;
 
-    private Ticket(int id, LocalDateTime arrival, LocalDateTime departure,
-                   long price, int amountPassengers, TicketClass type,
+    private Ticket(int id, String person, int place, long price,
+                   int amountPassengers, TicketClass type,
                    User user, Tour tour) {
         this.id = id;
-        this.arrival = arrival;
-        this.departure = departure;
+        this.person = person;
+        this.place = place;
         this.price = price;
         this.type = type;
         this.user = user;
         this.tour = tour;
         this.amountPassengers = amountPassengers;
-        duration = new CruiseDuration(departure, arrival);
     }
 
     public int getId() {
         return id;
     }
 
-    public LocalDateTime getArrival() {
-        return arrival;
+    public String getPerson() {
+        return person;
     }
 
-    public LocalDateTime getDeparture() {
-        return departure;
-    }
-
-    public CruiseDuration getDuration() {
-        return duration;
+    public int getPlace() {
+        return place;
     }
 
     public long getPrice() {
@@ -80,8 +74,8 @@ public class Ticket implements Cloneable, Serializable, Entity {
 
     public static class Builder {
         private int id;
-        private LocalDateTime arrival;
-        private LocalDateTime departure;
+        private String person;
+        private int place;
         private long price;
         private int amountPassengers;
         private TicketClass type;
@@ -93,13 +87,13 @@ public class Ticket implements Cloneable, Serializable, Entity {
             return this;
         }
 
-        public Builder departure(LocalDateTime departure) {
-            this.departure = departure;
+        public Builder person(String person) {
+            this.person = person;
             return this;
         }
 
-        public Builder arrival(LocalDateTime arrival) {
-            this.arrival = arrival;
+        public Builder place(int place) {
+            this.place = place;
             return this;
         }
 
@@ -129,7 +123,7 @@ public class Ticket implements Cloneable, Serializable, Entity {
         }
 
         public Ticket build() {
-            return new Ticket(id, arrival, departure,
+            return new Ticket(id, person, place,
                               price, amountPassengers,
                               type, user, tour);
         }
@@ -158,8 +152,8 @@ public class Ticket implements Cloneable, Serializable, Entity {
     @Override
     public String toString() {
         return "{id = " + id + "\n"
-                + "departure = " + departure.toString()
-                + ", arrival = " + arrival.toString() + "\n"
+                + "departure = " + person
+                + ", arrival = " + place + "\n"
                 + "type = " + type + ", price = " + price + "}";
     }
 }

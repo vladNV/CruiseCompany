@@ -1,3 +1,5 @@
+package serviceTest;
+
 import model.entity.*;
 import model.exceptions.ServiceException;
 import model.service.TicketService;
@@ -17,13 +19,6 @@ public class TicketServiceTest {
         service = new TicketService();
     }
 
-    @Test
-    public void testChooseTicket() {
-        Ticket ticket = mock(Ticket.class);
-        when(ticket.getType()).thenReturn(TicketClass.LUXE);
-        assertEquals(ticket.getType(), service
-                .chooseTicket(TicketClass.LUXE, 10).getType());
-    }
 
     @Test(expected = ServiceException.class)
     public void testBuyTicketNotEnoughMoney() throws ServiceException {

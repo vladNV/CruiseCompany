@@ -12,19 +12,21 @@
     <div class="col-sm-4"></div>
     <div class="col-sm-4">
         <div class="login">
-            <form action="login" method="post">
+            <form action="signin" method="post">
                 <div class="form-group">
-                    <input required name="login" class="form-control"
-                           min="3" max="75"
+                    <input required name="email" class="form-control"
+                           minlength="3" maxlength="75"
                            placeholder="<fmt:message bundle="${msg}" key="email" />">
                 </div>
                 <div class="form-group">
                     <input type="password" required name="password" class="form-control"
-                           min="4" max="16" pattern="[A-Za-z0-9]{4,16}"
+                           minlength="4" maxlength="16" pattern="[A-Za-z0-9]{4,16}"
                            placeholder="<fmt:message bundle="${msg}" key="password" />">
                 </div>
-                <div class="form-group">
-                    <c:import url="/WEB-INF/static/requestStatus.jsp"/>
+                <div class="form-group" style="color:red; font-weight: bold;">
+                   <c:forEach items="${requestScope.wrong}" var="i">
+                       <fmt:message bundle="${msg}" key="${i}"/> <br>
+                   </c:forEach>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary"><fmt:message bundle="${msg}" key="sign_in"/></button>

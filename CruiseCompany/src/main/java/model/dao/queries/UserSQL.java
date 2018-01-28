@@ -16,4 +16,6 @@ public interface UserSQL {
                             "and cvv = ? and money >= ?";
 
      String PUT_MONEY =     "update protected_bank set money = (money + ?) where card = ?";
+
+     String EXIST_CARD =    "select 1 from protected_bank where card = ? and cvv = ?";
 }

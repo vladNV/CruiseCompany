@@ -84,7 +84,6 @@ public class TourService {
     }
 
     public int quantityOfPages(String search) {
-
         try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())){
             if (search == null) {
                 return tourDAO.amount();

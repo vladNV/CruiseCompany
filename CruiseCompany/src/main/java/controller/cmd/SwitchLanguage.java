@@ -1,12 +1,14 @@
 package controller.cmd;
 
 import controller.params.ApplicationParam;
+import controller.util.Currency;
+import controller.params.SessionParam;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
-import controller.util.URI;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class SwitchLanguage implements Action {
@@ -19,7 +21,9 @@ public class SwitchLanguage implements Action {
     @Override
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
-        request.getSession().setAttribute(ApplicationParam.LOCALE, locale);
-        return new Redirect(URI.MAIN);
+        HttpSession session = request.getSession();
+        session.setAttribute(ApplicationParam.LOCALE, locale);
+        session.setAttribute(SessionParam.CURRENCY, Currency.currency(locale).value());
+        return new Redirect((String) session.getAttribute(SessionParam.PATH));
     }
 }

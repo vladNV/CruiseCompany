@@ -34,7 +34,7 @@ public class ShowUserTickets implements Action {
         // x - active
         // y - old
         Tuple<List<Ticket>, List<Ticket>> t = service
-                .userTickets(user.getId(), LocalDateTime.now());
+                .userTickets(user, LocalDateTime.now());
         request.setAttribute(RequestParam.ACTIVE_TICKETS, t.x());
         request.setAttribute(RequestParam.OLD_TICKETS, t.y());
         return new Forward(URI.PROFILE_JSP);
