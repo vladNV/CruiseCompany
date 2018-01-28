@@ -36,6 +36,10 @@ public class Ticket implements Cloneable, Serializable, Entity {
         return person;
     }
 
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
     public int getPlace() {
         return place;
     }

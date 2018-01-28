@@ -38,19 +38,19 @@ public class SignUp implements Action {
         password.setRegexp(RegexpParam.PASSWORD);
 
         Param repassword = new Param();
-        password.setValue(request.getParameter(PARAM_REPASSWORD));
-        password.setIncorrect("incorrect.password");
-        password.setRegexp(RegexpParam.PASSWORD);
+        repassword.setValue(request.getParameter(PARAM_REPASSWORD));
+        repassword.setIncorrect("incorrect.password");
+        repassword.setRegexp(RegexpParam.PASSWORD);
 
         Param login = new Param();
-        password.setValue(request.getParameter(PARAM_LOGIN));
-        password.setIncorrect("incorrect.password");
-        password.setRegexp(RegexpParam.LOGIN);
+        login.setValue(request.getParameter(PARAM_LOGIN));
+        login.setIncorrect("incorrect.login");
+        login.setRegexp(RegexpParam.LOGIN);
 
         Param email = new Param();
-        password.setValue(request.getParameter(PARAM_EMAIL));
-        password.setIncorrect("incorrect.password");
-        password.setRegexp(RegexpParam.EMAIL);
+        email.setValue(request.getParameter(PARAM_EMAIL));
+        email.setIncorrect("incorrect.email");
+        email.setRegexp(RegexpParam.EMAIL);
 
         Verify verify = new Verify();
         if (verify.validate(email).validate(password)

@@ -73,6 +73,7 @@ public class TicketService {
              UserDAO userDAO = factory.userDAO(connect)){
             logger.info("start transaction for " + ticket.getId() + " user, " + user.getId());
             connect.setAutoCommit(false);
+            connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             ticketDAO.existTicket(user.getId(), ticket.getTour().getId());
             userDAO.existUser(card, cvv);
             userDAO.takeMoney(card, cvv, money);

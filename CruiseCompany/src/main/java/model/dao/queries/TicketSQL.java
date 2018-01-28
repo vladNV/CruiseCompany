@@ -21,7 +21,7 @@ public interface TicketSQL {
       String CHOOSE_TICKET =      "select * from ticket join tour using (idtour) " +
                                   "where idticket = ?";
 
-      String UPDATE_USER_TICKET = "update ticket set iduser = ?, amount_passengers = ? " +
+      String UPDATE_USER_TICKET = "update ticket set iduser = ?, amount_passengers = ?, person = ? " +
                                   "where idticket = ? and iduser is null";
 
       String USER_TICKETS =       "select * from ticket join tour using(idtour) where iduser = ?";

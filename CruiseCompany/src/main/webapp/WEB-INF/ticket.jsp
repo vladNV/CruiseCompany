@@ -42,7 +42,7 @@
             <div>
                 <h4><fmt:message bundle="${msg}" key="short_desc_excurs"/></h4>
             </div>
-            <div>
+            <div style="margin: 25px 0;">
                 <c:if test="${requestScope.excursionStatus != null}">
                     <fmt:message bundle="${msg}" key="${requestScope.excursionStatus}"/>
                 </c:if>
@@ -68,25 +68,43 @@
                         <fmt:formatNumber value="${currency * excursion.price / 1000}"
                                                                  type="currency"/></div>
                     <div class="ticket-cell">
-                        <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
+                        <form id="form_add_${excursion.id}" method="post"
+                              action="${pageContext.request.contextPath}/ticket/excursion">
                             <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
                             <input type="hidden" name="command" value="add">
-                            <button class="btn-link">
-                                <span style="color:green;"><fmt:message bundle="${msg}" key="add"/></span>
+                            <button id="add_${excursion.id}" class="btn-link"
+                                    onclick="add('${excursion.id}')">
+                                <span style="color:green;">
+                                    <fmt:message bundle="${msg}" key="add"/>
+                                </span>
                             </button>
                         </form>
                     </div>
                     <div class="ticket-cell">
-                        <form method="post" action="${pageContext.request.contextPath}/ticket/excursion">
+                        <form id="form_remove_${excursion.id}" method="post"
+                              action="${pageContext.request.contextPath}/ticket/excursion">
                             <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
                             <input type="hidden" name="command" value="remove">
-                            <button class="btn-link">
+                            <button id="remove_${excursion.id}"
+                                    class="btn-link"
+                                    onclick="remove('${excursion.id}')">
                                 <span style="color:green;"><fmt:message bundle="${msg}" key="remove"/></span>
                             </button>
                         </form>
                     </div>
                 </div>
             </c:forEach>
+            <script type="text/javascript">
+                function add(id) {
+                    document.getElementById('remove_' + id).disabled = true;
+                    document.getElementById('form_add_' + id).submit();
+                }
+
+                function remove(id) {
+                    document.getElementById('remove_' + id).disabled = false;
+                    document.getElementById('form_remove_' + id).submit();
+                }
+            </script>
         </div>
     </div>
     <div class="col-sm-2"></div>

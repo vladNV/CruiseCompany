@@ -49,7 +49,7 @@
                                 <div class="ticket-cell">${e.port.country}</div>
                                 <div class="ticket-cell">
                                     <fmt:formatNumber value="${currency * e.price / 1000}"
-                                                                              type="currency"/>}</div>
+                                                                              type="currency"/></div>
                             </div>
                         </c:forEach>
                     </div>
@@ -103,11 +103,11 @@
                                 <input required class="form-control" id="cvv"
                                       pattern="[1-9]{1}\d{2}"
                                        minlength="3" maxlength="3"
-                                       title=""
+                                       title="<fmt:message bundle="${msg}" key="cvv.number"/>"
                                        name="cvv" type="password">
                             </label>
                         </div>
-                        <input type="hidden" value="${requestScope.price}" name="money">
+                        <input type="hidden" value="${requestScope.price}" name="price">
                         <div class="form-group">
                             <button class="btn btn-lg btn-success">
                                 <fmt:message bundle="${msg}" key="buy"/>

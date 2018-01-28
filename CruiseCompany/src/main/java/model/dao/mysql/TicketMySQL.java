@@ -127,7 +127,8 @@ public class TicketMySQL implements TicketDAO {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER_TICKET)){
             statement.setInt(1, userId);
             statement.setInt(2, ticket.getAmountPassengers());
-            statement.setInt(3, ticket.getId());
+            statement.setString(3, ticket.getPerson());
+            statement.setInt(4, ticket.getId());
             int update = statement.executeUpdate();
             if(update == 0) throw new ServiceException("ticket.was.bought");
         } catch (SQLException e) {

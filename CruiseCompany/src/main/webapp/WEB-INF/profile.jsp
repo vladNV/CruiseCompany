@@ -25,6 +25,7 @@
                         <div class="ticket-cell"><fmt:message bundle="${msg}" key="cruise_name"/></div>
                         <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
                         <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
+                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="passenger.amount"/></div>
                     </div>
                     <c:forEach items="${requestScope.activeTickets}" var="a">
                         <div class="ticket-row">
@@ -48,6 +49,9 @@
                             </div>
                             <div class="ticket-cell">
                                     ${a.tour.arrival}
+                            </div>
+                            <div class="ticket-cell">
+                                    ${a.amountPassengers}
                             </div>
                         </div>
                     </c:forEach>

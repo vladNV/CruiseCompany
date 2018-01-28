@@ -7,6 +7,7 @@ import controller.servlet.ServletAction;
 import controller.util.*;
 import futures.Param;
 import futures.Verify;
+import model.entity.Ticket;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +57,9 @@ public class Confirm implements Action {
         Cart cart = (Cart) session.getAttribute(SessionParam.CART);
         nullCheck(cart);
         int quantity = amount.toInt();
-        cart.getTicket().setAmountPassengers(quantity);
+        Ticket ticket = cart.getTicket();
+        ticket.setAmountPassengers(quantity);
+        ticket.setPerson(name.getValue() + " " + surname.getValue());
         request.setAttribute(RequestParam.PRICE,  cart.getPrice(quantity));
         return new Forward(URI.PAYMENT_JSP);
     }
