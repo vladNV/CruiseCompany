@@ -25,8 +25,8 @@ public class OpenTour implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         int tourId = RequestUtil.getIdFromURI(request.getRequestURI());
         Tour tour = serviceTour.allInformationAboutTour(tourId);
         List<Ticket> tickets = serviceTicket.showTicketsForTour(tourId);

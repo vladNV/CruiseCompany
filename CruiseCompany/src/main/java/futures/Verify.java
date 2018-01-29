@@ -1,24 +1,34 @@
 package futures;
 
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 
 public class Verify {
 
-    private LinkedList<String> remarks = new LinkedList<>();
+    private LinkedHashSet<String> remarks = new LinkedHashSet<>();
+    private String incorrect;
+    private String regexp;
 
-    public Verify validate(Param ... params) {
-        for (Param param : params) {
-            if (!param.getValue().matches(param.getRegexp())) {
-                remarks.add(param.getIncorrect());
+    public Verify equalSize(String[] ... arr) {
+        int size = arr[0].length;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i].length != size) {
+                remarks.add(this.incorrect);
+                return this;
             }
         }
         return this;
     }
 
-    public Verify equalSize(String incorrect, String[] ... arr) {
-        int size = arr[0].length;
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i].length != size) {
+    public Verify validate(String val) {
+        if (!val.matches(this.regexp)) {
+            remarks.add(this.incorrect);
+        }
+        return this;
+    }
+
+    public Verify validateArray(String[] val) {
+        for (String s : val) {
+            if (!s.matches(this.regexp)) {
                 remarks.add(incorrect);
                 return this;
             }
@@ -26,22 +36,13 @@ public class Verify {
         return this;
     }
 
-    public Verify validateArray(Param ... arrays) {
-        for (Param array : arrays) {
-            for (String s : array.getValues()) {
-                if (!s.matches(array.getRegexp())) {
-                    remarks.add(array.getIncorrect());
-                    return this;
-                }
-            }
-        }
+    public Verify regexp(String regexp) {
+        this.regexp = regexp;
         return this;
     }
 
-    public Verify validate(String val, String inc, String regexp) {
-        if (!val.matches(regexp)) {
-            remarks.add(inc);
-        }
+    public Verify incorrect(String incorrect) {
+        this.incorrect = incorrect;
         return this;
     }
 
@@ -49,7 +50,7 @@ public class Verify {
         return remarks.isEmpty();
     }
 
-    public LinkedList<String> getRemarks() {
+    public LinkedHashSet<String> getRemarks() {
         return remarks;
     }
 }

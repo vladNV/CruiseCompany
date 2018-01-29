@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Registration implements Action {
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         return new Forward(URI.SIGN_UP_JSP);
     }
 }

@@ -18,8 +18,8 @@ public class ShowExcursionList implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         request.setAttribute(RequestParam.EXCURSIONS, service.showExcursions());
         return new Forward(URI.EXCURSIONS_JSP);
     }

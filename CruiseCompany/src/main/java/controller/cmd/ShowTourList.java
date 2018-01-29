@@ -20,8 +20,8 @@ public class ShowTourList implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         int q = service.quantityOfPages(null);
         int page = RequestUtil.getIdFromURI(request.getRequestURI());
         int maxPage = RequestUtil.getPage(q, page);

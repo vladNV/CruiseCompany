@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 public class SignOut implements Action {
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.removeAttribute(SessionParam.USER);
         session.removeAttribute(SessionParam.BUILD_TOUR);

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ActionFactory {
     private final static Logger logger = Logger.getLogger(ActionFactory.class);
 
-    public Action defineAction(HttpServletRequest request) {
+    public Action defineAction(final HttpServletRequest request) {
         String action = RequestUtil.getActionFromURI(request.getRequestURI());
         try {
             ActionEnum actionEnum = ActionEnum.valueOf(action.toUpperCase());

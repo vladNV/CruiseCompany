@@ -5,11 +5,9 @@ import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
-import controller.util.RegexpParam;
-import controller.util.RegexpURI;
+import controller.util.Regexp;
 import controller.util.TourBuilder;
 import controller.util.URI;
-import futures.Param;
 import futures.Verify;
 import model.entity.Tour;
 import model.service.ShipService;
@@ -20,8 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import static controller.util.RequestUtil.nullArrayCheck;
 import static controller.util.RequestUtil.nullCheck;
-import static controller.util.RequestUtil.validate;
 
 public class AddTickets implements Action {
     private ShipService serviceShip;
@@ -39,41 +37,30 @@ public class AddTickets implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         HttpSession session = request.getSession();
         TourBuilder builder = (TourBuilder) session.getAttribute(SessionParam.BUILD_TOUR);
-        final Param ship = Param.newParam()
-                .value(request.getParameter(PARAM_SHIP))
-                .regexp(RegexpParam.NUMBER)
-                .incorrect("incorrect.data").build();
-        final Param type = Param.newParam()
-                .values(request.getParameterValues(PARAM_TYPE))
-                .regexp(RegexpParam.TYPE_PARAM)
-                .incorrect("incorrect.data").build();
-        final Param price = Param.newParam()
-                .values(request.getParameterValues(PARAM_PRICE))
-                .regexp(RegexpParam.PRICE)
-                .incorrect("incorrect.data").build();
-        final Param quantity = Param.newParam()
-                .values(request.getParameterValues(PARAM_QUANTITY))
-                .regexp(RegexpParam.LOCALE_DATE_TIME)
-                .incorrect("incorrect.data").build();
-
+        final String ship = request.getParameter(PARAM_SHIP);
+        final String type[] = request.getParameterValues(PARAM_TYPE);
+        final String price[] = request.getParameterValues(PARAM_PRICE);
+        final String quantity[] = request.getParameterValues(PARAM_QUANTITY);
+        nullCheck(ship);
+        nullArrayCheck(type, price, quantity);
         Verify verify = new Verify();
-        if (verify.equalSize("incorrect.sizes" ,
-                 type.getValues(), price.getValues(), quantity.getValues())
-                .validate(ship).validateArray(type, price, quantity)
-                .allRight()) {
+        if (!verify.incorrect("incorrect.data")
+                .regexp(Regexp.NUMBER).validate(ship)
+                .regexp(Regexp.TYPE_PARAM).validateArray(type)
+                .regexp(Regexp.PRICE).validateArray(price)
+                .regexp( Regexp.QUANTITY).validateArray(quantity).allRight()) {
             request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return new Forward(URI.ADD_TICKET_JSP);
         }
         Tour tour = builder.getTour();
         nullCheck(tour);
-        int shipId = Integer.parseInt(ship.getValue());
+        int shipId = Integer.parseInt(ship);
         tour.setShip(serviceShip.selectShip(shipId));
-        tour.setTickets(serviceTicket.extractTicket(price.getValues(),
-                type.getValues(), quantity.getValues(),
+        tour.setTickets(serviceTicket.extractTicket(price, type, quantity,
                 tour.getDeparture(), tour.getArrival()));
         serviceTour.createNewTour(tour);
         return new Redirect(URI.MAIN);

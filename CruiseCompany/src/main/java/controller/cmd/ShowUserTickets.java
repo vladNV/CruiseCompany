@@ -26,8 +26,8 @@ public class ShowUserTickets implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionParam.USER);
         nullCheck(user);

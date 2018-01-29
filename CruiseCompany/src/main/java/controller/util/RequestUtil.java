@@ -66,10 +66,12 @@ public class RequestUtil {
         }
     }
 
-    public static void nullArrayCheck(Object[] array) {
-        for (Object a : array) {
-            if (a == null) {
-                throw new CommandException("null array");
+    public static void nullArrayCheck(Object[] ... arrays) {
+        for (Object[] array : arrays) {
+            for (Object a : array) {
+                if (a == null) {
+                    throw new CommandException("null array");
+                }
             }
         }
     }

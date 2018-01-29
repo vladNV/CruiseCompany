@@ -4,7 +4,7 @@ import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
-import controller.util.RegexpParam;
+import controller.util.Regexp;
 import controller.util.RequestUtil;
 import controller.util.URI;
 import model.service.TourService;
@@ -24,10 +24,11 @@ public class Search implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request, HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         String search = request.getParameter(PARAM_SEARCH);
         nullCheck(search);
-        if (validate(search, RegexpParam.TOUR_NAME)) {
+        if (validate(search, Regexp.TOUR_NAME)) {
             return new Redirect(URI.MAIN);
         }
         int q = service.quantityOfPages(search);

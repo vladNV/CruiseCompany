@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Login implements Action {
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         return new Forward(URI.LOGIN_JSP);
     }
 }

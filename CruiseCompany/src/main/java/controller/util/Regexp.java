@@ -1,6 +1,6 @@
 package controller.util;
 
-public interface RegexpParam {
+public interface Regexp {
 
     String REGION = "[A-za-z\\s\\-]{3,99}";
     String QUANTITY = "[1-9]{1}[0-9]{2}";

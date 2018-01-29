@@ -6,9 +6,8 @@ import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.Cart;
-import controller.util.RegexpParam;
+import controller.util.Regexp;
 import controller.util.URI;
-import futures.Param;
 import futures.Verify;
 import model.entity.Excursion;
 import model.service.ExcursionService;
@@ -31,30 +30,27 @@ public class AddRemoveExcursion implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request, HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         HttpSession session = request.getSession();
         Forward forward = new Forward(URI.TICKET_JSP);
-        final Param excursion = Param.newParam()
-                .regexp(RegexpParam.NUMBER)
-                .value(request.getParameter(PARAM_ID))
-                .incorrect("incorrect.excursion")
-                .build();
-        final Param command = Param.newParam()
-                .value(request.getParameter(PARAM_COMMAND))
-                .regexp(RegexpParam.NUMBER)
-                .incorrect("incorrect.excmd")
-                .build();
+        final String excursion = request.getParameter(request.getParameter(PARAM_ID));
+        final String command = request.getParameter(PARAM_COMMAND);
+        nullCheck(excursion, command);
         Verify verify = new Verify();
-        if (!verify.validate(excursion, command).allRight()) {
+        if (!verify.incorrect("incorrect.data")
+                .regexp(Regexp.NUMBER).validate(excursion)
+                .regexp(Regexp.EXCURSION_CMD).validate(command)
+                .allRight()) {
             request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return forward;
         }
         Cart cart = (Cart) session.getAttribute(SessionParam.CART);
-        int excursionId = excursion.toInt();
+        int excursionId = Integer.parseInt(excursion);
         Excursion ex = service.getExcursion(excursionId);
         nullCheck(cart, ex);
         request.setAttribute(RequestParam.EXCURSION_STATUS,
-                excursionCommand(command.getValue(), cart, ex));
+                excursionCommand(command, cart, ex));
         return forward;
     }
 

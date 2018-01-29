@@ -26,41 +26,52 @@
                 <div class="form-group">
                     <h4>STANDARD TICKET:</h4>
                     <div class="form-group">
-                        <label>Quantity
-                            <input required name="quantity" type="number"
-                                   class="form-control" pattern="[1-9]{1}[0-9]{2}">
-                        </label>
                         <label>Price in dollars
-                            <input required  name="price" pattern="[1-9]{1}\d{1,15}"
+                            <input required  name="price"
+                                   pattern="[1-9]{1}\d{1,5}"
                                    type="number" class="form-control"/>
+                        </label>
+                        <label>Bonuses for standard ticket:
+                            <input type="checkbox" name="bonus_standard" value="beauty_salon">
+                            <input type="checkbox" name="bonus_standard" value="swimming_pool">
+                            <input type="checkbox" name="bonus_standard" value="cinema">
+                            <input type="checkbox" name="bonus_standard" value="sport_room">
+                            <input type="checkbox" name="bonus_standard" value="tennis">
+                            <input type="checkbox" name="bonus_standard" value="library">
                         </label>
                         <input type="hidden" name="type"
                                class="form-control" value="standard"/>
                     </div>
                     <h4>PREMIUM TICKET:</h4>
                     <div class="form-group">
-                        <label>Quantity
-                            <input required  name="quantity" type="number"
-                                   pattern="[1-9]{1}[0-9]{2}"
-                                   class="form-control"/>
-                        </label>
                         <label>Price in dollars
                             <input required  name="price" type="number"
-                                   class="form-control"/>
+                                   class="form-control"  pattern="[1-9]{1}\d{1,5}"/>
+                        </label>
+                        <label>Bonuses for standard ticket:
+                            <input type="checkbox" name="bonus_premium" value="beauty_salon">
+                            <input type="checkbox" name="bonus_premium" value="swimming_pool">
+                            <input type="checkbox" name="bonus_premium" value="cinema">
+                            <input type="checkbox" name="bonus_premium" value="sport_room">
+                            <input type="checkbox" name="bonus_premium" value="tennis">
+                            <input type="checkbox" name="bonus_premium" value="library">
                         </label>
                         <input type="hidden" name="type"
                                class="form-control" value="premium"/>
                     </div>
                     <h4>LUXE TICKET:</h4>
                     <div class="form-group">
-                        <label>Quantity
-                            <input required name="quantity" type="number"
-                                   class="form-control"
-                                   pattern="[1-9]{1}[0-9]{2}"/>
-                        </label>
                         <label>Price in dollars
                             <input required name="price" type="number"
-                                   pattern="[1-9]{1}\d{1,15}" class="form-control"/>
+                                   pattern="[1-9]{1}\d{1,5}" class="form-control"/>
+                        </label>
+                        <label>Bonuses for standard ticket:
+                            <input type="checkbox" name="bonus_luxe" value="beauty_salon">
+                            <input type="checkbox" name="bonus_luxe" value="swimming_pool">
+                            <input type="checkbox" name="bonus_luxe" value="cinema">
+                            <input type="checkbox" name="bonus_luxed" value="sport_room">
+                            <input type="checkbox" name="bonus_luxe" value="tennis">
+                            <input type="checkbox" name="bonus_luxe" value="library">
                         </label>
                         <input type="hidden" name="type"
                                class="form-control" value="luxe">

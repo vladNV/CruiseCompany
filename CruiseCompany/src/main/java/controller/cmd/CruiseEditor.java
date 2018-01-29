@@ -19,8 +19,8 @@ public class CruiseEditor implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         request.setAttribute(RequestParam.PORTS, portService.selectPorts());
         TourBuilder tourBuilder = new TourBuilder();
         tourBuilder.setPorts(portService.selectPorts());

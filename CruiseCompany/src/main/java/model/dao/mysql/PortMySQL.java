@@ -57,11 +57,9 @@ public class PortMySQL implements PortDAO {
 
     @Override
     public Port findById(int id) {
-        logger.info("delete");
         try (PreparedStatement statement = connection.prepareStatement(FIND)){
             statement.setInt(1, id);
-            Mapper<Port> mapper = new PortMapper();
-            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
+            return EntityMapper.extractNextIf(statement.executeQuery(), new PortMapper());
         } catch (SQLException e) {
             logger.error(e);
             throw new RuntimeException(e);

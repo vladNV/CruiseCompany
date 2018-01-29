@@ -69,7 +69,6 @@ public class TicketService {
                                            final List<Excursion> excursions) {
         final HashMap<Port, List<Excursion>> map = new HashMap<>();
         Port port;
-        List<Excursion> list;
         for (Excursion ex : excursions) {
             port = ex.getPort();
             if (map.containsKey(port)) {

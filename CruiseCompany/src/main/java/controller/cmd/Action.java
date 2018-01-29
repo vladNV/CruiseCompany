@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface Action {
 
-    ServletAction execute(HttpServletRequest request,
-                          HttpServletResponse response);
+    ServletAction execute(final HttpServletRequest request,
+                          final HttpServletResponse response);
 
 }

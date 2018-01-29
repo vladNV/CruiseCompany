@@ -4,10 +4,9 @@ import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
-import controller.util.RegexpParam;
+import controller.util.Regexp;
 import controller.util.TourBuilder;
 import controller.util.URI;
-import futures.Param;
 import futures.Verify;
 import model.entity.Route;
 import model.entity.Tour;
@@ -19,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.util.LinkedList;
+
+import static controller.util.RequestUtil.nullArrayCheck;
+import static controller.util.RequestUtil.nullCheck;
 
 public class AddCruise implements Action {
     private RouteService routeService;
@@ -36,68 +38,43 @@ public class AddCruise implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                final HttpServletResponse response) {
         Forward forward = new Forward(URI.ADD_CRUISE_JSP);
         HttpSession session = request.getSession();
-
-        final Param name = Param.newParam()
-                .value(request.getParameter(PARAM_NAME))
-                .incorrect("incorrect.tourname")
-                .regexp(RegexpParam.TOUR_NAME).build();
-
-        final Param region = Param.newParam()
-                .value(request.getParameter(PARAM_REGION))
-                .incorrect("incorrect.region")
-                .regexp(RegexpParam.REGION)
-                .build();
-
-        final Param routeNames = Param.newParam()
-                .values(request.getParameterValues(PARAM_ROUTE_NAME))
-                .incorrect("incorrect.routes")
-                .regexp(RegexpParam.ROUTE)
-                .build();
-
-        final Param departures = Param.newParam()
-                .values(request.getParameterValues(PARAM_DEPARTURE))
-                .incorrect("incorrect.date")
-                .regexp(RegexpParam.LOCALE_DATE_TIME)
-                .build();
-
-        final Param arrivals = Param.newParam()
-                .values(request.getParameterValues(PARAM_ARRIVAL))
-                .incorrect("incorrect.date")
-                .regexp(RegexpParam.LOCALE_DATE_TIME)
-                .build();
-
-        final Param port = Param.newParam()
-                .values(request.getParameterValues(PARAM_PORT))
-                .incorrect("incorrect.port")
-                .regexp(RegexpParam.NUMBER)
-                .build();
-
+        String name = request.getParameter(PARAM_NAME);
+        String region = request.getParameter(PARAM_REGION);
+        String[] routeNames = request.getParameterValues(PARAM_ROUTE_NAME);
+        String[] arrivals = request.getParameterValues(PARAM_ARRIVAL);
+        String[] departures = request.getParameterValues(PARAM_DEPARTURE);
+        String[] ports = request.getParameterValues(PARAM_PORT);
+        nullCheck(name, region);
+        nullArrayCheck(routeNames, arrivals, departures, ports);
         Verify verify = new Verify();
-        if (!verify.equalSize("incorrect.sizes", routeNames.getValues(),
-                departures.getValues(), arrivals.getValues(), port.getValues())
-                .validate(name, region)
-                .validateArray(port, departures, routeNames, arrivals)
-                .allRight()) {
+        if (!verify.incorrect("incorrect.sizes")
+                .equalSize(routeNames, arrivals, departures, ports)
+                .regexp(Regexp.TOUR_NAME).incorrect("incorrect.tourname").validate(name)
+                .regexp(Regexp.REGION).incorrect("incorrect.region").validate(region)
+                .regexp(Regexp.LOCALE_DATE_TIME).incorrect("incorrect.date")
+                .validateArray(departures).validateArray(arrivals)
+                .regexp(Regexp.ROUTE).incorrect("incorrect.routes")
+                .validateArray(routeNames)
+                .regexp(Regexp.NUMBER).incorrect("incorrect.port")
+                .validateArray(ports).allRight()) {
             request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return forward;
         }
-
         TourBuilder builder = (TourBuilder) session.getAttribute(SessionParam.BUILD_TOUR);
         LinkedList<Route> routes;
         try {
-            routes = routeService.extractRoutes(routeNames.getValues(), departures.getValues(),
-                                                arrivals.getValues(), port.getValues());
+            routes = routeService.extractRoutes(routeNames, departures, arrivals, ports);
         } catch (RouteTimeException e) {
             request.setAttribute(RequestParam.WRONG, "incorrect.date");
             return forward;
         }
         Tour tour = Tour.newTour()
-                .name(name.getValue())
-                .region(region.getValue())
+                .name(name)
+                .region(region)
                 .departure(routes.getFirst().getDeparture())
                 .arrival(routes.getLast().getArrival())
                 .routes(routes)

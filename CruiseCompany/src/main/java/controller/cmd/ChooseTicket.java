@@ -21,8 +21,8 @@ public class ChooseTicket implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                   HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                   final HttpServletResponse response) {
         HttpSession session = request.getSession();
         int ticketId = RequestUtil.getIdFromURI(request.getRequestURI());
         Cart cart = (Cart) session.getAttribute(SessionParam.CART);

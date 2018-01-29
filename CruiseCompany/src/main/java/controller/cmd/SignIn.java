@@ -6,7 +6,6 @@ import controller.servlet.Forward;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
 import controller.util.*;
-import futures.Param;
 import futures.Verify;
 import model.entity.User;
 import model.service.UserService;
@@ -14,6 +13,8 @@ import model.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import static controller.util.RequestUtil.nullCheck;
 
 public class SignIn implements Action {
 
@@ -26,27 +27,22 @@ public class SignIn implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         HttpSession session = request.getSession();
         Forward forward = new Forward(URI.LOGIN_JSP);
-
-        final  Param email = new Param();
-        email.setValue(request.getParameter(PARAM_EMAIL));
-        email.setIncorrect("auth_invalid");
-        email.setRegexp(RegexpParam.EMAIL);
-
-        final Param password = new Param();
-        password.setValue(request.getParameter(PARAM_PASSWORD));
-        password.setIncorrect("auth_invalid");
-        password.setRegexp(RegexpParam.PASSWORD);
-
+        String email = request.getParameter(PARAM_EMAIL);
+        String password = request.getParameter(PARAM_PASSWORD);
+        nullCheck(email, password);
         Verify verify = new Verify();
-        if (!verify.validate(email, password).allRight()) {
-            request.setAttribute(RequestParam.WRONG, "auth_invalid");
+        if (!verify.incorrect("auth_invalid")
+                .regexp(Regexp.EMAIL).validate(email)
+                .regexp(Regexp.PASSWORD).validate(password)
+                .allRight()) {
+            request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return forward;
         }
-        User user = service.signIn(email.getValue(), password.getValue());
+        User user = service.signIn(email, password);
         if (user != null) {
             session.setAttribute(SessionParam.USER, user);
             session.setAttribute(SessionParam.ROLE, user.getRole());

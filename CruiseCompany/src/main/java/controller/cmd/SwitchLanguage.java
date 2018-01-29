@@ -19,8 +19,8 @@ public class SwitchLanguage implements Action {
     }
 
     @Override
-    public ServletAction execute(HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ServletAction execute(final HttpServletRequest request,
+                                 final HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.setAttribute(ApplicationParam.LOCALE, locale);
         session.setAttribute(SessionParam.CURRENCY, Currency.currency(locale).value());
