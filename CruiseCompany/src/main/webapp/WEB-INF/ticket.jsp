@@ -29,7 +29,7 @@
         ${sessionScope.cart.ticket.type}<br>
         <b><fmt:message bundle="${msg}" key="place"/>:</b>
         ${sessionScope.cart.ticket.place}<br>
-        <b><fmt:message bundle="${msg}" key="price"/>:</b>
+        <b><fmt:message bundle="${msg}" key="price.person"/>:</b>
         <fmt:formatNumber value="${currency * sessionScope.cart.ticket.price / 1000}" type="currency"/>
         </div>
     <div class="col-sm-2"></div>
@@ -47,52 +47,52 @@
                     <fmt:message bundle="${msg}" key="${requestScope.excursionStatus}"/>
                 </c:if>
             </div>
-            <div class="ticket-header">
-                <div class="ticket-cell">
-                    <fmt:message bundle="${msg}" key="excursion"/></div>
-                <div class="ticket-cell">
-                    <fmt:message bundle="${msg}" key="port"/></div>
-                <div class="ticket-cell">
-                    <fmt:message bundle="${msg}" key="country"/></div>
-                <div class="ticket-cell">
-                    <fmt:message bundle="${msg}" key="person.for"/></div>
-                <div class="ticket-cell"></div>
-                <div class="ticket-cell"></div>
-            </div>
-            <c:forEach items="${requestScope.excursions}" var="excursion">
-                <div class="ticket-row">
-                    <div class="ticket-cell">${excursion.name}</div>
-                    <div class="ticket-cell">${excursion.port.name}</div>
-                    <div class="ticket-cell">${excursion.port.country}</div>
+            <c:forEach items="${sessionScope.tour.routes}" var="r">
+            <h4>${r.port.name}</h4>
+                <div class="ticket-header">
                     <div class="ticket-cell">
-                        <fmt:formatNumber value="${currency * excursion.price / 1000}"
-                                                                 type="currency"/></div>
+                        <fmt:message bundle="${msg}" key="excursion"/>
+                    </div>
                     <div class="ticket-cell">
-                        <form id="form_add_${excursion.id}" method="post"
-                              action="${pageContext.request.contextPath}/ticket/excursion">
-                            <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
-                            <input type="hidden" name="command" value="add">
-                            <button id="add_${excursion.id}" class="btn-link"
-                                    onclick="add('${excursion.id}')">
+                        <fmt:message bundle="${msg}" key="price"/>
+                    </div>
+                    <div class="ticket-cell"></div>
+                    <div class="ticket-cell"></div>
+                </div>
+                <c:forEach items="${r.port.excursions}" var="excursion">
+                    <div class="ticket-row">
+                        <div class="ticket-cell">${excursion.name}</div>
+                        <div class="ticket-cell">
+                            <fmt:formatNumber value="${currency * excursion.price / 1000}"
+                                              type="currency"/>
+                        </div>
+                        <div class="ticket-cell">
+                            <form id="form_add_${excursion.id}" method="post"
+                                  action="${pageContext.request.contextPath}/ticket/excursion">
+                                <input type="hidden" name="id" id="idAdd" value="${excursion.id}">
+                                <input type="hidden" name="command" value="add">
+                                <button id="add_${excursion.id}" class="btn-link"
+                                        onclick="add('${excursion.id}')">
                                 <span style="color:green;">
                                     <fmt:message bundle="${msg}" key="add"/>
                                 </span>
-                            </button>
-                        </form>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="ticket-cell">
+                            <form id="form_remove_${excursion.id}" method="post"
+                                  action="${pageContext.request.contextPath}/ticket/excursion">
+                                <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
+                                <input type="hidden" name="command" value="remove">
+                                <button id="remove_${excursion.id}"
+                                        class="btn-link"
+                                        onclick="remove('${excursion.id}')">
+                                    <span style="color:green;"><fmt:message bundle="${msg}" key="remove"/></span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="ticket-cell">
-                        <form id="form_remove_${excursion.id}" method="post"
-                              action="${pageContext.request.contextPath}/ticket/excursion">
-                            <input type="hidden" name="id" id="idRemove" value="${excursion.id}">
-                            <input type="hidden" name="command" value="remove">
-                            <button id="remove_${excursion.id}"
-                                    class="btn-link"
-                                    onclick="remove('${excursion.id}')">
-                                <span style="color:green;"><fmt:message bundle="${msg}" key="remove"/></span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                </c:forEach>
             </c:forEach>
             <script type="text/javascript">
                 function add(id) {
@@ -135,7 +135,7 @@
                 <input minlength="2" maxlength="100" id="name"
                        pattern="^[A-Za-z\-]{2,100}$"
                        title="<fmt:message bundle="${msg}"
-                       key="confirm.name"/>"
+                       key="confirm.name"/>" required
                        name="name" class="form-control"/>
             </div>
             <div class="form-group">
@@ -146,7 +146,7 @@
                 <input minlength="2" maxlength="100" id="surname"
                        pattern="^[A-Za-z\-]{2,100}$"
                        title="<fmt:message bundle="${msg}"
-                       key="confirm.name"/>"
+                       key="confirm.name"/>" required
                        name="surname" class="form-control"/>
             </div>
             <div class="form-group">

@@ -4,7 +4,7 @@ import controller.exceptions.CommandException;
 import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
-import controller.util.RequestParser;
+import controller.util.RequestUtil;
 import controller.util.URI;
 import model.service.TourService;
 
@@ -23,18 +23,21 @@ public class ShowTourList implements Action {
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
         int q = service.quantityOfPages(null);
-        int page = RequestParser.getIdFromURI(request.getRequestURI());
-        int maxPage = (q % TourService.LIMIT_TOUR == 0) ? q / TourService.LIMIT_TOUR :
-                q / TourService.LIMIT_TOUR + 1;
-        if (page > maxPage)
-            throw new CommandException("so big page number");
+        int page = RequestUtil.getIdFromURI(request.getRequestURI());
+        int maxPage = RequestUtil.getPage(q, page);
+        putTours(request, page);
+        request.setAttribute(RequestParam.PAGE, maxPage);
+        request.setAttribute(RequestParam.URL, "main");
+        return new Forward(URI.MAIN_JSP);
+    }
+
+    private void putTours(HttpServletRequest request, int page) {
         if (page == 0) {
             request.setAttribute(RequestParam.TOURS, service.showTours(1));
         } else {
             request.setAttribute(RequestParam.TOURS, service.showTours(page));
         }
-        request.setAttribute(RequestParam.PAGE, maxPage);
-        request.setAttribute(RequestParam.URL, "main");
-        return new Forward(URI.MAIN_JSP);
     }
+
+
 }

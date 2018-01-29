@@ -1,11 +1,12 @@
 package controller.util;
 
 import controller.exceptions.CommandException;
+import model.service.TourService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RequestParser {
+public class RequestUtil {
 
     public static String getActionFromURI(String URI) {
         URI = URI.substring(1, URI.length());
@@ -15,7 +16,7 @@ public class RequestParser {
                 return s[i];
             }
         }
-        return null;
+        throw new CommandException("null action");
     }
 
     public static int getIdFromURI(String URI) {
@@ -65,11 +66,21 @@ public class RequestParser {
         }
     }
 
-    public static boolean isNull(Object ... params) {
-        for (Object o : params) {
-            if (o == null) return true;
+    public static void nullArrayCheck(Object[] array) {
+        for (Object a : array) {
+            if (a == null) {
+                throw new CommandException("null array");
+            }
         }
-        return false;
+    }
+
+
+    public static int getPage(int q, int page) {
+        int maxPage = (q % TourService.LIMIT_TOUR == 0) ? q / TourService.LIMIT_TOUR :
+                q / TourService.LIMIT_TOUR + 1;
+        if (page > maxPage)
+            throw new CommandException("so big page number");
+        return maxPage;
     }
 
 }

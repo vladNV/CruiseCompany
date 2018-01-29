@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static controller.util.RequestParser.nullCheck;
+import static controller.util.RequestUtil.nullCheck;
 
 public class ShowUserTickets implements Action {
     private TicketService service;
@@ -31,8 +31,6 @@ public class ShowUserTickets implements Action {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionParam.USER);
         nullCheck(user);
-        // x - active
-        // y - old
         Tuple<List<Ticket>, List<Ticket>> t = service
                 .userTickets(user, LocalDateTime.now());
         request.setAttribute(RequestParam.ACTIVE_TICKETS, t.x());

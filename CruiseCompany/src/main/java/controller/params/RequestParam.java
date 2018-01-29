@@ -6,7 +6,6 @@ public interface RequestParam {
     String CAUSE = "cause";
     String ACTIVE_TICKETS = "activeTickets";
     String OLD_TICKETS = "oldTickets";
-    String TOUR_TICKETS = "tour_tickets";
     String TOURS = "tours";
     String TOUR = "tour";
     String PRICE = "price";

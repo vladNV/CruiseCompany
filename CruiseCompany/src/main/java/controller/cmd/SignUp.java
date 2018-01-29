@@ -1,8 +1,5 @@
 package controller.cmd;
 
-import static controller.util.RequestParser.isNull;
-import static controller.util.RequestParser.validate;
-
 import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
@@ -32,30 +29,28 @@ public class SignUp implements Action {
                                  HttpServletResponse response) {
         Forward forward = new Forward(URI.SIGN_UP_JSP);
 
-        Param password = new Param();
+        final Param password = new Param();
         password.setValue(request.getParameter(PARAM_PASSWORD));
         password.setIncorrect("incorrect.password");
         password.setRegexp(RegexpParam.PASSWORD);
 
-        Param repassword = new Param();
+        final Param repassword = new Param();
         repassword.setValue(request.getParameter(PARAM_REPASSWORD));
         repassword.setIncorrect("incorrect.password");
         repassword.setRegexp(RegexpParam.PASSWORD);
 
-        Param login = new Param();
+        final Param login = new Param();
         login.setValue(request.getParameter(PARAM_LOGIN));
         login.setIncorrect("incorrect.login");
         login.setRegexp(RegexpParam.LOGIN);
 
-        Param email = new Param();
+        final Param email = new Param();
         email.setValue(request.getParameter(PARAM_EMAIL));
         email.setIncorrect("incorrect.email");
         email.setRegexp(RegexpParam.EMAIL);
 
         Verify verify = new Verify();
-        if (verify.validate(email).validate(password)
-                .validate(repassword).validate(login)
-                .allRight()) {
+        if (!verify.validate(email, password, repassword, login).allRight()) {
             request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return forward;
         }

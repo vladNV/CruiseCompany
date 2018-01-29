@@ -8,13 +8,12 @@ import model.entity.Ticket;
 import model.entity.Tour;
 import model.service.TicketService;
 import model.service.TourService;
-import model.dao.mapper.AggregateOperation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import static controller.util.RequestParser.nullCheck;
+import static controller.util.RequestUtil.nullCheck;
 
 public class OpenTour implements Action {
     private TourService serviceTour;
@@ -28,12 +27,12 @@ public class OpenTour implements Action {
     @Override
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
-        int tourId = RequestParser.getIdFromURI(request.getRequestURI());
+        int tourId = RequestUtil.getIdFromURI(request.getRequestURI());
         Tour tour = serviceTour.allInformationAboutTour(tourId);
         List<Ticket> tickets = serviceTicket.showTicketsForTour(tourId);
         nullCheck(tour);
+        tour.setTickets(tickets);
         request.setAttribute(RequestParam.TOUR, tour);
-        request.setAttribute(RequestParam.TOUR_TICKETS, tickets);
         return new Forward(URI.TOUR_PAGE_JSP);
     }
 

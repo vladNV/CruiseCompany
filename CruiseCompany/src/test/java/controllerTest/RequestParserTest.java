@@ -1,15 +1,15 @@
 package controllerTest;
 
 import org.junit.Test;
-import static controller.util.RequestParser.*;
+import static controller.util.RequestUtil.*;
 import static org.junit.Assert.*;
 
 public class RequestParserTest {
 
+
     @Test
     public void testGetActionFromURI() {
-        assertEquals(null, getActionFromURI("/"));
-        assertEquals(null, getActionFromURI("//"));
+
         assertEquals("premium", getActionFromURI("/ticket/premium"));
         assertEquals("ticket", getActionFromURI("/ticket"));
         assertEquals("tour", getActionFromURI("/tour/2"));

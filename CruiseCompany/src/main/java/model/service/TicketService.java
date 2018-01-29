@@ -14,9 +14,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TicketService {
     private final static Logger logger = Logger.getLogger(TicketService.class);
@@ -51,10 +49,15 @@ public class TicketService {
         logger.info("choose ticket: " + ticketId);
         Connection connection = ConnectionPool.pool().connect();
         try (TicketDAO ticketDAO = factory.ticketDAO(connection);
-            RouteDAO routeDAO = factory.routeDAO(connection)) {
+            RouteDAO routeDAO = factory.routeDAO(connection);
+            ExcursionDAO excursionDAO = factory.excursionDAO(connection)) {
+            connection.setAutoCommit(false);
             Ticket ticket = ticketDAO.getTourTicket(ticketId);
             Tour tour = ticket.getTour();
-            tour.setRoutes(routeDAO.routesOfCruise(tour.getId()));
+            List<Route> routes = routeDAO.routesOfCruise(tour.getId());
+            List<Excursion> excursions = excursionDAO.cruiseExcursion(tour.getId());
+            tour.setRoutes(putExcursionInTour(routes, excursions));
+            connection.commit();
             return ticket;
         } catch (Exception e) {
             logger.error(e);
@@ -62,6 +65,27 @@ public class TicketService {
         }
     }
 
+    private List<Route> putExcursionInTour(final List<Route> routes,
+                                           final List<Excursion> excursions) {
+        final HashMap<Port, List<Excursion>> map = new HashMap<>();
+        Port port;
+        List<Excursion> list;
+        for (Excursion ex : excursions) {
+            port = ex.getPort();
+            if (map.containsKey(port)) {
+                map.get(port).add(ex);
+            } else {
+                map.put(port,  new ArrayList<>(Collections.singletonList(ex)));
+            }
+        }
+        // routes.forEach((route -> route.getPort()
+        // .setExcursions((map.get(route.getPort())))));
+        for (Route r : routes) {
+            port = r.getPort();
+            port.setExcursions(map.get(port));
+        }
+        return routes;
+    }
 
     public void buyTicket(Ticket ticket, Set<Excursion> excursions,
                              User user, long money, long card, int cvv)
@@ -74,8 +98,8 @@ public class TicketService {
             logger.info("start transaction for " + ticket.getId() + " user, " + user.getId());
             connect.setAutoCommit(false);
             connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            ticketDAO.existTicket(user.getId(), ticket.getTour().getId());
             userDAO.existUser(card, cvv);
+            ticketDAO.existTicket(user.getId(), ticket.getTour().getId());
             userDAO.takeMoney(card, cvv, money);
             userDAO.putMoney(CruiseCompany.CARD, money);
             ticketDAO.updateTicket(ticket, user.getId());

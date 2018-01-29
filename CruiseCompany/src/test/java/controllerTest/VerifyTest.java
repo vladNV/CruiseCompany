@@ -31,7 +31,7 @@ public class VerifyTest {
         when(email.getValue()).thenReturn("vlad.nagaev.vn@gmail.com").thenReturn("dkhsduhd");
 
         System.out.println(
-                verify
+                !verify
                 .validate(login)
                 .validate(pass)
                 .validate(repass)
@@ -42,7 +42,7 @@ public class VerifyTest {
         System.out.println(verify.getRemarks());
 
         System.out.println(
-                verify
+                !verify
                 .validate(login)
                 .validate(pass)
                 .validate(repass)

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
-import static controller.util.RequestParser.nullCheck;
+import static controller.util.RequestUtil.nullCheck;
 
 public class BuyTicket implements Action {
     private TicketService ticketService;
@@ -32,17 +32,18 @@ public class BuyTicket implements Action {
     public ServletAction execute(HttpServletRequest request,
                                  HttpServletResponse response) {
         HttpSession session = request.getSession();
-        Param card = new Param();
+
+        final Param card = new Param();
         card.setValue(request.getParameter(PARAM_CARD));
         card.setIncorrect("incorrect.card");
         card.setRegexp(RegexpParam.NUMBER);
 
-        Param cvv = new Param();
+        final Param cvv = new Param();
         cvv.setValue(request.getParameter(PARAM_CVV));
         cvv.setIncorrect("incorrect.cvv");
         cvv.setRegexp(RegexpParam.CVV);
 
-        Param price = new Param();
+        final Param price = new Param();
         price.setValue(request.getParameter(PARAM_PRICE));
         price.setRegexp(RegexpParam.PRICE);
         price.setIncorrect("incorrect.price");
@@ -56,8 +57,7 @@ public class BuyTicket implements Action {
         nullCheck(ticket);
 
         Verify verify = new Verify();
-
-        if (verify.validate(card).validate(price).validate(cvv).allRight()) {
+        if (!verify.validate(card, price, cvv).allRight()) {
             request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return new Forward(URI.PAYMENT_JSP);
         }

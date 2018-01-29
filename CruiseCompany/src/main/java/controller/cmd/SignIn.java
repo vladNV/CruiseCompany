@@ -30,18 +30,19 @@ public class SignIn implements Action {
                                  HttpServletResponse response) {
         HttpSession session = request.getSession();
         Forward forward = new Forward(URI.LOGIN_JSP);
-        Param email = new Param();
+
+        final  Param email = new Param();
         email.setValue(request.getParameter(PARAM_EMAIL));
         email.setIncorrect("auth_invalid");
         email.setRegexp(RegexpParam.EMAIL);
 
-        Param password = new Param();
+        final Param password = new Param();
         password.setValue(request.getParameter(PARAM_PASSWORD));
         password.setIncorrect("auth_invalid");
         password.setRegexp(RegexpParam.PASSWORD);
 
         Verify verify = new Verify();
-        if (verify.validate(email).validate(password).allRight()) {
+        if (!verify.validate(email, password).allRight()) {
             request.setAttribute(RequestParam.WRONG, "auth_invalid");
             return forward;
         }

@@ -1,5 +1,6 @@
 package controller.cmd;
 
+import controller.exceptions.CommandException;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
@@ -7,6 +8,8 @@ import controller.servlet.ServletAction;
 import controller.util.Cart;
 import controller.util.RegexpParam;
 import controller.util.URI;
+import futures.Param;
+import futures.Verify;
 import model.entity.Excursion;
 import model.service.ExcursionService;
 
@@ -14,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static controller.util.RequestParser.*;
+import static controller.util.RequestUtil.*;
 
 public class AddRemoveExcursion implements Action {
     private ExcursionService service;
@@ -30,25 +33,39 @@ public class AddRemoveExcursion implements Action {
     @Override
     public ServletAction execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String excursion = request.getParameter(PARAM_ID);
-        String command = request.getParameter(PARAM_COMMAND);
-        Cart cart = (Cart) session.getAttribute(SessionParam.CART);
-        nullCheck(excursion, command, cart);
-        validate(excursion, RegexpParam.NUMBER);
-        validate(command, RegexpParam.EXCURSION_CMD);
-        int excursionId = Integer.parseInt(excursion);
-        Excursion ex = service.getExcursion(excursionId);
-        nullCheck(ex);
-        String answer;
-        // TODO fix it
-        if (command.equals(CMD_ADD)) {
-            answer = cart.add(ex) ? "item.added" : "item.already.added";
-        } else {
-            answer = cart.remove(ex) ? "item.removed" : "item.already.removed";
+        Forward forward = new Forward(URI.TICKET_JSP);
+        final Param excursion = Param.newParam()
+                .regexp(RegexpParam.NUMBER)
+                .value(request.getParameter(PARAM_ID))
+                .incorrect("incorrect.excursion")
+                .build();
+        final Param command = Param.newParam()
+                .value(request.getParameter(PARAM_COMMAND))
+                .regexp(RegexpParam.NUMBER)
+                .incorrect("incorrect.excmd")
+                .build();
+        Verify verify = new Verify();
+        if (!verify.validate(excursion, command).allRight()) {
+            request.setAttribute(RequestParam.WRONG, verify.getRemarks());
+            return forward;
         }
-        request.setAttribute(RequestParam.EXCURSIONS, service
-                .showCruiseExcursion(cart.getTicket().getTour().getId()));
-        request.setAttribute(RequestParam.EXCURSION_STATUS, answer);
-        return new Forward(URI.TICKET_JSP);
+        Cart cart = (Cart) session.getAttribute(SessionParam.CART);
+        int excursionId = excursion.toInt();
+        Excursion ex = service.getExcursion(excursionId);
+        nullCheck(cart, ex);
+        request.setAttribute(RequestParam.EXCURSION_STATUS,
+                excursionCommand(command.getValue(), cart, ex));
+        return forward;
+    }
+
+    private String excursionCommand(String command, Cart cart, Excursion ex) {
+        switch (command) {
+            case CMD_ADD:
+                return cart.add(ex) ? "item.added" : "item.already.added";
+            case CMD_REMOVE:
+                return cart.remove(ex) ? "item.removed" : "item.already.removed";
+            default:
+                throw new CommandException("unknown command");
+        }
     }
 }
