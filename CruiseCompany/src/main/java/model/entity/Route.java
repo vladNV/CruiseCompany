@@ -43,6 +43,10 @@ public class Route implements Cloneable, Serializable, Entity {
         return port;
     }
 
+    public void setPort(Port port) {
+        this.port = port;
+    }
+
     public Tour getTour() {
         return tour;
     }

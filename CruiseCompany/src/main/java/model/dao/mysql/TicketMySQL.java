@@ -5,8 +5,10 @@ import model.dao.mapper.EntityMapper;
 import model.dao.mapper.Mapper;
 import model.dao.mapper.TicketMapper;
 import model.dao.mapper.aggregation.TicketAmount;
+import model.dao.mapper.join.TicketTourJoin;
 import model.entity.Ticket;
 import model.entity.Tour;
+import model.entity.User;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
 import model.entity.TicketClass;
@@ -26,22 +28,7 @@ public class TicketMySQL implements TicketDAO {
 
     @Override
     public int insert(Ticket ticket) {
-        logger.info("insert");
-        try (PreparedStatement statement = connection
-                .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
-            statement.setInt(1, ticket.getTour().getId());
-            statement.setInt(2, ticket.getUser().getId());
-            statement.setTimestamp(3, Timestamp
-                    .valueOf(ticket.getArrival()));
-            statement.setTimestamp(4, Timestamp
-                    .valueOf(ticket.getDeparture()));
-            statement.setLong(5, ticket.getPrice());
-            statement.setString(6, ticket.getType().name());
-            return statement.getGeneratedKeys().getInt(1);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new RuntimeException(e);
-        }
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -50,8 +37,8 @@ public class TicketMySQL implements TicketDAO {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setInt(1, ticket.getUser().getId());
             statement.setInt(2, ticket.getTour().getId());
-            statement.setTimestamp(3, Timestamp.valueOf(ticket.getArrival()));
-            statement.setTimestamp(4, Timestamp.valueOf(ticket.getDeparture()));
+            statement.setString(3, ticket.getPerson());
+            statement.setInt(4, ticket.getPlace());
             statement.setLong(5, ticket.getPrice());
             statement.setString(6, String.valueOf(ticket.getType()));
             statement.execute();
@@ -84,6 +71,19 @@ public class TicketMySQL implements TicketDAO {
         throw new UnsupportedOperationException();
     }
 
+
+    @Override
+    public List<Ticket> tourTickets(int tourId) {
+        try (PreparedStatement statement = connection.prepareStatement(TICKETS_TOUR)){
+            statement.setInt(1, tourId);
+            TicketMapper map = new TicketMapper();
+            return EntityMapper.extractNextWhile(statement.executeQuery(), map);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public List<AggregateOperation<Integer, Ticket>> ticketForCategory(int tourId) {
         logger.info("ticket for category");
@@ -98,10 +98,10 @@ public class TicketMySQL implements TicketDAO {
     }
 
     @Override
-    public List<Ticket> ticketsForId(int id) {
+    public List<Ticket> userTickets(int userId) {
         try (PreparedStatement statement = connection.prepareStatement(USER_TICKETS)){
-            statement.setInt(1, id);
-            Mapper<Ticket> mapper = new TicketMapper();
+            statement.setInt(1, userId);
+            Mapper<Ticket> mapper = new TicketTourJoin();
             return EntityMapper.extractNextWhile(statement.executeQuery(), mapper);
         } catch (SQLException e) {
             logger.error(e);
@@ -109,14 +109,12 @@ public class TicketMySQL implements TicketDAO {
         }
     }
 
-
     @Override
-    public Ticket findTicketByType(TicketClass type, int tourId) {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_TYPE)) {
-            statement.setString(1, String.valueOf(type));
-            statement.setInt(2, tourId);
-            Mapper<Ticket> mapper = new TicketMapper();
-            return EntityMapper.extractNextIf(statement.executeQuery(), mapper);
+    public Ticket getTourTicket(int ticketId) {
+        try (PreparedStatement statement = connection.prepareStatement(CHOOSE_TICKET)){
+            statement.setInt(1, ticketId);
+            Mapper<Ticket> map = new TicketTourJoin();
+            return EntityMapper.extractNextIf(statement.executeQuery(), map);
         } catch (SQLException e) {
             logger.error(e);
             throw new RuntimeException(e);
@@ -129,7 +127,8 @@ public class TicketMySQL implements TicketDAO {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER_TICKET)){
             statement.setInt(1, userId);
             statement.setInt(2, ticket.getAmountPassengers());
-            statement.setInt(3, ticket.getId());
+            statement.setString(3, ticket.getPerson());
+            statement.setInt(4, ticket.getId());
             int update = statement.executeUpdate();
             if(update == 0) throw new ServiceException("ticket.was.bought");
         } catch (SQLException e) {
@@ -171,12 +170,13 @@ public class TicketMySQL implements TicketDAO {
     public void setTicketsOnTour(Tour tour) {
         logger.info("set tickets on tour");
         try (PreparedStatement statement = connection.prepareStatement(INSERT)){
+            int iterator = 1;
             for (Ticket ticket : tour.getTickets()) {
                 statement.setInt(1, tour.getId());
-                statement.setTimestamp(2, Timestamp.valueOf(tour.getArrival()));
-                statement.setTimestamp(3, Timestamp.valueOf(tour.getDeparture()));
-                statement.setLong(4, ticket.getPrice());
-                statement.setString(5, String.valueOf(ticket.getType()));
+                statement.setLong(2, ticket.getPrice());
+                statement.setString(3, String.valueOf(ticket.getType()));
+                statement.setInt(4, iterator++);
+                statement.setString(5, ticket.getBonusRow());
                 statement.addBatch();
             }
             statement.executeBatch();

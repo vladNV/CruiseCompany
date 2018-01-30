@@ -4,14 +4,11 @@ import model.dao.FactoryDAO;
 import model.dao.interfaces.RouteDAO;
 import model.dao.interfaces.TicketDAO;
 import model.dao.interfaces.TourDAO;
-import model.dao.mysql.ConnectionPool;
-import model.dao.mysql.FactoryMySQL;
-import model.entity.Ticket;
+import model.dao.ConnectionPool;
 import model.entity.Tour;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class TourService {
@@ -84,7 +81,6 @@ public class TourService {
     }
 
     public int quantityOfPages(String search) {
-
         try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())){
             if (search == null) {
                 return tourDAO.amount();

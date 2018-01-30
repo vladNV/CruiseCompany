@@ -6,6 +6,7 @@ import model.dao.mapper.Mapper;
 import model.dao.mapper.UserMapper;
 import model.entity.User;
 import model.exceptions.ServiceException;
+import model.exceptions.UniqueException;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -24,12 +25,15 @@ public class UserMySQL implements UserDAO {
     public int insert(User user) {
         logger.info("insert");
         try (PreparedStatement statement = connection
-                .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
+                .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getEmail());
             statement.execute();
             return EntityMapper.getKey(statement.getGeneratedKeys());
+        } catch (SQLIntegrityConstraintViolationException e) {
+            logger.error(e.getMessage(), e);
+            throw new UniqueException("such email isn't unique", user.getEmail());
         } catch (SQLException e) {
             logger.error(e.getSQLState(), e);
             throw new RuntimeException(e);
@@ -93,8 +97,22 @@ public class UserMySQL implements UserDAO {
     }
 
     @Override
+    public void existUser(long card, int CVV) throws ServiceException {
+       logger.info("transaction exist user card " + card + ", cvv " + CVV);
+       try (PreparedStatement statement = connection.prepareStatement(EXIST_CARD)){
+           statement.setLong(1, card);
+           statement.setInt(2, CVV);
+           if (! statement.executeQuery().next()) {
+               throw new ServiceException("account.notexist");
+           }
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
+    }
+
+    @Override
     public void takeMoney(long card, int CVV, long money) throws ServiceException {
-        logger.info("transaction take money on card " + card + ", money " + money);
+        logger.info("transaction take money from card " + card + ", money " + money);
         try (PreparedStatement statement = connection.prepareStatement(TAKE_MONEY)){
             statement.setLong(1, money);
             statement.setLong(2, card);

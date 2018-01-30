@@ -26,6 +26,7 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        logger.info(req.getLocalAddr());
         logger.info(getServletName() + " get request");
         processRequest(req, resp);
     }
@@ -33,6 +34,7 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        logger.info(req.getLocalAddr());
         logger.info(getServletName() + " post request");
         processRequest(req, resp);
     }
@@ -41,16 +43,17 @@ public class Servlet extends HttpServlet {
         throws ServletException, IOException {
         try {
             HttpSession session = req.getSession();
-            session.setAttribute(SessionParam.PATH, req.getRequestURI());
+            logger.info(req.getRequestURL().toString());
             ActionFactory client = new ActionFactory();
             Action action = client.defineAction(req);
             ServletAction dispatcher = action.execute(req, resp);
             dispatcher.action(req, resp);
+            session.setAttribute(SessionParam.PATH, req.getRequestURL().toString());
         } catch (CommandException e) {
             e.printStackTrace();
             logger.error("command exception", e);
             resp.sendError(400, e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             logger.error("internal server error", e);
             e.printStackTrace();
             resp.sendError(500);

@@ -10,63 +10,90 @@
     <c:import url="/WEB-INF/static/menu.jsp"/>
     <div class="content container">
         <div class="col-sm-12">
-            <div class="col-sm-5">
-                <b>Login:</b> ${sessionScope.user.login} <br>
-                <b>Email:</b> ${sessionScope.user.email} <br>
-            </div>
-            <div class="col-sm-7">
-                <h2><fmt:message bundle="${msg}" key="ticket.active"/> </h2>
-                <div class="ticket-table">
-                    <div class="ticket-header">
-                        <div class="ticket-cell">#</div>
-                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
-                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
-                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="ticket_type"/></div></div>
-                    <c:forEach items="${requestScope.activeTickets}" var="a">
-                        <div class="ticket-row">
-                            <div class="ticket-cell">
-                                    ${a.id}
-                            </div>
-                            <div class="ticket-cell">
-                                    ${a.departure}
-                            </div>
-                            <div class="ticket-cell">
-                                    ${a.arrival}
-                            </div>
-                            <div class="ticket-cell">
-                                    ${a.type}
-                            </div>
-                        </div>
-                    </c:forEach>
+            <b>Login:</b> ${sessionScope.user.login} <br>
+            <b>Email:</b> ${sessionScope.user.email} <br>
+        </div>
+        <div class="col-sm-12">
+            <h2><fmt:message bundle="${msg}" key="ticket.active"/> </h2>
+            <div class="ticket-table">
+                <div class="ticket-header">
+                    <div class="ticket-cell">#</div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="person"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="place"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="ticket_type"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="cruise_name"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="passenger.amount"/></div>
                 </div>
-                <hr>
-                <h2><fmt:message bundle="${msg}" key="ticket.old"/></h2>
-                <div class="ticket-table">
-                    <div class="ticket-header">
-                        <div class="ticket-cell">#</div>
-                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
-                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
-                        <div class="ticket-cell"><fmt:message bundle="${msg}" key="ticket_type"/></div>
+                <c:forEach items="${requestScope.activeTickets}" var="a">
+                    <div class="ticket-row">
+                        <div class="ticket-cell">
+                                ${a.id}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.person}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.place}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.type}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.tour.name}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.tour.departure}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.tour.arrival}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.amountPassengers}
+                        </div>
                     </div>
-                    <c:forEach items="${requestScope.oldTickets}" var="a">
-                        <div class="ticket-row">
-                            <div class="ticket-cell">
-                                    ${a.id}
-                            </div>
-                            <div class="ticket-cell">
-                                    ${a.departure}
-                            </div>
-                            <div class="ticket-cell">
-                                    ${a.arrival}
-                            </div>
-                            <div class="ticket-cell">
-                                    ${a.type}
-                            </div>
-                        </div>
-                    </c:forEach>
-                </div>
-                <hr>
+                </c:forEach>
             </div>
+            <hr>
+            <h2><fmt:message bundle="${msg}" key="ticket.old"/></h2>
+            <div class="ticket-table">
+                <div class="ticket-header">
+                    <div class="ticket-cell">#</div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="person"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="place"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="ticket_type"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="cruise_name"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="departure"/></div>
+                    <div class="ticket-cell"><fmt:message bundle="${msg}" key="arrival"/></div>
+                </div>
+                <c:forEach items="${requestScope.oldTickets}" var="a">
+                    <div class="ticket-row">
+                        <div class="ticket-cell">
+                                ${a.id}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.person}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.place}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.type}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.tour.name}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.tour.departure}
+                        </div>
+                        <div class="ticket-cell">
+                                ${a.tour.arrival}
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+            <hr>
         </div>
     </div>
     <c:import url="/WEB-INF/static/footer.jsp"/>

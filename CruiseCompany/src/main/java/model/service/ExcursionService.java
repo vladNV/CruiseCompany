@@ -2,7 +2,7 @@ package model.service;
 
 import model.dao.FactoryDAO;
 import model.dao.interfaces.ExcursionDAO;
-import model.dao.mysql.ConnectionPool;
+import model.dao.ConnectionPool;
 import model.entity.Excursion;
 
 import java.util.List;
@@ -20,7 +20,8 @@ public class ExcursionService {
 
     public List<Excursion> showExcursions() {
         logger.info("show excursion");
-        try (ExcursionDAO excursionDAO = factory.excursionDAO(ConnectionPool.pool().connect())){
+        try (ExcursionDAO excursionDAO = factory
+                .excursionDAO(ConnectionPool.pool().connect())){
             return excursionDAO.joinWithPort();
         } catch (Exception e) {
             logger.error("Excursion service exception", e);
@@ -28,20 +29,10 @@ public class ExcursionService {
         }
     }
 
-    public List<Excursion> showCruiseExcursion(int tourId) {
-        logger.info("show cruise excursion " + tourId);
-        try (ExcursionDAO excursionDAO = factory
-                .excursionDAO(ConnectionPool.pool().connect())){
-            return excursionDAO.cruiseExcursion(tourId);
-        } catch (Exception e) {
-            logger.error(e);
-            throw new RuntimeException(e);
-        }
-    }
-
     public Excursion getExcursion(int id) {
         logger.info("get excursion " + id);
-        try (ExcursionDAO excursionDAO = factory.excursionDAO(ConnectionPool.pool().connect())){
+        try (ExcursionDAO excursionDAO = factory
+                .excursionDAO(ConnectionPool.pool().connect())){
             return excursionDAO.findById(id);
         } catch (Exception e) {
             logger.error(e);

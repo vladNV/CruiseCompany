@@ -13,8 +13,6 @@ public class TicketAmount implements Mapper<AggregateOperation<Integer, Ticket>>
     public AggregateOperation<Integer, Ticket>
     extract(ResultSet rs) throws SQLException {
         Ticket t = Ticket.newTicket()
-                .arrival(rs.getTimestamp("arrival").toLocalDateTime())
-                .departure(rs.getTimestamp("departure").toLocalDateTime())
                 .price(rs.getLong("price"))
                 .type(TicketClass.valueOf(rs.getString("type")))
                 .build();

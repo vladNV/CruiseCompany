@@ -3,6 +3,11 @@
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="jt" %>
 <c:set var="locale" scope="session"
        value="${sessionScope.locale}" />
+<c:if test="${sessionScope.currency == null}">
+    <c:set scope="session" value="1" var="currency"/>
+</c:if>
+<c:set var="currency" scope="session"
+       value="${sessionScope.currency}"/>
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle  basename="messages" var="msg"/>
 <%@ page isELIgnored="false" %>

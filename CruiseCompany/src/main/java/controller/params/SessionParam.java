@@ -1,9 +1,10 @@
 package controller.params;
 
 public interface SessionParam {
+    String LOCALE = "locale";
+    String CURRENCY = "currency";
     String CART = "cart";
     String USER = "user";
-    // ??? what to do, with path?
     String PATH = "path";
     String LASTPATH = "lastPath";
     String ROLE = "role";

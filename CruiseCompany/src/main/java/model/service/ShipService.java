@@ -2,7 +2,7 @@ package model.service;
 
 import model.dao.FactoryDAO;
 import model.dao.interfaces.ShipDAO;
-import model.dao.mysql.ConnectionPool;
+import model.dao.ConnectionPool;
 import model.entity.Ship;
 import org.apache.log4j.Logger;
 

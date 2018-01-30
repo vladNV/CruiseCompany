@@ -18,8 +18,7 @@ import java.util.regex.Pattern;
 @WebFilter(urlPatterns = {"/"}, servletNames = "Servlet")
 public class FilterAccess implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
+    public void init(FilterConfig filterConfig) throws ServletException { }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,

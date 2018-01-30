@@ -11,52 +11,41 @@
 <div class="container content">
     <div class="col-sm-3"></div>
     <div class="col-sm-6 registration">
-        <form class="form-group" action="registration" method="post">
+        <form class="form-group" action="signup" method="post">
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="login"/>"
-                       min="3" max="75" required pattern="^[A-Za-z0-9_]{3,75}$"
-                       class="form-control" name="login">
+                       minlength="3" maxlength="75" required
+                       pattern="^[A-Za-z0-9_]{3,75}$"
+                       class="form-control" title="" name="login">
             </div>
             <div class="form-group">
                 <input type="email" placeholder="<fmt:message bundle="${msg}" key="email"/>"
-                       min="5" max="100" required class="form-control" name="email">
+                       minlength="5" maxlength="100" required
+                       class="form-control" name="email">
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="password"/>"
-                       min="4" max="16" type="password" required pattern="[A-Za-z0-9]{4,16}"
-                       class="form-control" name="password">
+                       minlength="4" maxlength="16" type="password" required
+                       pattern="[A-Za-z0-9]{4,16}"
+                       class="form-control" name="password"
+                       title="<fmt:message bundle="${msg}" key="reg.pass"/>"/>
             </div>
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="repeat_password"/>"
-                       min="4" max="16" type="password" name="repassword"
+                       minlength="4" maxlength="16" type="password" name="repassword"
                        pattern="[A-Za-z0-9]{4,16}"
+                       title="<fmt:message bundle="${msg}" key="reg.pass"/>"
                        required class="form-control">
             </div>
-            <div class="form-group">
-            <c:if test="${requestScope.wrong != null}">
-                <span style="color:red">
-                    <fmt:message bundle="${msg}" key="${requestScope.wrong}"/><br>
-                </span>
-            </c:if>
-            <c:if test="${requestScope.wrongEmail != null}">
-                <span style="color:red">
-                        <fmt:message bundle="${msg}" key="${requestScope.wrongEmail}"/><br>
-                </span>
-            </c:if>
-            <c:if test="${requestScope.wrongPass != null}">
-                <span style="color:red">
-                    <fmt:message bundle="${msg}" key="${requestScope.wrongPass}"/><br>
-                </span>
-            </c:if>
-            <c:if test="${requestScope.wrongLogin != null}">
-                <span style="color:red">
-                    <fmt:message bundle="${msg}" key="${requestScope.wrongLogin}"/>
-                </span><br>
-            </c:if>
+            <div class="form-group" style="color:red; font-weight: bold;">
+                <c:forEach items="${requestScope.wrong}" var="i">
+                   <fmt:message bundle="${msg}" key="${i}"/> <br>
+                </c:forEach>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary pull-right">
-                    <fmt:message bundle="${msg}" key="sign_up"/></button>
+                    <fmt:message bundle="${msg}" key="sign_up"/>
+                </button>
             </div>
         </form>
     </div>

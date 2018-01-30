@@ -1,13 +1,20 @@
 package controller.cmd;
 
+import controller.cmd.admin.AddCruise;
+import controller.cmd.admin.AddTickets;
+import controller.cmd.admin.CruiseEditor;
+import controller.cmd.user.*;
 import controller.util.MessageManager;
 
 import java.util.Locale;
 
 public enum ActionEnum {
-    LOGIN               {{ action = new SignIn(); }},
+
+    LOGIN               {{ action = new Login(); }},
+    SIGNIN              {{ action = new SignIn(); }},
+    REGISTRATION        {{ action = new Registration(); }},
+    SIGNUP              {{ action = new SignUp(); }},
     LOGOUT              {{ action = new SignOut(); }},
-    REGISTRATION        {{ action = new SignUp(); }},
     MAIN                {{ action = new ShowTourList(); }},
     TOUR                {{ action = new OpenTour(); }},
     EXCURSIONS          {{ action = new ShowExcursionList(); }},
@@ -15,11 +22,9 @@ public enum ActionEnum {
     ADD_CRUISE          {{ action = new AddCruise(); }},
     CONFIRM             {{ action = new Confirm(); }},
     EXCURSION           {{ action = new AddRemoveExcursion(); }},
-    STANDARD            {{ action = new ChooseTicket(); }},
-    PREMIUM             {{ action = new ChooseTicket(); }},
-    LUXE                {{ action = new ChooseTicket(); }},
+    TICKET              {{ action = new ChooseTicket(); }},
     UA                  {{ action = new SwitchLanguage(MessageManager.UKRAINE); }},
-    ENG                 {{ action = new SwitchLanguage(Locale.ENGLISH); }},
+    ENG                 {{ action = new SwitchLanguage(Locale.US); }},
     BUY                 {{ action = new BuyTicket(); }},
     SEARCH              {{ action = new Search(); }},
     ADDCRUISE           {{ action = new AddCruise();}},

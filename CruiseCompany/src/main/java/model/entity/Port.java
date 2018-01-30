@@ -44,6 +44,10 @@ public class Port implements Cloneable, Serializable, Entity {
         return excursions;
     }
 
+    public void setExcursions(List<Excursion> excursions) {
+        this.excursions = excursions;
+    }
+
     public List<Route> getRoutes() {
         return routes;
     }

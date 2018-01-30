@@ -1,25 +1,21 @@
 package model.service;
 
+import controller.util.Currency;
 import model.CruiseCompany;
 import model.dao.FactoryDAO;
 import model.dao.interfaces.ExcursionDAO;
+import model.dao.interfaces.RouteDAO;
 import model.dao.interfaces.TicketDAO;
 import model.dao.interfaces.UserDAO;
-import model.dao.mysql.ConnectionPool;
-import model.entity.Excursion;
-import model.entity.Ticket;
-import model.entity.User;
+import model.dao.ConnectionPool;
+import model.entity.*;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
-import model.entity.TicketClass;
-import model.entity.Tuple;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TicketService {
     private final static Logger logger = Logger.getLogger(TicketService.class);
@@ -40,14 +36,49 @@ public class TicketService {
         }
     }
 
-    public Ticket chooseTicket(TicketClass type, int tourId) {
-        logger.info("choose ticket: " + tourId + "," + type);
-        try (TicketDAO ticketDAO = factory.ticketDAO(ConnectionPool.pool().connect())) {
-            return ticketDAO.findTicketByType(type, tourId);
+    public List<Ticket> showTicketsForTour(int tourId) {
+        logger.info("show tickets for tour " + tourId);
+        try (TicketDAO ticketDAO = factory.ticketDAO(ConnectionPool.pool().connect())){
+            return ticketDAO.tourTickets(tourId);
         } catch (Exception e) {
             logger.error(e);
             throw new RuntimeException(e);
         }
+    }
+
+    public Ticket chooseTicket(int ticketId) {
+        logger.info("choose ticket: " + ticketId);
+        Connection connection = ConnectionPool.pool().connect();
+        try (TicketDAO ticketDAO = factory.ticketDAO(connection);
+            RouteDAO routeDAO = factory.routeDAO(connection);
+            ExcursionDAO excursionDAO = factory.excursionDAO(connection)) {
+            connection.setAutoCommit(false);
+            Ticket ticket = ticketDAO.getTourTicket(ticketId);
+            Tour tour = ticket.getTour();
+            List<Route> routes = routeDAO.routesOfCruise(tour.getId());
+            List<Excursion> excursions = excursionDAO.cruiseExcursion(tour.getId());
+            tour.setRoutes(putExcursionInTour(routes, excursions));
+            connection.commit();
+            return ticket;
+        } catch (Exception e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<Route> putExcursionInTour(final List<Route> routes,
+                                           final List<Excursion> excursions) {
+        final HashMap<Port, List<Excursion>> map = new HashMap<>();
+        Port port;
+        for (Excursion ex : excursions) {
+            port = ex.getPort();
+            map.computeIfAbsent(port, v -> new ArrayList<>()).add(ex);
+        }
+        for (Route r : routes) {
+            port = r.getPort();
+            port.setExcursions(map.get(port));
+        }
+        return routes;
     }
 
     public void buyTicket(Ticket ticket, Set<Excursion> excursions,
@@ -60,6 +91,8 @@ public class TicketService {
              UserDAO userDAO = factory.userDAO(connect)){
             logger.info("start transaction for " + ticket.getId() + " user, " + user.getId());
             connect.setAutoCommit(false);
+            connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            userDAO.existUser(card, cvv);
             ticketDAO.existTicket(user.getId(), ticket.getTour().getId());
             userDAO.takeMoney(card, cvv, money);
             userDAO.putMoney(CruiseCompany.CARD, money);
@@ -77,11 +110,11 @@ public class TicketService {
     }
 
     public Tuple<List<Ticket>, List<Ticket>>
-    userTickets(int userId, LocalDateTime to) {
-        logger.info("user tickets: " + userId);
+    userTickets(User user, LocalDateTime to) {
+        logger.info("user tickets: " + user.getId());
         try (TicketDAO ticketDAO = factory
                 .ticketDAO(ConnectionPool.pool().connect())) {
-            List<Ticket> all = ticketDAO.ticketsForId(userId);
+            List<Ticket> all = ticketDAO.userTickets(user.getId());
             return delimListForDate(to, all);
         } catch (Exception e) {
             logger.error(e);
@@ -95,7 +128,7 @@ public class TicketService {
         List<Ticket> active = new ArrayList<>();
         List<Ticket> old = new ArrayList<>();
         for (Ticket t : all) {
-           if (t.getArrival().compareTo(to) > 0) {
+           if (t.getTour().getArrival().compareTo(to) > 0) {
                active.add(t);
            } else {
                old.add(t);
@@ -104,23 +137,17 @@ public class TicketService {
         return new Tuple<>(active, old);
     }
 
-    public List<Ticket> extractTicket(String[] prices, String[] types,
-                                      String[] amounts, LocalDateTime departure,
-                                      LocalDateTime arrival) {
+    public List<Ticket> extractTicket(String[] prices, HashMap<TicketClass,
+                                      List<TicketBonus>> map, int[] quantity) {
+        TicketClass[] types = TicketClass.values();
         List<Ticket> tickets = new ArrayList<>();
-        int amount;
-        long price;
-        TicketClass type;
-        for (int i = 0; i < amounts.length; i++) {
-            amount = Integer.parseInt(amounts[i]);
-            type = TicketClass.valueOf(types[i].toUpperCase());
-            price = Long.parseLong(prices[i]);
-            for (int j = 0; j < amount; j++) {
+        for (TicketClass type : types) {
+            for (int i = 0; i < quantity[type.ordinal()]; i++) {
                 tickets.add(Ticket.newTicket()
-                        .price(price)
-                        .type(type)
-                        .departure(departure)
-                        .arrival(arrival)
+                        .bonus(map.get(type))
+                        .price(Long.parseLong(
+                                prices[type.ordinal()]) * Currency.Const.ACCURACY
+                        ).type(type)
                         .build());
             }
         }
