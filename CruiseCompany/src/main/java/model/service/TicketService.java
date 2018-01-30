@@ -7,7 +7,7 @@ import model.dao.interfaces.ExcursionDAO;
 import model.dao.interfaces.RouteDAO;
 import model.dao.interfaces.TicketDAO;
 import model.dao.interfaces.UserDAO;
-import model.dao.mysql.ConnectionPool;
+import model.dao.ConnectionPool;
 import model.entity.*;
 import model.exceptions.ServiceException;
 import model.dao.mapper.AggregateOperation;
@@ -72,14 +72,8 @@ public class TicketService {
         Port port;
         for (Excursion ex : excursions) {
             port = ex.getPort();
-            if (map.containsKey(port)) {
-                map.get(port).add(ex);
-            } else {
-                map.put(port,  new ArrayList<>(Collections.singletonList(ex)));
-            }
+            map.computeIfAbsent(port, v -> new ArrayList<>()).add(ex);
         }
-        // routes.forEach((route -> route.getPort()
-        // .setExcursions((map.get(route.getPort())))));
         for (Route r : routes) {
             port = r.getPort();
             port.setExcursions(map.get(port));

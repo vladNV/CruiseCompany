@@ -1,5 +1,6 @@
 package model.dao.interfaces;
 
+
 import java.util.List;
 
 interface GenericDAO<E> extends AutoCloseable {

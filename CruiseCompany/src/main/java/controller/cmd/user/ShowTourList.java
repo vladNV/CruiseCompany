@@ -1,6 +1,6 @@
-package controller.cmd;
+package controller.cmd.user;
 
-import controller.exceptions.CommandException;
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
@@ -15,7 +15,7 @@ public class ShowTourList implements Action {
 
     private final TourService service;
 
-    ShowTourList() {
+    public ShowTourList() {
         service = new TourService();
     }
 

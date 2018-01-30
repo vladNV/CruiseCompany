@@ -12,7 +12,7 @@ public class RequestUtil {
         URI = URI.substring(1, URI.length());
         String[] s = URI.split("/");
         for (int i = s.length - 1; i >= 0; i--) {
-            if (s[i].matches(RegexpURI.URI_ACTION)) {
+            if (s[i].matches(Regexp.URI_ACTION)) {
                 return s[i];
             }
         }
@@ -33,16 +33,6 @@ public class RequestUtil {
             id = 0;
         }
         return id;
-    }
-
-     public static String getTicketType(String uri) {
-        String ticketType = "";
-        Pattern pattern = Pattern.compile(RegexpURI.TICKET_TYPE);
-        Matcher matcher = pattern.matcher(uri);
-        while (matcher.find()) {
-            ticketType = matcher.group();
-        }
-        return ticketType;
     }
 
     public static boolean validate(String param, String regex) {

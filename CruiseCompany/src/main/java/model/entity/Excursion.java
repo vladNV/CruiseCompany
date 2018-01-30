@@ -38,7 +38,7 @@ public class Excursion implements Cloneable, Serializable, Entity {
         return new Builder();
     }
 
-    public static class Builder implements model.entity.Builder<Excursion> {
+    public static class Builder {
         private int id;
         private String name;
         private long price;
@@ -64,7 +64,6 @@ public class Excursion implements Cloneable, Serializable, Entity {
             return this;
         }
 
-        @Override
         public Excursion build() {
             return new Excursion(id, name, price, port);
         }

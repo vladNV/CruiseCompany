@@ -1,5 +1,6 @@
-package controller.cmd;
+package controller.cmd.user;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
@@ -21,7 +22,7 @@ import static controller.util.RequestUtil.nullCheck;
 public class ShowUserTickets implements Action {
     private TicketService service;
 
-    ShowUserTickets() {
+    public ShowUserTickets() {
         service = new TicketService();
     }
 

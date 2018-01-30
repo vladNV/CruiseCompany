@@ -1,11 +1,13 @@
-package controller.cmd;
+package controller.cmd.user;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.Regexp;
 import controller.util.URI;
-import futures.Verify;
+import controller.util.Verify;
+import model.exceptions.UniqueException;
 import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class SignUp implements Action {
     private static final String PARAM_REPASSWORD = "repassword";
     private static final String PARAM_LOGIN = "login";
 
-    SignUp() {
+    public SignUp() {
         service = new UserService();
     }
 
@@ -44,12 +46,12 @@ public class SignUp implements Action {
             request.setAttribute(RequestParam.WRONG, verify.getRemarks());
             return forward;
         }
-        // TODO service exception
-        if (!service.uniqueEmail(email)) {
+        try {
+            service.registration(password, login, email);
+        } catch (UniqueException e) {
             request.setAttribute(RequestParam.WRONG,"email_not_unique");
             return forward;
         }
-        service.registration(password, login, email);
         return new Forward(URI.SUCCESS_REG_JSP);
     }
 

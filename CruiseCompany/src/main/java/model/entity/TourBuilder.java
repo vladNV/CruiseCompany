@@ -1,4 +1,4 @@
-package controller.util;
+package model.entity;
 
 import model.entity.Port;
 import model.entity.Ship;

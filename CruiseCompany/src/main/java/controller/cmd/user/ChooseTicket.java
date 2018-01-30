@@ -1,9 +1,11 @@
-package controller.cmd;
+package controller.cmd.user;
 
+import controller.cmd.Action;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.*;
+import model.entity.Cart;
 import model.entity.Ticket;
 import model.service.TicketService;
 
@@ -16,7 +18,7 @@ import static controller.util.RequestUtil.nullCheck;
 public class ChooseTicket implements Action {
     private TicketService ticketService;
 
-    ChooseTicket() {
+    public ChooseTicket() {
         ticketService = new TicketService();
     }
 

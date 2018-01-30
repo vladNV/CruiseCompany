@@ -1,12 +1,14 @@
-package controller.cmd;
+package controller.cmd.user;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
 import controller.util.*;
-import futures.Verify;
+import controller.util.Verify;
+import model.entity.Cart;
 import model.entity.User;
 import model.service.UserService;
 
@@ -22,7 +24,7 @@ public class SignIn implements Action {
     private static final String PARAM_EMAIL = "email";
     private static final String PARAM_PASSWORD = "password";
 
-    SignIn() {
+    public SignIn() {
         this.service = new UserService();
     }
 

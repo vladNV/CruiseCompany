@@ -1,13 +1,22 @@
 package serviceTest;
 
+import model.entity.User;
+import model.exceptions.UniqueException;
 import model.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
     UserService service = new UserService();
+
+    @Test(expected = UniqueException.class)
+    public void addUserTest() {
+        service.registration("123","login","vlad.nagaev.vn@gmail.com" );
+    }
 
     @Before
     public void init() {

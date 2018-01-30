@@ -1,5 +1,9 @@
 package controller.cmd;
 
+import controller.cmd.admin.AddCruise;
+import controller.cmd.admin.AddTickets;
+import controller.cmd.admin.CruiseEditor;
+import controller.cmd.user.*;
 import controller.util.MessageManager;
 
 import java.util.Locale;
@@ -11,7 +15,6 @@ public enum ActionEnum {
     REGISTRATION        {{ action = new Registration(); }},
     SIGNUP              {{ action = new SignUp(); }},
     LOGOUT              {{ action = new SignOut(); }},
-
     MAIN                {{ action = new ShowTourList(); }},
     TOUR                {{ action = new OpenTour(); }},
     EXCURSIONS          {{ action = new ShowExcursionList(); }},

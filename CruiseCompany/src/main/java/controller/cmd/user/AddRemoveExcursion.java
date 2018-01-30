@@ -1,14 +1,15 @@
-package controller.cmd;
+package controller.cmd.user;
 
+import controller.cmd.Action;
 import controller.exceptions.CommandException;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
-import controller.util.Cart;
+import model.entity.Cart;
 import controller.util.Regexp;
 import controller.util.URI;
-import futures.Verify;
+import controller.util.Verify;
 import model.entity.Excursion;
 import model.service.ExcursionService;
 
@@ -25,7 +26,7 @@ public class AddRemoveExcursion implements Action {
     private static final String CMD_REMOVE = "remove";
     private static final String CMD_ADD = "add";
 
-    AddRemoveExcursion() {
+    public AddRemoveExcursion() {
         service = new ExcursionService();
     }
 

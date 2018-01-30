@@ -1,7 +1,5 @@
 package model.exceptions;
 
-import java.sql.SQLException;
-
 public class ServiceException extends Exception {
     private String exceptionCause;
     public ServiceException(String reason) {

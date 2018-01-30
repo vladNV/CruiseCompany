@@ -1,10 +1,11 @@
-package controller.cmd;
+package controller.cmd.admin;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
-import controller.util.TourBuilder;
+import model.entity.TourBuilder;
 import controller.util.URI;
 import model.service.PortService;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CruiseEditor implements Action {
     private PortService portService;
 
-    CruiseEditor() {
+    public CruiseEditor() {
         this.portService = new PortService();
     }
 

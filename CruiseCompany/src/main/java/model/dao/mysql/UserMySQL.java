@@ -6,6 +6,7 @@ import model.dao.mapper.Mapper;
 import model.dao.mapper.UserMapper;
 import model.entity.User;
 import model.exceptions.ServiceException;
+import model.exceptions.UniqueException;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -24,12 +25,15 @@ public class UserMySQL implements UserDAO {
     public int insert(User user) {
         logger.info("insert");
         try (PreparedStatement statement = connection
-                .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
+                .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getEmail());
             statement.execute();
             return EntityMapper.getKey(statement.getGeneratedKeys());
+        } catch (SQLIntegrityConstraintViolationException e) {
+            logger.error(e.getMessage(), e);
+            throw new UniqueException("such email isn't unique", user.getEmail());
         } catch (SQLException e) {
             logger.error(e.getSQLState(), e);
             throw new RuntimeException(e);

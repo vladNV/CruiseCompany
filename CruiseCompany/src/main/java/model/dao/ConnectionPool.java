@@ -1,4 +1,4 @@
-package model.dao.mysql;
+package model.dao;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

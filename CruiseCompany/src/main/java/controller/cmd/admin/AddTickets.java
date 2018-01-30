@@ -1,14 +1,15 @@
-package controller.cmd;
+package controller.cmd.admin;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.Redirect;
 import controller.servlet.ServletAction;
 import controller.util.Regexp;
-import controller.util.TourBuilder;
+import model.entity.TourBuilder;
 import controller.util.URI;
-import futures.Verify;
+import controller.util.Verify;
 import model.entity.*;
 import model.service.ShipService;
 import model.service.TicketService;
@@ -33,7 +34,7 @@ public class AddTickets implements Action {
     private static final String PARAM_BONUS = "bonus";
     private static final String PARAM_SHIP = "ship";
 
-    AddTickets() {
+    public AddTickets() {
         serviceShip = new ShipService();
         serviceTour = new TourService();
         serviceTicket = new TicketService();

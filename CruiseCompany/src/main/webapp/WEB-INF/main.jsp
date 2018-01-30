@@ -8,6 +8,14 @@
 <body>
     <c:import url="/WEB-INF/static/menu.jsp"/>
     <div class="wrapper">
+    <div class="col-sm-12">
+        <select name="language" style="margin-top: 16px;"
+                id="language" onchange="location = this.value;">
+            <option selected value=""><fmt:message bundle="${msg}"  key="language"/></option>
+            <option value="${pageContext.request.contextPath}/eng">ENG</option>
+            <option value="${pageContext.request.contextPath}/ua">UA</option>
+        </select>
+    </div>
     <div class="col-sm-12 center-block content">
         <h2><fmt:message bundle="${msg}" key="tours"/></h2>
         <div class="tour-table">

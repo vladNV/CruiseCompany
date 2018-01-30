@@ -1,7 +1,7 @@
 package controllerTest;
 
 import controller.util.Regexp;
-import futures.Verify;
+import controller.util.Verify;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

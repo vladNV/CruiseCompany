@@ -1,13 +1,14 @@
-package controller.cmd;
+package controller.cmd.admin;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.params.SessionParam;
 import controller.servlet.Forward;
 import controller.servlet.ServletAction;
 import controller.util.Regexp;
-import controller.util.TourBuilder;
+import model.entity.TourBuilder;
 import controller.util.URI;
-import futures.Verify;
+import controller.util.Verify;
 import model.entity.Route;
 import model.entity.Tour;
 import model.exceptions.RouteTimeException;
@@ -32,7 +33,7 @@ public class AddCruise implements Action {
     private static final String PARAM_ROUTE_NAME = "routeName";
     private static final String PARAM_PORT = "port";
 
-    AddCruise() {
+    public AddCruise() {
         routeService = new RouteService();
         serviceShip = new ShipService();
     }

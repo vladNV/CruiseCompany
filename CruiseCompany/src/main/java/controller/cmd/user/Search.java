@@ -1,5 +1,6 @@
-package controller.cmd;
+package controller.cmd.user;
 
+import controller.cmd.Action;
 import controller.params.RequestParam;
 import controller.servlet.Forward;
 import controller.servlet.Redirect;
