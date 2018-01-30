@@ -1,11 +1,11 @@
 package model.dao.queries;
 
 public interface TicketSQL {
-      String INSERT =             "insert into ticket(idtour, arrival, departure, price, type, place) " +
-                                  "values(?, ?, ?, ?, ?, ?)";
+      String INSERT =             "insert into ticket(idtour, price, type, place, bonus) " +
+                                  "values(?, ?, ?, ?, ?)";
 
-      String UPDATE =             "update ticket set idtour = ?, iduser = ?, arrival = ?, " +
-                                  "departure = ?, price = ?, type = ?";
+      String UPDATE =             "update ticket set idtour = ?, iduser = ?, person = ?, " +
+                                  "place = ?, price = ?, type = ?";
 
       String FIND =               "select * from ticket where idticket = ?";
 

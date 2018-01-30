@@ -1,5 +1,6 @@
 package model.service;
 
+import controller.util.Currency;
 import model.CruiseCompany;
 import model.dao.FactoryDAO;
 import model.dao.interfaces.ExcursionDAO;
@@ -142,21 +143,17 @@ public class TicketService {
         return new Tuple<>(active, old);
     }
 
-    public List<Ticket> extractTicket(String[] prices, String[] types,
-                                      String[] amounts, LocalDateTime departure,
-                                      LocalDateTime arrival) {
+    public List<Ticket> extractTicket(String[] prices, HashMap<TicketClass,
+                                      List<TicketBonus>> map, int[] quantity) {
+        TicketClass[] types = TicketClass.values();
         List<Ticket> tickets = new ArrayList<>();
-        int amount;
-        long price;
-        TicketClass type;
-        for (int i = 0; i < amounts.length; i++) {
-            amount = Integer.parseInt(amounts[i]);
-            type = TicketClass.valueOf(types[i].toUpperCase());
-            price = Long.parseLong(prices[i]);
-            for (int j = 0; j < amount; j++) {
+        for (TicketClass type : types) {
+            for (int i = 0; i < quantity[type.ordinal()]; i++) {
                 tickets.add(Ticket.newTicket()
-                        .price(price)
-                        .type(type)
+                        .bonus(map.get(type))
+                        .price(Long.parseLong(
+                                prices[type.ordinal()]) * Currency.Const.ACCURACY
+                        ).type(type)
                         .build());
             }
         }

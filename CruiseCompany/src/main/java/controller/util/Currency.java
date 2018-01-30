@@ -3,6 +3,8 @@ package controller.util;
 import java.util.Locale;
 
 public enum Currency {
+
+
     UAH(28.9351852f), USD(1);
 
     private float currency;
@@ -24,4 +26,10 @@ public enum Currency {
             return USD;
         }
     }
+
+    public static class Const {
+        // one dollar is 1000 points
+        public static final long ACCURACY = 1000;
+    }
+
 }

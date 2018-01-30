@@ -173,11 +173,10 @@ public class TicketMySQL implements TicketDAO {
             int iterator = 1;
             for (Ticket ticket : tour.getTickets()) {
                 statement.setInt(1, tour.getId());
-                statement.setTimestamp(2, Timestamp.valueOf(tour.getArrival()));
-                statement.setTimestamp(3, Timestamp.valueOf(tour.getDeparture()));
-                statement.setLong(4, ticket.getPrice());
-                statement.setString(5, String.valueOf(ticket.getType()));
-                statement.setInt(6, iterator++);
+                statement.setLong(2, ticket.getPrice());
+                statement.setString(3, String.valueOf(ticket.getType()));
+                statement.setInt(4, iterator++);
+                statement.setString(5, ticket.getBonusRow());
                 statement.addBatch();
             }
             statement.executeBatch();

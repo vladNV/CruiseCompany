@@ -15,6 +15,7 @@ public class TicketMapper implements Mapper<Ticket> {
                 .person(rs.getString("person"))
                 .price(rs.getLong("price"))
                 .type(TicketClass.valueOf(rs.getString("type")))
+                .bonus(rs.getString("bonus"))
                 .build();
     }
 }

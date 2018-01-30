@@ -1,7 +1,9 @@
 package model.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Ticket implements Cloneable, Serializable, Entity {
     private final static long serialVersionUID = 1L;
@@ -12,12 +14,13 @@ public class Ticket implements Cloneable, Serializable, Entity {
     private TicketClass type;
     private String person;
     private int place;
+    private List<TicketBonus> bonus;
     private User user;
     private Tour tour;
 
     private Ticket(int id, String person, int place, long price,
                    int amountPassengers, TicketClass type,
-                   User user, Tour tour) {
+                   User user, Tour tour, List<TicketBonus> bonus) {
         this.id = id;
         this.person = person;
         this.place = place;
@@ -25,7 +28,21 @@ public class Ticket implements Cloneable, Serializable, Entity {
         this.type = type;
         this.user = user;
         this.tour = tour;
+        this.bonus = bonus;
         this.amountPassengers = amountPassengers;
+    }
+
+    public List<TicketBonus> getBonus() {
+        return bonus;
+    }
+
+    public String getBonusRow() {
+        StringBuilder sb = new StringBuilder();
+        for (TicketBonus bonus : this.bonus) {
+            sb.append(bonus.toString()).append(",");
+        }
+        if (sb.toString().isEmpty()) return "";
+        return sb.toString().substring(0, sb.length() - 1);
     }
 
     public int getId() {
@@ -82,6 +99,7 @@ public class Ticket implements Cloneable, Serializable, Entity {
         private int place;
         private long price;
         private int amountPassengers;
+        private List<TicketBonus> bonus;
         private TicketClass type;
         private User user;
         private Tour tour;
@@ -126,10 +144,26 @@ public class Ticket implements Cloneable, Serializable, Entity {
             return this;
         }
 
+        public Builder bonus(String bonus) {
+            List<TicketBonus> bonusList = new ArrayList<>();
+            if (bonus != null && !bonus.isEmpty()) {
+                List<String> list = Arrays.asList(bonus.split(","));
+                list.forEach(b -> bonusList.add(TicketBonus.valueOf(b.toUpperCase())));
+            }
+            this.bonus = bonusList;
+            return this;
+        }
+
+        public Builder bonus(List<TicketBonus> bonus) {
+            if (bonus == null) bonus = new ArrayList<>();
+            this.bonus = bonus;
+            return this;
+        }
+
         public Ticket build() {
             return new Ticket(id, person, place,
                               price, amountPassengers,
-                              type, user, tour);
+                              type, user, tour, bonus);
         }
     }
 
@@ -155,9 +189,14 @@ public class Ticket implements Cloneable, Serializable, Entity {
 
     @Override
     public String toString() {
-        return "{id = " + id + "\n"
-                + "departure = " + person
-                + ", arrival = " + place + "\n"
-                + "type = " + type + ", price = " + price + "}";
+        return "Ticket{" +
+                "id=" + id +
+                ", price=" + price +
+                ", amountPassengers=" + amountPassengers +
+                ", type=" + type +
+                ", person='" + person + '\'' +
+                ", place=" + place +
+                ", bonus='" + bonus + '\'' +
+                '}';
     }
 }

@@ -34,7 +34,7 @@ public class AddRemoveExcursion implements Action {
                                  final HttpServletResponse response) {
         HttpSession session = request.getSession();
         Forward forward = new Forward(URI.TICKET_JSP);
-        final String excursion = request.getParameter(request.getParameter(PARAM_ID));
+        final String excursion = request.getParameter(PARAM_ID);
         final String command = request.getParameter(PARAM_COMMAND);
         nullCheck(excursion, command);
         Verify verify = new Verify();

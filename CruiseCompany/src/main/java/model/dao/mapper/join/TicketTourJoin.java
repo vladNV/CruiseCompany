@@ -29,6 +29,7 @@ public class TicketTourJoin implements Mapper<Ticket> {
                 .price(rs.getLong("price"))
                 .amountPassengers(rs.getInt("amount_passengers"))
                 .type(TicketClass.valueOf(rs.getString("type")))
+                .bonus(rs.getString("bonus"))
                 .tour(map.get(rs.getInt("idtour")))
                 .build();
     }

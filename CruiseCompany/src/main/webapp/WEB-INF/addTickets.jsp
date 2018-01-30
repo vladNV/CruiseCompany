@@ -11,7 +11,8 @@
     <c:import url="/WEB-INF/static/menu.jsp"/>
     <div class="container content">
         <div class="col-sm-6">
-            <form method="post" action="${pageContext.request.contextPath}/addTickets">
+            <form method="post" id="addTickets"
+                  action="${pageContext.request.contextPath}/addTickets">
                 <div class="form-group">
                     <label>Select free ship:
                         <select class="form-control" name="ship">
@@ -23,63 +24,13 @@
                         </select>
                     </label>
                 </div>
-                <div class="form-group">
-                    <h4>STANDARD TICKET:</h4>
-                    <div class="form-group">
-                        <label>Price in dollars
-                            <input required  name="price"
-                                   pattern="[1-9]{1}\d{1,5}"
-                                   type="number" class="form-control"/>
-                        </label>
-                        <label>Bonuses for standard ticket:
-                            <input type="checkbox" name="bonus_standard" value="beauty_salon">
-                            <input type="checkbox" name="bonus_standard" value="swimming_pool">
-                            <input type="checkbox" name="bonus_standard" value="cinema">
-                            <input type="checkbox" name="bonus_standard" value="sport_room">
-                            <input type="checkbox" name="bonus_standard" value="tennis">
-                            <input type="checkbox" name="bonus_standard" value="library">
-                        </label>
-                        <input type="hidden" name="type"
-                               class="form-control" value="standard"/>
-                    </div>
-                    <h4>PREMIUM TICKET:</h4>
-                    <div class="form-group">
-                        <label>Price in dollars
-                            <input required  name="price" type="number"
-                                   class="form-control"  pattern="[1-9]{1}\d{1,5}"/>
-                        </label>
-                        <label>Bonuses for standard ticket:
-                            <input type="checkbox" name="bonus_premium" value="beauty_salon">
-                            <input type="checkbox" name="bonus_premium" value="swimming_pool">
-                            <input type="checkbox" name="bonus_premium" value="cinema">
-                            <input type="checkbox" name="bonus_premium" value="sport_room">
-                            <input type="checkbox" name="bonus_premium" value="tennis">
-                            <input type="checkbox" name="bonus_premium" value="library">
-                        </label>
-                        <input type="hidden" name="type"
-                               class="form-control" value="premium"/>
-                    </div>
-                    <h4>LUXE TICKET:</h4>
-                    <div class="form-group">
-                        <label>Price in dollars
-                            <input required name="price" type="number"
-                                   pattern="[1-9]{1}\d{1,5}" class="form-control"/>
-                        </label>
-                        <label>Bonuses for standard ticket:
-                            <input type="checkbox" name="bonus_luxe" value="beauty_salon">
-                            <input type="checkbox" name="bonus_luxe" value="swimming_pool">
-                            <input type="checkbox" name="bonus_luxe" value="cinema">
-                            <input type="checkbox" name="bonus_luxed" value="sport_room">
-                            <input type="checkbox" name="bonus_luxe" value="tennis">
-                            <input type="checkbox" name="bonus_luxe" value="library">
-                        </label>
-                        <input type="hidden" name="type"
-                               class="form-control" value="luxe">
-                    </div>
+                <div id="values">
+
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success">Accept</button>
                 </div>
+
                 <div class="form-group" style="color:red; font-weight: bold;">
                     <c:forEach items="${requestScope.wrong}" var="i">
                         <fmt:message bundle="${msg}" key="${i}"/> <br>
@@ -87,6 +38,53 @@
                 </div>
             </form>
         </div>
+        <script>
+            var titles = ['STANDARD TICKET', 'PREMIUM TICKET', 'LUXE TICKET'];
+            var form = document.getElementById('values');
+            var type = ['standard','premium','luxe'];
+            var bonus = ['beauty','pool','cinema',
+                'sport','tennis','library'];
+            for (i = 0; i < titles.length; i++) {
+                var H4 = document.createElement('h4');
+                H4.innerHTML = titles[i];
+                form.appendChild(H4);
+
+                var block = document.createElement('div');
+                block.className = 'form-group';
+
+                var label = document.createElement('label');
+                label.innerText = 'Price in dollars';
+
+                var input = document.createElement('input');
+                input.required = true;
+                input.name = 'price';
+                input.type = 'number';
+                input.className = 'form-control';
+                input.pattern = '[1-9]{1}\\d{1,5}';
+
+                label.appendChild(input);
+                block.appendChild(label);
+                form.appendChild(block);
+
+                for (j = 0; j < bonus.length; j++) {
+                    block = document.createElement('div');
+                    block.className = 'form-group';
+
+                    label = document.createElement('label');
+                    label.innerText = bonus[j].toUpperCase();
+
+                    input = document.createElement('input');
+                    input.name = 'bonus';
+                    input.value = type[i] + ',' + bonus[j];
+                    input.className = 'form-check-input';
+                    input.type = 'checkbox';
+
+                    label.appendChild(input);
+                    block.appendChild(label);
+                    form.appendChild(block);
+                }
+            }
+        </script>
         <div class="col-sm-6"></div>
     </div>
     <c:import url="/WEB-INF/static/footer.jsp"/>
