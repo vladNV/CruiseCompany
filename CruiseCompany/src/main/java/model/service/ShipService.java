@@ -9,6 +9,9 @@ import org.apache.log4j.Logger;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Ship service
+ */
 public class ShipService {
     private final static Logger logger = Logger.getLogger(ShipService.class);
 
@@ -18,6 +21,11 @@ public class ShipService {
         factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
 
+    /**
+     *
+     * @param shipId
+     * @return
+     */
     public Ship selectShip(int shipId) {
         logger.info("select ship: " + shipId);
         try (ShipDAO shipDAO = factory.shipDAO(ConnectionPool.pool().connect())){

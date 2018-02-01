@@ -42,5 +42,10 @@ public class RegexpTest {
         assertEquals(false, "djkhddd9878".matches("\\+?[1-9]{1}\\d{8,13}"));
     }
 
+    @Test
+    public void testRegion() {
+        assertEquals(true, " Italy ".matches(Regexp.REGION));
+    }
+
 
 }

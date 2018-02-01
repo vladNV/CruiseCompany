@@ -40,6 +40,7 @@ public class SignUp implements Action {
         if (!verify
                 .regexp(Regexp.PASSWORD).incorrect("incorrect.password")
                 .validate(password).validate(repassword)
+                .incorrect("password_notequals").equalValues(password, repassword)
                 .regexp(Regexp.LOGIN).incorrect("incorrect.login").validate(login)
                 .regexp(Regexp.EMAIL).incorrect("incorrect.email").validate(email)
                 .allRight()) {

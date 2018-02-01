@@ -11,7 +11,7 @@
 <div class="container content">
     <div class="col-sm-3"></div>
     <div class="col-sm-6 registration">
-        <form class="form-group" action="signup" method="post">
+        <form class="form-group" action="signup" id="reg" method="post">
             <div class="form-group">
                 <input placeholder="<fmt:message bundle="${msg}" key="login"/>"
                        minlength="3" maxlength="75" required

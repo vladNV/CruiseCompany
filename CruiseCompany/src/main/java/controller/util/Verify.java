@@ -20,7 +20,7 @@ public class Verify {
     }
 
     public Verify validate(String val) {
-        if (!val.matches(this.regexp)) {
+        if (!(val.trim().isEmpty()) && !val.matches(this.regexp)) {
             remarks.add(this.incorrect);
         }
         return this;
@@ -32,6 +32,13 @@ public class Verify {
                 remarks.add(incorrect);
                 return this;
             }
+        }
+        return this;
+    }
+
+    public Verify equalValues(String var1, String var2) {
+        if (!var1.equals(var2)) {
+            remarks.add(this.incorrect);
         }
         return this;
     }

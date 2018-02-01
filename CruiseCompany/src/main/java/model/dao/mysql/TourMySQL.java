@@ -124,7 +124,7 @@ public class TourMySQL implements TourDAO {
     public List<Tour> search(String region, int offset) {
         logger.info("search");
         try (PreparedStatement statement = connection.prepareStatement(SEARCH_FOR_REGION)){
-            statement.setString(1, "%" + region + "%");
+            statement.setString(1, region + "%");
             statement.setInt(3, TourService.LIMIT_TOUR);
             statement.setInt(2, offset);
             Mapper<Tour> mapper = new TourShipJoin();

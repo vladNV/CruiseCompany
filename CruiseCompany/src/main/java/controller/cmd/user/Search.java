@@ -23,13 +23,13 @@ public class Search implements Action {
     public Search() {
         this.service = new TourService();
     }
-
+        
     @Override
     public ServletAction execute(final HttpServletRequest request,
                                  final HttpServletResponse response) {
         String search = request.getParameter(PARAM_SEARCH);
         nullCheck(search);
-        if (validate(search, Regexp.TOUR_NAME)) {
+        if (!validate(search, Regexp.REGION)) {
             return new Redirect(URI.MAIN);
         }
         int q = service.quantityOfPages(search);

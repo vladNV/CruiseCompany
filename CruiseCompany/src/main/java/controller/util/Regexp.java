@@ -9,7 +9,7 @@ public interface Regexp {
     String EXCURSION_CMD = "(remove|add)";
     String PRICE = "[1-9]{1}\\d{1,15}";
     String CVV = "[1-9]{1}\\d{2}";
-    String NAME = "^[A-Za-z\\-]{2,100}$";
+    String NAME = "[A-Za-z\\-]{2,100}$";
     String TOUR_NAME = "[A-za-z0-9\\s\\-,\\.;:!\\']{5,199}";
     String ROUTE = "^[A-Za-z\\s-,\\.;:0-9]{5,100}$";
     String LOGIN = "^[A-Za-z0-9_]{3,75}$";

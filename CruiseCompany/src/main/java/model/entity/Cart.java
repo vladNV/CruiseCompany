@@ -1,8 +1,5 @@
 package model.entity;
 
-import model.entity.Excursion;
-import model.entity.Ticket;
-
 import java.util.HashSet;
 import java.util.Set;
 

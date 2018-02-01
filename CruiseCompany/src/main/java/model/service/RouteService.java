@@ -8,9 +8,22 @@ import org.apache.log4j.Logger;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+/**
+ * Route service
+ */
 public class RouteService {
     private final static Logger logger = Logger.getLogger(RouteService.class);
 
+    /**
+     * Creates List with routes
+     * @param names route names
+     * @param departures route departures
+     * @param arrivals route arrivals
+     * @param port route port
+     * @return list with routes
+     * @throws RouteTimeException is exception,
+     * when departure time is after arrival time
+     */
     public LinkedList<Route> extractRoutes(String[] names, String[] departures,
                                            String arrivals[], String[] port)
             throws RouteTimeException {

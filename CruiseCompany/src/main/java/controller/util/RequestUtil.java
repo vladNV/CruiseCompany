@@ -57,7 +57,9 @@ public class RequestUtil {
     }
 
     public static void nullArrayCheck(Object[] ... arrays) {
+        nullCheck(arrays);
         for (Object[] array : arrays) {
+            nullCheck(array);
             for (Object a : array) {
                 if (a == null) {
                     throw new CommandException("null array");

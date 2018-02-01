@@ -8,6 +8,9 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Port service
+ */
 public class PortService {
     private final static Logger logger = Logger.getLogger(PortService.class);
     private FactoryDAO factory;
@@ -16,6 +19,10 @@ public class PortService {
         factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
 
+    /**
+     * Select all ports
+     * @return list with ports
+     */
     public List<Port> selectPorts() {
         logger.info("select ports");
         try (PortDAO portDAO = factory.portDAO(ConnectionPool.pool().connect())){

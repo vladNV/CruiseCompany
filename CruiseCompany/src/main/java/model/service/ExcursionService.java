@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Excursion service
+ */
 public class ExcursionService {
     private final static Logger logger = Logger.getLogger(ExcursionService.class);
 
@@ -17,6 +20,11 @@ public class ExcursionService {
     public ExcursionService() {
         factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
+
+    /**
+     * Show all excursions
+     * @return list with excursions
+     */
 
     public List<Excursion> showExcursions() {
         logger.info("show excursion");
@@ -29,6 +37,11 @@ public class ExcursionService {
         }
     }
 
+    /**
+     * Get excursion by id
+     * @param id excursion
+     * @return excursion entity
+     */
     public Excursion getExcursion(int id) {
         logger.info("get excursion " + id);
         try (ExcursionDAO excursionDAO = factory

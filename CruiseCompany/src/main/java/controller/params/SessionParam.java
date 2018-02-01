@@ -1,6 +1,7 @@
 package controller.params;
 
 public interface SessionParam {
+    String SEARCH = "search";
     String LOCALE = "locale";
     String CURRENCY = "currency";
     String CART = "cart";

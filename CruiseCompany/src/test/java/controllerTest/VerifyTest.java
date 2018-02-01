@@ -32,11 +32,6 @@ public class VerifyTest {
         System.out.println(verify.getRemarks());
     }
 
-    @Test
-    public void testVerifySignUp() {
-
-    }
-
 
     @Test
     public void testVerifyConfirm() {

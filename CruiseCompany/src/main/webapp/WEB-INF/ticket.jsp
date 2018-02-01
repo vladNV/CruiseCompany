@@ -12,7 +12,7 @@
 <div class="content">
 <div class="col-sm-12">
     <div class="col-sm-2"></div>
-    <div class="info-page col-sm-8">
+    <div class="info-page col-sm-4">
         <b><fmt:message bundle="${msg}" key="cruise_name"/>:</b>
         ${sessionScope.tour.name}<br>
         <b><fmt:message bundle="${msg}" key="region"/>:</b>
@@ -32,6 +32,20 @@
         <b><fmt:message bundle="${msg}" key="price.person"/>:</b>
         <fmt:formatNumber value="${currency * sessionScope.cart.ticket.price / 1000}" type="currency"/>
         </div>
+    <div class="col-sm-4">
+        <h4><fmt:message bundle="${msg}" key="bonus"/> </h4>
+        <c:choose>
+            <c:when test="${empty sessionScope.cart.ticket.bonus}">
+                <fmt:message bundle="${msg}" key="bonus.empty"/>
+            </c:when>
+            <c:otherwise>
+                <c:forEach items="${sessionScope.cart.ticket.bonus}" var="bonus">
+                    <fmt:message bundle="${msg}" key="${bonus.description}"/><br>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+
+    </div>
     <div class="col-sm-2"></div>
 </div>
 <div class="col-sm-12">
@@ -172,7 +186,24 @@
             </div>
         </form>
     </div>
-    <div class="col-sm-6"></div>
+    <div class="col-sm-4">
+        <h4><fmt:message bundle="${msg}" key="excurs"/></h4>
+        <div class="route-table">
+            <div class="route-header">
+                <div class="route-cell"><fmt:message bundle="${msg}" key="excursion"/></div>
+                <div class="route-cell"><fmt:message bundle="${msg}" key="price"/> </div>
+            </div>
+            <c:forEach items="${sessionScope.cart.excursions}" var="ex">
+                <div class="route-row">
+                    <div class="route-cell">${ex.name}</div>
+                    <div class="route-cell">
+                        <fmt:formatNumber value="${currency * ex.price / 1000}"
+                        type="currency"/></div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+    <div class="col-sm-2"></div>
 </div>
 </div>
 <c:import url="/WEB-INF/static/footer.jsp"/>

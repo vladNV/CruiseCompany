@@ -19,13 +19,13 @@
     <div class="col-sm-12 center-block content">
         <h2><fmt:message bundle="${msg}" key="tours"/></h2>
         <div class="tour-table">
-            <form method="post" action="${pageContext.request.contextPath}/search" class="form-inline">
-                <input required class="form-control" name="search" placeholder="Search for region"/>
-                <button class="btn btn-success"><fmt:message bundle="${msg}" key="search"/></button>
-                <a href="${pageContext.request.contextPath}/main" class="btn btn-success">
-                    <fmt:message bundle="${msg}" key="cancel"/>
-                </a>
-            </form>
+            <%--<form method="post" action="${pageContext.request.contextPath}/search" class="form-inline">--%>
+                <%--<input required class="form-control" name="search" placeholder="Search for region"/>--%>
+                <%--<button class="btn btn-success"><fmt:message bundle="${msg}" key="search"/></button>--%>
+                <%--<a href="${pageContext.request.contextPath}/main" class="btn btn-success">--%>
+                    <%--<fmt:message bundle="${msg}" key="cancel"/>--%>
+                <%--</a>--%>
+            <%--</form>--%>
             <div class="tour-header">
                 <div class="tour-cell"><fmt:message bundle="${msg}" key="cruise_name"/></div>
                 <div class="tour-cell"><fmt:message bundle="${msg}" key="departure"/></div>

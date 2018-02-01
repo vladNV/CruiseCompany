@@ -15,10 +15,13 @@ public interface TourSQL {
 
      String FIND_ALL =           "select * from tour limit ?, ?";
 
-     String TOUR_WITH_SHIP =     "select * from tour join ship using(idship) limit ?, ?";
+     String TOUR_WITH_SHIP =     "select * from tour join ship using(idship) " +
+                                 "where departure > now() order by departure " +
+                                 "limit ?, ? ";
 
      String FIND_TOUR_SHIP =     "select * from tour join ship using(idship) where idtour = ?";
 
      String SEARCH_FOR_REGION =  "select * from tour join ship using(idship) where region like ? " +
                                  "limit ?, ?";
+
 }
