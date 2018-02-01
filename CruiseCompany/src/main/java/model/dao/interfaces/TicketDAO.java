@@ -10,7 +10,7 @@ import model.entity.TicketClass;
 import java.util.List;
 
 /**
- * ExcursionDAO.java - an interface of parameterize dao.
+ * TicketDAO.java - an interface of parameterize dao.
  * Defines methods for saving and retrieving data from database.
  *
  * @author  Nagaev Vladislav
@@ -19,52 +19,52 @@ import java.util.List;
 public interface TicketDAO extends GenericDAO<Ticket> {
 
     /**
-     *
-     * @param userId
-     * @return
+     * Gets all users tickets
+     * @param userId - user identifier
+     * @return tickets list
      */
     List<Ticket> userTickets(int userId);
 
     /**
-     *
-     * @param tourId
-     * @return
+     *  Gets all cruises tickets
+     * @param tourId - tour identifier
+     * @return tickets list
      */
     List<Ticket> tourTickets(int tourId);
 
     /**
-     *
-     * @param tourId
-     * @return
+     * Gets all categories tickets
+     * @param tourId - tour identifier
+     * @return tickets list
      */
     List<AggregateOperation<Integer, Ticket>> ticketForCategory(int tourId);
 
     /**
-     *
-     * @param ticketId
-     * @return
+     * Gets ticket by Id
+     * @param ticketId - ticket identifier
+     * @return ticket
      */
     Ticket getTourTicket(int ticketId);
 
     /**
-     *
-     * @param ticket
-     * @param userId
-     * @throws ServiceException
+     * Updates ticket by Id
+     * @param ticket - new ticket info
+     * @param userId - user identifier
+     * @throws ServiceException - ticket is already bought
      */
     void updateTicket(Ticket ticket, int userId) throws ServiceException;
 
     /**
-     *
-     * @param userId
-     * @param tourId
-     * @throws ServiceException
+     * Checks tickets for existing
+     * @param userId - user identifier
+     * @param tourId - tour identifier
+     * @throws ServiceException - user already bought this ticket
      */
     void existTicket(int userId, int tourId) throws ServiceException;
 
     /**
-     *
-     * @param tour
+     * Generates tickets for tour
+     * @param tour - updated tour
      */
     void setTicketsOnTour(Tour tour);
 

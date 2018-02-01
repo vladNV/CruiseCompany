@@ -5,7 +5,7 @@ import model.entity.Tour;
 import java.util.List;
 
 /**
- * ExcursionDAO.java - an interface of parameterize dao.
+ * TourDAO.java - an interface of parameterize dao.
  * Defines methods for saving and retrieving data from database.
  *
  * @author  Nagaev Vladislav
@@ -14,37 +14,37 @@ import java.util.List;
 public interface TourDAO extends GenericDAO<Tour> {
 
     /**
-     *
-     * @param offset
-     * @return
+     * Presents union of tour and ship tabels
+     * @param offset - offset on table
+     * @return list of tours
      */
     List<Tour> joinWithShip(int offset);
 
     /**
-     *
-     * @param region
-     * @param offset
-     * @return
+     * Search tours by region
+     * @param region - region
+     * @param offset - offset on table
+     * @return list of tours
      */
     List<Tour> search(String region, int offset);
 
     /**
-     *
-     * @param tourId
-     * @return
+     * Gets tour with ship by Id
+     * @param tourId - tour identifier
+     * @return tour
      */
     Tour findTourWithShip(int tourId);
 
     /**
-     *
-     * @return
+     * Gets number of tours
+     * @return number
      */
     int amount();
 
     /**
-     *
-     * @param name
-     * @return
+     * Gets number of tours by name
+     * @param name - tour name
+     * @return number
      */
     int amount(String name);
 

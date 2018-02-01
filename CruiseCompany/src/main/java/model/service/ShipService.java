@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Ship service
+ * @author  Nagaev Vladislav
+ * @version 1.0
  */
 public class ShipService {
     private final static Logger logger = Logger.getLogger(ShipService.class);
@@ -22,9 +24,9 @@ public class ShipService {
     }
 
     /**
-     *
-     * @param shipId
-     * @return
+     * Selects ship by id
+     * @param shipId identifier
+     * @return ship
      */
     public Ship selectShip(int shipId) {
         logger.info("select ship: " + shipId);
@@ -36,6 +38,12 @@ public class ShipService {
         }
     }
 
+    /**
+     * Selects free ships in period departure-arrival
+     * @param departure - time of departure
+     * @param arrival - time of arrival
+     * @return list with ships
+     */
     public List<Ship> selectFreeShips(LocalDateTime departure, LocalDateTime arrival) {
         logger.info("select free ship from: " + departure.toString()
                 + " to " + arrival.toString());

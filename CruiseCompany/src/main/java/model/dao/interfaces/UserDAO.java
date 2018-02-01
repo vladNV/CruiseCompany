@@ -4,7 +4,7 @@ import model.entity.User;
 import model.exceptions.ServiceException;
 
 /**
- * ExcursionDAO.java - an interface of parameterize dao.
+ * UserDAO.java - an interface of parameterize dao.
  * Defines methods for saving and retrieving data from database.
  *
  * @author  Nagaev Vladislav
@@ -13,33 +13,33 @@ import model.exceptions.ServiceException;
 public interface UserDAO extends GenericDAO<User> {
 
     /**
-     *
-     * @param email
-     * @return
+     * Gets user by email
+     * @param email - users email
+     * @return user
      */
     User findByEmail(String email);
 
     /**
-     *
-     * @param card
-     * @param CVV
-     * @param money
-     * @throws ServiceException
+     * Withdraws money from the bill
+     * @param card - card number
+     * @param CVV - CVV number
+     * @param money - amount of money
+     * @throws ServiceException - User does not have enough money
      */
     void takeMoney(long card, int CVV, long money) throws ServiceException;
 
     /**
-     *
-     * @param card
-     * @param money
+     * Puts money on the bill
+     * @param card - card number
+     * @param money - amount of money
      */
     void putMoney(long card, long money);
 
     /**
-     *
-     * @param card
-     * @param CVV
-     * @throws ServiceException
+     * Checks existing user in the bank
+     * @param card - card number
+     * @param CVV - CVV number
+     * @throws ServiceException - user doesn't exist
      */
     void existUser(long card, int CVV) throws ServiceException;
 

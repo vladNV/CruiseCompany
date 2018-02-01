@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Excursion service
+ * @author  Nagaev Vladislav
+ * @version 1.0
  */
 public class ExcursionService {
     private final static Logger logger = Logger.getLogger(ExcursionService.class);

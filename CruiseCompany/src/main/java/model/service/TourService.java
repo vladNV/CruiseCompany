@@ -11,6 +11,11 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Tour service
+ * @author  Nagaev Vladislav
+ * @version 1.0
+ */
 public class TourService {
     private final static Logger logger = Logger.getLogger(TourService.class);
 
@@ -31,6 +36,11 @@ public class TourService {
         }
     }
 
+    /**
+     * Gets all information about the tour
+     * @param tourId- tour identifier
+     * @return tour
+     */
     public Tour allInformationAboutTour(int tourId)  {
         logger.info("all information about tour");
         Connection connect = ConnectionPool.pool().connect();
@@ -50,6 +60,13 @@ public class TourService {
         }
     }
 
+
+    /**
+     * Gets all tours in the region
+     * @param region - region name
+     * @param page - page number
+     * @return tours list
+     */
     public List<Tour> searchTourForRegion(String region, int page) {
         logger.info("search tour for region: " + region);
         try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())) {
@@ -60,6 +77,10 @@ public class TourService {
         }
     }
 
+    /**
+     * Creates new tour
+     * @param tour - information about tour
+     */
     public void createNewTour(Tour tour) {
         logger.info("create new tour");
         Connection connect = ConnectionPool.pool().connect();
@@ -80,6 +101,11 @@ public class TourService {
         }
     }
 
+    /**
+     * Counts numbers of pages
+     * @param search - search string
+     * @return number
+     */
     public int quantityOfPages(String search) {
         try (TourDAO tourDAO = factory.tourDAO(ConnectionPool.pool().connect())){
             if (search == null) {

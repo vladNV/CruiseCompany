@@ -10,6 +10,8 @@ import java.util.LinkedList;
 
 /**
  * Route service
+ * @author  Nagaev Vladislav
+ * @version 1.0
  */
 public class RouteService {
     private final static Logger logger = Logger.getLogger(RouteService.class);

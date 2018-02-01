@@ -17,6 +17,11 @@ import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * Ticket service
+ * @author  Nagaev Vladislav
+ * @version 1.0
+ */
 public class TicketService {
     private final static Logger logger = Logger.getLogger(TicketService.class);
 
@@ -26,6 +31,7 @@ public class TicketService {
         factory = FactoryDAO.getDAOImpl(FactoryDAO.MYSQL);
     }
 
+    @Deprecated
     public List<AggregateOperation<Integer, Ticket>> amountTicket(int tourId) {
         logger.info("amount ticket: " + tourId);
         try (TicketDAO ticketDAO = factory.ticketDAO(ConnectionPool.pool().connect())) {
@@ -36,6 +42,11 @@ public class TicketService {
         }
     }
 
+    /**
+     * Returns ticket for cruise.
+     * @param tourId identifier.
+     * @return list with tickets.
+     */
     public List<Ticket> showTicketsForTour(int tourId) {
         logger.info("show tickets for tour " + tourId);
         try (TicketDAO ticketDAO = factory.ticketDAO(ConnectionPool.pool().connect())){
@@ -46,6 +57,11 @@ public class TicketService {
         }
     }
 
+    /**
+     * Chooses ticket by id.
+     * @param ticketId identifier.
+     * @return ticket.
+     */
     public Ticket chooseTicket(int ticketId) {
         logger.info("choose ticket: " + ticketId);
         Connection connection = ConnectionPool.pool().connect();
@@ -66,6 +82,13 @@ public class TicketService {
         }
     }
 
+    /**
+     * Adds excursions on tour.
+     * @param routes cruise route, each route has one port,
+     *        where excursions are held
+     * @param excursions list with excursions
+     * @return lit with cruise routes
+     */
     private List<Route> putExcursionInTour(final List<Route> routes,
                                            final List<Excursion> excursions) {
         final HashMap<Port, List<Excursion>> map = new HashMap<>();
@@ -81,6 +104,20 @@ public class TicketService {
         return routes;
     }
 
+    /**
+     * Buys ticket for client.
+     * @param ticket - ticket.
+     * @param excursions - list with selected excursions.
+     * @param user - customer.
+     * @param money - money represents in long type with accuracy
+     * @param card - card number
+     * @param cvv - cvv number
+     * @throws ServiceException throws when,
+     *         1) User already bought this ticket;
+     *         2) Ticket is already bought;
+     *         3) User does not have enough money;
+     *         4) Bank account does not exist;
+     */
     public void buyTicket(Ticket ticket, Set<Excursion> excursions,
                              User user, long money, long card, int cvv)
             throws ServiceException {
@@ -109,6 +146,12 @@ public class TicketService {
         }
     }
 
+    /**
+     * Separates user tickets for active and old.
+     * @param user - tickets owner
+     * @param to - date to which all tickets are old
+     * @return tuple with active and old tickets
+     */
     public Tuple<List<Ticket>, List<Ticket>>
     userTickets(User user, LocalDateTime to) {
         logger.info("user tickets: " + user.getId());
@@ -122,21 +165,14 @@ public class TicketService {
         }
     }
 
-    private Tuple<List<Ticket>, List<Ticket>> delimListForDate(LocalDateTime to,
-                                                               List<Ticket> all) {
-        logger.info("delim list for date");
-        List<Ticket> active = new ArrayList<>();
-        List<Ticket> old = new ArrayList<>();
-        for (Ticket t : all) {
-           if (t.getTour().getArrival().compareTo(to) > 0) {
-               active.add(t);
-           } else {
-               old.add(t);
-           }
-        }
-        return new Tuple<>(active, old);
-    }
 
+    /**
+     * Extracts ticket for params from client.
+     * @param prices array with ticket prices by ticket category
+     * @param map map with ticket bonuses, which inclusive in cruise
+     * @param quantity number of each type
+     * @return list with tickets
+     */
     public List<Ticket> extractTicket(String[] prices, HashMap<TicketClass,
                                       List<TicketBonus>> map, int[] quantity) {
         TicketClass[] types = TicketClass.values();
@@ -152,5 +188,20 @@ public class TicketService {
             }
         }
         return tickets;
+    }
+
+    private Tuple<List<Ticket>, List<Ticket>> delimListForDate(LocalDateTime to,
+                                                               List<Ticket> all) {
+        logger.info("delim list for date");
+        List<Ticket> active = new ArrayList<>();
+        List<Ticket> old = new ArrayList<>();
+        for (Ticket t : all) {
+            if (t.getTour().getArrival().compareTo(to) > 0) {
+                active.add(t);
+            } else {
+                old.add(t);
+            }
+        }
+        return new Tuple<>(active, old);
     }
 }
